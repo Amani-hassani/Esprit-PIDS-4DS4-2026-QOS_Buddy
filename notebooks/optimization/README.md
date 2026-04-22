@@ -70,7 +70,7 @@ When referencing this benchmarking framework, please cite:
 
 ```
 QoS Buddy Optimization Agent Benchmark and Evaluation Framework
-Esprit PIDS 4DS4 2026
+Esprit PIDS 4DS4 2026 || QOSmic Team
 ```
 
 ## Notes for Reproduction
