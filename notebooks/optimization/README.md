@@ -73,6 +73,17 @@ QoS Buddy Optimization Agent Benchmark and Evaluation Framework
 Esprit PIDS 4DS4 2026 || QOSmic Team
 ```
 
+## Viewing the Notebook
+
+The notebook contains 75 interactive Plotly visualizations. For optimal viewing experience with all figures displayed:
+
+1. **GitHub Browser View:** Click on the `.ipynb` file directly in the repository
+2. **Local Jupyter:** Clone the repository and open with `jupyter notebook` or `jupyter lab`
+3. **nbviewer (Recommended):** View with full interactivity at:
+   - `https://nbviewer.jupyter.org/github/AzizX25/Esprit-PIDS-4DS4-2026-QOS_Buddy/blob/main/notebooks/optimization/optimization_agent_benchmark_notebook.ipynb`
+
+The Plotly visualizations include performance comparisons, robustness analyses, and diagnostic figures essential for interpreting the benchmark results.
+
 ## Notes for Reproduction
 
 All results are anchored to a fixed random seed (RANDOM_STATE = 42) and explicit artifact hashing to ensure reproducibility across computational environments. The project root and output directories are detected automatically to support flexible deployment configurations.
