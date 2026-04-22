@@ -1,4 +1,6 @@
-# QoS Buddy Optimization Agent: Benchmark and Evaluation Framework
+# QoS Buddy Optimization Agent Benchmark and Evaluation Framework
+
+**Esprit PIDS 4DS4 2026 || QOSmic team**
 
 ## Overview
 
