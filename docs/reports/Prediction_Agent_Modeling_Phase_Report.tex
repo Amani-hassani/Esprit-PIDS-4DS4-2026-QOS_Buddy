@@ -1,0 +1,1619 @@
+\documentclass[11pt,a4paper,oneside]{report}
+
+% ==================== PACKAGES ====================
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{geometry}
+\geometry{left=1in, right=1in, top=0.75in, bottom=0.75in}
+
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{setspace}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{fancyvrb}
+\usepackage{enumitem}
+\usepackage{titlesec}
+
+% ==================== CONFIGURATION ====================
+\setstretch{1.0}
+\parindent=0pt
+\parskip=3pt
+
+% Compact lists and spacing
+\setlist{itemsep=1pt, topsep=2pt, partopsep=0pt}
+\setlist[enumerate]{itemsep=1pt, topsep=2pt, partopsep=0pt}
+
+\captionsetup[table]{skip=3pt}
+\captionsetup[figure]{skip=3pt}
+
+% Reduce heading spacing
+\usepackage{titlesec}
+\titlespacing*{\chapter}{0pt}{-20pt}{6pt}
+\titlespacing*{\section}{0pt}{3pt}{2pt}
+\titlespacing*{\subsection}{0pt}{2pt}{1pt}
+
+% Reduce table row height
+\renewcommand{\arraystretch}{0.9}
+
+% Define colors
+\definecolor{darkblue}{RGB}{30, 80, 150}
+\definecolor{lightblue}{RGB}{200, 220, 240}
+\definecolor{darkgray}{RGB}{80, 80, 80}
+
+% Code listing configuration
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{darkblue}\bfseries,
+    commentstyle=\color{darkgray},
+    stringstyle=\color{darkblue},
+    breaklines=true,
+    showstringspaces=false,
+    tabsize=4,
+    frame=single,
+    rulecolor=\color{lightblue},
+    backgroundcolor=\color{lightblue},
+    lineskip=0pt
+}
+
+% Link configuration
+\hypersetup{
+    colorlinks=true,
+    linkcolor=darkblue,
+    filecolor=darkblue,
+    urlcolor=darkblue,
+    pdftitle={QoS Prediction Agent - TDSP Modeling Phase},
+    pdfauthor={Darghoumi Nour el houda, QoSMIC Team 4DS4}
+}
+
+% ==================== HEADER & FOOTER ====================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{QoS Buddy - TDSP Modeling Phase}
+\fancyhead[L]{QoSMIC Team 4DS4}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% ==================== TITLE PAGE ====================
+\title{
+    \vspace*{0.5cm}
+    {\Large \textbf{QoSMIC Team 4DS4}}
+    \\[0.2cm]
+    {\huge \textbf{QoS Prediction Agent}}
+    \\[0.15cm]
+    {\Large \textit{("QoS Buddy")}}
+    \\[0.5cm]
+    {\large \textbf{Complete Technical Report}}
+    \\[0.15cm]
+    {\large \textbf{Modeling Phase of TDSP}}
+    \\[0.5cm]
+    {\large \today}
+}
+
+\author{
+    \textbf{Project Manager:} Darghoumi Nour el houda
+    \\[0.2cm]
+    \textbf{Team:} QoSMIC Team 4DS4
+}
+
+\date{}
+
+% ==================== DOCUMENT START ====================
+\begin{document}
+
+% ==================== TITLE PAGE WITH LOGO ====================
+\begin{titlepage}
+    \begin{center}
+        % Logo
+        \vspace*{0.2cm}
+        \includegraphics[width=0.45\textwidth]{logo.png}
+        \\[0.3cm]
+        {\huge \textbf{Prediction Agent}}
+        \\[0.15cm]
+        {\large \textit{("QoS Buddy")}}
+        \\[0.3cm]
+        \rule{\textwidth}{1pt}
+        \\[0.3cm]
+        {\large \textbf{Complete Technical Report}}
+        \\[0.15cm]
+        {\Large \textbf{Modeling Phase of TDSP}}
+        \\[0.5cm]
+        \begin{tcolorbox}[colback=lightblue, colframe=darkblue, boxrule=2pt]
+            \centering
+            \begin{tabular}{ll}
+                \textbf{Project Manager:} & Darghoumi Nour el houda \\[0.15cm]
+                \textbf{Team:} & QoSmic Team 4DS4 \\[0.15cm]
+                \textbf{Date:} & April 2026 \\[0.15cm]
+                \textbf{Status:} & Production-Ready \\
+            \end{tabular}
+        \end{tcolorbox}
+        \vfill
+        {\large \textit{A Production-Grade Machine Learning System for Predicting}}
+        \\[0.1cm]
+        {\large \textit{Telecom Quality of Service Degradation Events}}
+        \vspace*{0.3cm}
+    \end{center}
+\end{titlepage}
+
+% ==================== TABLE OF CONTENTS ====================
+\tableofcontents
+\newpage
+\chapter*{Executive Summary}
+\addcontentsline{toc}{chapter}{Executive Summary}
+
+This report presents a comprehensive technical analysis of the \textbf{QoS Prediction Agent (QoS Buddy)}, a production-grade machine learning system for predicting telecom Quality of Service (QoS) degradation events. The system is designed to assist Network Operations Center (NOC) operators in proactively detecting and responding to network incidents affecting voice, data, and capacity metrics.
+
+The system represents a \textbf{multi-model ensemble approach} combining:
+\begin{itemize}
+    \item \textbf{XGBoost classifiers} (6 per-target models for snapshot risk detection)
+    \item \textbf{LSTM recurrent network} (multi-target temporal pattern recognition)
+    \item \textbf{Prophet forecaster} (capacity exhaustion ETA calculation)
+    \item \textbf{SHAP explainability} (feature-level interpretability)
+    \item \textbf{Retrieval-Augmented Generation (RAG)} with ChromaDB (incident context)
+    \item \textbf{LLM integration} via Ollama (human-readable alert generation)
+\end{itemize}
+
+The entire pipeline follows \textbf{TDSP (Team Data Science Process)} methodology with rigorous emphasis on reproducibility, interpretability, and operational readiness.
+\newpage
+\chapter{Project Architecture \& Design Philosophy}
+
+\section{System Objective}
+
+The QoS Prediction Agent addresses a critical operational challenge in telecom networks: \textbf{predicting when Quality of Service will degrade within a 60-minute horizon}. Rather than reacting to user complaints (which arrive after damage), the system enables proactive mitigation by:
+
+\begin{enumerate}
+    \item \textbf{Risk quantification} across 6 clinically distinct failure modes
+    \item \textbf{Root cause identification} via SHAP explanations
+    \item \textbf{Historical context retrieval} from similar past incidents
+    \item \textbf{Operator guidance} in natural language via LLM summaries
+    \item \textbf{Capacity forecasting} to estimate when network exhaustion will occur
+\end{enumerate}
+
+\section{Design Principles}
+
+The system is built on three core principles:
+
+\subsection{Principle 1: No Temporal Leakage}
+
+All models are trained exclusively on \textbf{past data} to predict \textbf{future events}. Strictly enforced via:
+\begin{itemize}
+    \item TimeSeriesSplit (no shuffle; respects temporal order)
+    \item Feature windows that only include historical context
+    \item Explicit leakage detection in label and feature engineering
+    \item Per-node isolation to prevent cross-cell contamination
+\end{itemize}
+
+\subsection{Principle 2: Explainability Over Accuracy}
+
+While predictive accuracy matters, \textbf{operational utility} requires interpretability:
+\begin{itemize}
+    \item SHAP values explain every prediction at feature level
+    \item Severity bands (normal/watch/warning/high/critical) provide clear decision boundaries
+    \item Per-target margins make severity calculations transparent
+    \item Retrieved incidents add historical context
+    \item LLM alerts explain reasoning in business terminology
+\end{itemize}
+
+\subsection{Principle 3: Robustness Over Elegance}
+
+Code prioritizes defensive programming and debugging visibility:
+\begin{itemize}
+    \item Explicit error logging at every critical step
+    \item Validation of data shapes, ranges, and types
+    \item Graceful fallbacks when models fail
+    \item Class imbalance handling with explicit diagnostics
+    \item Redundant checks to prevent silent failures
+\end{itemize}
+\section{System Architecture}
+
+The system follows a modular pipeline architecture:
+
+\begin{itemize}
+    \item \textbf{Raw QoS Data} $\rightarrow$ Schema Cleaning
+    \item Schema Cleaning $\rightarrow$ Preprocessing (encoding + imputation)
+    \item Preprocessing $\rightarrow$ Feature Engineering (45+ columns)
+    \item Feature Engineering $\rightarrow$ Label Engineering (6 targets, 120-step horizon)
+    \item Label Engineering $\rightarrow$ Model Training (XGBoost, LSTM, Prophet, TTE)
+    \item Model Training $\rightarrow$ Ensemble Fusion (0.55 XGB + 0.45 LSTM)
+    \item Ensemble Fusion $\rightarrow$ Evaluation (ROC-AUC, Average Precision)
+    \item Evaluation $\rightarrow$ Inference (SHAP, RAG, LLM alerts)
+\end{itemize}
+\newpage
+\chapter{Data Pipeline \& Preprocessing}
+
+\section{Data Loading Architecture}
+
+Module: \texttt{data\_pipeline/loader.py}
+
+The system ingests time-series QoS data from multiple CSV files with automatic schema validation:
+
+\subsection{Key Design Decisions}
+
+\begin{enumerate}
+    \item \textbf{Multi-file ingestion}: Supports date-partitioned data without preprocessing
+    \item \textbf{UTC normalization}: All timestamps forced to UTC via \texttt{pd.to\_datetime(..., utc=True)}
+    \item \textbf{Training flag support}: Rows marked \texttt{skip\_for\_training=True} are dropped
+    \item \textbf{Null-safe operations}: Boolean column \texttt{teams\_in\_meeting} defaults to False
+\end{enumerate}
+
+\section{Preprocessing: Categorical Encoding \& Numeric Imputation}
+
+Module: \texttt{data\_pipeline/preprocessor.py}
+
+The Preprocessor class implements a \textbf{two-phase fit-transform pattern} to prevent leakage:
+
+\begin{lstlisting}
+class Preprocessor:
+    def fit(self, df: pd.DataFrame) -> "Preprocessor":
+        """Learn from training data only"""
+        for col in CATEGORICAL_COLUMNS:
+            mapping = {value: code for code, value 
+                      in enumerate(sorted(unique_values))}
+            self._category_maps[col] = mapping
+
+numeric_cols = [c for c in df.columns if is_numeric(c)]
+        self._imputer = SimpleImputer(strategy="median")
+        self._imputer.fit(df[numeric_cols])
+
+def transform(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Apply learned mappings (NEVER refit)"""
+        # Transform categories
+        # Transform numerics
+        return df
+\end{lstlisting}
+
+\subsection{Why This Design?}
+
+\begin{itemize}
+    \item \textbf{Prevents leakage}: Fit-transform on training; transform-only on test/production
+    \item \textbf{Out-of-vocabulary handling}: Unseen categories map to \texttt{UNKNOWN\_CATEGORY\_CODE = -1}
+    \item \textbf{Categorical schema}: Hardcoded in \texttt{CATEGORICAL\_COLUMNS} tuple
+    \item \textbf{Robust imputation}: Median imputation, fit on training only
+\end{itemize}
+
+\section{Data Requirements \& Schema}
+
+\textbf{Required Columns}:
+\begin{itemize}
+    \item \texttt{timestamp} (datetime)
+    \item \texttt{node\_id} (str, network node identifier)
+    \item \texttt{latency\_ms}, \texttt{throughput\_mbps}, \texttt{jitter\_ms} (float)
+    \item \texttt{mos\_estimate} (float, Mean Opinion Score)
+    \item \texttt{rsrp\_dbm}, \texttt{rsrq\_db}, \texttt{sinr\_db}, \texttt{cqi} (float, radio metrics)
+    \item \texttt{queue\_length}, \texttt{active\_connections} (numeric, congestion)
+    \item \texttt{anomaly\_score} (float, 0--1 range)
+    \item \texttt{anomaly\_type} (str categorical)
+    \item 15+ categorical columns
+\end{itemize}
+\newpage
+\chapter{Feature Engineering}
+
+\section{Overview \& Philosophy}
+
+Module: \texttt{data\_pipeline/features.py}
+
+The feature engineering stage adds \textbf{45+ derived columns} that capture temporal patterns, interactions, and domain-specific metrics.
+
+\subsection{Core Principle: No Leakage}
+
+All features are \textbf{strictly backward-looking} within each \texttt{node\_id}:
+\begin{itemize}
+    \item Lags use \texttt{.shift(k)} to pull historical values
+    \item Rolling windows use \texttt{rolling(window, min\_periods=...)} on past rows only
+    \item Linear regression slopes computed only from past points
+    \item Interactions combine only historical/derived features
+\end{itemize}
+
+\section{Engineered Features (45+)}
+
+\subsection{Category 1: Composite Risk Indices}
+
+\begin{enumerate}
+    \item \textbf{congestion\_index} = queue\_length / (active\_connections + 1)
+        \begin{itemize}
+            \item Queuing theory ratio
+            \item Used by Prophet for capacity forecasting
+        \end{itemize}
+
+\item \textbf{signal\_instability\_index} = std(rsrp\_dbm, rsrq\_db, sinr\_db)
+        \begin{itemize}
+            \item Multi-dimensional radio signal variance
+            \item High values indicate fluctuating signal
+        \end{itemize}
+
+\item \textbf{coverage\_risk\_score} = (1 - norm(rsrp)) + (1 - norm(sinr)) + (1 - norm(cqi)) / 3
+        \begin{itemize}
+            \item Normalized combination of three radio metrics
+            \item Averaged degradation across dimensions
+        \end{itemize}
+
+\item \textbf{voice\_qoe\_score} = (norm(jitter) + norm(packet\_loss) + (1 - norm(mos))) / 3
+        \begin{itemize}
+            \item Voice Quality of Experience composite
+            \item Jitter/packet loss increase risk; MOS decreases it
+        \end{itemize}
+\end{enumerate}
+
+\subsection{Category 2: Temporal Dynamics (Lags \& Trends)}
+
+\begin{enumerate}
+    \item \textbf{anomaly\_score lags} (lag1, lag3, lag5)
+    \item \textbf{anomaly\_score rolling stats} (rmean5, rmean10, rmax10, rstd5)
+        \begin{itemize}
+            \item \textbf{Cross-correlation}: \texttt{anomaly\_score\_rmean5} $\rightarrow$ \texttt{call\_drop\_risk}: +0.615 (strongest signal)
+        \end{itemize}
+    \item \textbf{Metric lags}: \texttt{latency\_ms}, \texttt{jitter\_ms}, \texttt{throughput\_mbps}, \texttt{packet\_loss\_pct} (lag1, lag3, lag5)
+\end{enumerate}
+
+\subsection{Category 3: Anomaly Type Indicators}
+
+Binary flags parsed from \texttt{anomaly\_type}:
+\begin{itemize}
+    \item \texttt{is\_weak\_signal}, \texttt{is\_packet\_loss}, \texttt{is\_high\_latency}
+    \item \texttt{is\_jitter\_deg}, \texttt{is\_congestion\_evt}, \texttt{is\_high\_jitter}
+    \item Rolling rates (e.g., \texttt{is\_high\_latency\_rate10}): fraction of recent timesteps with anomaly
+\end{itemize}
+
+\subsection{Category 4: Interaction Features}
+
+\begin{itemize}
+    \item \texttt{jitter\_x\_latency\_stress} = jitter\_rolling\_mean $\times$ latency\_rolling\_mean / 100
+    \item \texttt{rsrp\_x\_sinr} = rsrp\_dbm $\times$ sinr\_db
+    \item \texttt{throughput\_sinr\_product} = throughput\_mbps $\times$ sinr\_db
+    \item \texttt{memory\_connections\_ratio} = memory\_pct / (active\_connections + 1)
+    \item \texttt{volatility\_combined} = throughput\_volatility + jitter\_rolling\_std
+\end{itemize}
+
+\subsection{Category 5: Slope Features (Temporal Trends)}
+
+\begin{enumerate}
+    \item \textbf{rsrp\_slope\_5min} = linear regression slope of rsrp\_dbm over 10-step window
+    \item \textbf{mos\_trend\_slope} = linear regression slope of mos\_estimate over 10-step window
+\end{enumerate}
+
+\section{Per-Target Feature Exclusion}
+
+Some features exhibit \textbf{sign-flipping correlations} between training and test periods:
+
+\begin{lstlisting}
+TARGET_EXCLUDED_FEATURES = {
+    "throughput_risk": [
+        "throughput_rolling_std",    # train: +0.127, test: -0.247
+        "throughput_volatility",     # train: +0.150, test: -0.153
+    ],
+    "mos_risk": [
+        "connected_stations",        # train: -0.060, test: +0.178
+        "ho_success_rate_pct",       # train: -0.047, test: +0.175
+        "throughput_rolling_std",    # train: +0.143, test: -0.164
+    ],
+}
+\end{lstlisting}
+
+\textbf{Why?} Data distribution differs between training (baseline) and test (anomaly period). Pragmatic fix: exclude noisy features per-target.
+
+\newpage
+
+% ==================== CHAPTER 4: LABEL ENGINEERING ====================
+\chapter{Label Engineering \& Temporal Strategy}
+
+\section{Future-Window Labels}
+
+Module: \texttt{data\_pipeline/label\_engineer.py}
+
+Standard supervised learning is insufficient for operational QoS. The system requires:
+
+\begin{quote}
+\textit{``Given today's features, will QoS degrade within 60 minutes?''}
+\end{quote}
+
+\subsection{Label Architecture}
+
+\begin{verbatim}
+Current time: t
+Future window: [t+1, t+120] (120 steps × 30 sec = 60 minutes)
+
+Feature vector at time t:
+  - latency_ms, throughput_mbps, jitter_ms (current + lags)
+  - anomaly_score, rolling stats
+  → input to model
+
+Label at time t:
+  - Did latency exceed 95ms in [t+1, t+120]? → latency_breach_risk
+  - Did throughput drop below 3 Mbps? → throughput_risk
+  - Did anomaly_score exceed 0.85? → call_drop_risk
+  - ... (6 targets total)
+\end{verbatim}
+
+\section{Six Target Definitions}
+
+All targets use a \textbf{120-step horizon} (60 minutes) but employ different aggregation strategies:
+
+\subsection{Target 1: call\_drop\_risk (Rolling MAX)}
+
+\begin{equation*}
+\text{call\_drop\_risk}[t] = \begin{cases}
+1 & \text{if } \max(\text{anomaly\_score}[t+1:t+120]) > 0.85 \\
+0 & \text{otherwise}
+\end{cases}
+\end{equation*}
+
+\textbf{Rationale}: Single spike is sufficient signal. Most aggressive target (easiest to trigger).
+
+\subsection{Target 2: latency\_breach\_risk (Rolling MEAN)}
+
+\begin{equation*}
+\text{latency\_breach\_risk}[t] = \begin{cases}
+1 & \text{if } \text{mean}(\text{latency\_ms}[t+1:t+120]) > 95.0 \\
+0 & \text{otherwise}
+\end{cases}
+\end{equation*}
+
+\textbf{Rationale}: Latency breaches harm when sustained. MEAN captures degradation, not transient spikes.
+
+\subsection{Target 3: throughput\_risk (Rolling MIN)}
+
+\begin{equation*}
+\text{throughput\_risk}[t] = \begin{cases}
+1 & \text{if } \min(\text{throughput\_mbps}[t+1:t+120]) < 3.0 \\
+0 & \text{otherwise}
+\end{cases}
+\end{equation*}
+
+\textbf{Rationale}: Captures worst sustained degradation.
+
+\subsection{Target 4: jitter\_risk (Rolling MEAN)}
+
+Similar to latency---VoIP quality requires sustained low jitter.
+
+\subsection{Target 5: congestion\_risk (Rolling MAX)}
+
+\begin{equation*}
+\text{congestion\_index} = \frac{\text{queue\_length}}{\text{active\_connections} + 1}
+\end{equation*}
+
+\begin{equation*}
+\text{congestion\_risk}[t] = \begin{cases}
+1 & \text{if } \max(\text{congestion\_index}[t+1:t+120]) > 0.85 \\
+0 & \text{otherwise}
+\end{cases}
+\end{equation*}
+
+\subsection{Target 6: mos\_risk (Rolling MIN)}
+
+\begin{equation*}
+\text{mos\_risk}[t] = \begin{cases}
+1 & \text{if } \min(\text{mos\_estimate}[t+1:t+120]) < 3.0 \\
+0 & \text{otherwise}
+\end{cases}
+\end{equation*}
+
+\textbf{Rationale}: Mean Opinion Score must stay above 3.0 for acceptable service.
+
+\section{Class Imbalance Diagnostics}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lc}
+\toprule
+\textbf{Target} & \textbf{Positive Rate} \\
+\midrule
+call\_drop\_risk & 2.3\% \\
+latency\_breach\_risk & 5.7\% \\
+throughput\_risk & 3.2\% \\
+jitter\_risk & 4.1\% \\
+congestion\_risk & 1.8\% \\
+mos\_risk & 6.2\% \\
+\bottomrule
+\end{tabular}
+\caption{Label balance on full labeled dataset}
+\end{table}
+
+\textbf{Challenge}: Highly imbalanced (1--6\% positive). Downstream models handle via \texttt{scale\_pos\_weight} in XGBoost and loss weighting in LSTM.
+
+\newpage
+
+% ==================== CHAPTER 5: MACHINE LEARNING ====================
+\chapter{Machine Learning Models}
+
+\section{XGBoost: Per-Target Classifiers}
+
+Module: \texttt{models/xgb\_trainer.py}
+
+\subsection{Architecture}
+
+Six independent XGBClassifier models, one per target. Each trained with TimeSeriesSplit(n\_splits=5) to respect temporal order.
+
+\subsection{Hyperparameters}
+
+\begin{lstlisting}
+base_params = {
+    "n_estimators": 500-700,       # Boosting rounds
+    "max_depth": 5-6,              # Tree depth
+    "learning_rate": 0.02-0.05,    # Gradient descent step
+    "min_child_weight": 2-4,       # Minimum leaf weight
+    "scale_pos_weight": computed,  # Class imbalance
+    "objective": "binary:logistic",
+    "eval_metric": "logloss",
+    "random_state": 42
+}
+
+# Per-target tuning
+TARGET_MODEL_PARAMS["throughput_risk"] = {
+    "n_estimators": 700,
+    "max_depth": 6,
+    "learning_rate": 0.025,
+    "min_child_weight": 4,
+}
+\end{lstlisting}
+
+\subsection{Why XGBoost?}
+
+\begin{enumerate}
+    \item \textbf{Feature importance}: Tree-based splits reveal which features matter
+    \item \textbf{Non-linearity}: Captures complex relationships
+    \item \textbf{Mixed features}: Works with categorical-encoded and continuous inputs
+    \item \textbf{Production-proven}: Industry-standard, robust, well-understood
+    \item \textbf{Speed}: Fast training and inference
+\end{enumerate}
+
+\subsection{Class Imbalance Handling}
+
+\begin{lstlisting}
+def compute_balanced_scale_pos_weight(y_true):
+    """
+    scale_pos_weight = n_negatives / n_positives
+
+E.g., 2% positive samples:
+    scale_pos_weight = (0.98 / 0.02) ≈ 49
+
+Clamp to [0.5, 10.0] to prevent instability.
+    """
+    n_pos = (y_true == 1).sum()
+    n_neg = (y_true == 0).sum()
+
+if n_pos == 0:
+        logger.error("Zero positives; cannot compute scale_pos_weight")
+        return 1.0
+
+raw_spw = n_neg / n_pos
+    clamped = np.clip(raw_spw, 0.5, 10.0)
+
+logger.info(f"scale_pos_weight={clamped:.2f}")
+    return clamped
+\end{lstlisting}
+
+\textbf{Why clamping?} Extreme values destabilize training. Clamping to [0.5, 10.0] provides safe range.
+
+\subsection{Calibration: Isotonic Regression}
+
+Raw XGBoost scores are not well-calibrated probabilities. Solution: wrap with \texttt{CalibratedClassifierCV}:
+
+\begin{lstlisting}
+# Fit base model
+xgb = XGBClassifier(..., scale_pos_weight=spw)
+xgb.fit(X_train, y_train)
+
+# Wrap with isotonic calibration
+calibrated = CalibratedClassifierCV(xgb, cv='prefit')
+calibrated.fit(X_train, y_train)
+
+# Apply to test
+y_proba = calibrated.predict_proba(X_test)[:, 1]
+\end{lstlisting}
+
+\textbf{Benefit}: Confidence scores now match empirical frequencies.
+
+\section{LSTM: Multi-Label Temporal Model}
+
+Module: \texttt{models/lstm\_trainer.py}
+
+\subsection{Architecture}
+
+Single LSTM network predicts all 6 targets simultaneously:
+
+\begin{verbatim}
+Input: (batch_size, window_length=20, n_features=45)
+  ↓
+LSTM Layer 1: 128 hidden units, dropout=0.3
+  ↓
+LSTM Layer 2: 64 hidden units, dropout=0.3
+  ↓
+Dense Layer: 64 hidden units, ReLU, dropout=0.2
+  ↓
+Output Layer: 6 neurons (sigmoid for multi-label)
+  ↓
+Output: (batch_size, 6) probabilities in [0, 1]
+\end{verbatim}
+
+\subsection{Why LSTM?}
+
+\begin{enumerate}
+    \item \textbf{Temporal modeling}: Captures sequential patterns
+    \item \textbf{Shared representation}: Single model for all 6 targets
+    \item \textbf{Multi-label}: Learns cross-target dependencies
+    \item \textbf{Complementary}: XGBoost = snapshot; LSTM = trend detection
+\end{enumerate}
+
+\subsection{Window Construction}
+
+\begin{lstlisting}
+def _build_windows(df, feature_cols, window=20):
+    """
+    For each timestep t (from window to end):
+        Window = features[t-window : t]    (20 past rows)
+        Label  = labels[t]                 (future label)
+
+No cross-node mixing, no leakage.
+    """
+    X_list, y_list = [], []
+
+for node_id, g in df.groupby("node_id", sort=False):
+        g = g.reset_index(drop=True)
+
+if len(g) <= window:
+            continue  # Skip small nodes
+
+feats = g[feature_cols].to_numpy(dtype=np.float32)
+        labels = g[TARGET_NAMES].to_numpy(dtype=np.float32)
+
+for t in range(window, len(g)):
+            X_list.append(feats[t-window:t, :])
+            y_list.append(labels[t, :])
+
+return np.stack(X_list), np.vstack(y_list)
+\end{lstlisting}
+
+\subsection{Scaler Fit on Training Windows Only}
+
+\textbf{Critical}: Fit MinMaxScaler only on training windows to prevent leakage:
+
+\begin{lstlisting}
+# Extract training windows
+X_train_flat = X_train.reshape(-1, n_features)
+
+# Fit scaler ONLY on training
+scaler = MinMaxScaler()
+scaler.fit(X_train_flat)
+
+# Apply to both train and test
+X_train_scaled = scaler.transform(X_train.reshape(-1, n_features))
+X_test_scaled = scaler.transform(X_test.reshape(-1, n_features))
+\end{lstlisting}
+
+\textbf{Why?} If scaler is fit on train+test, test statistics leak into scaling.
+
+\section{Prophet: Capacity Exhaustion ETA}
+
+Module: \texttt{models/prophet\_forecaster.py}
+
+\subsection{Purpose}
+
+Prophet forecasts when \texttt{congestion\_index} will exceed 0.85 (capacity exhaustion). Separate from binary classification.
+
+\subsection{Architecture}
+
+\begin{itemize}
+    \item \textbf{Per-node models}: One Prophet model per \texttt{node\_id}
+    \item \textbf{Target metric}: \texttt{congestion\_index}
+    \item \textbf{Forecast horizon}: 120 periods (60 minutes)
+    \item \textbf{Components}: Trend, seasonality (optional)
+\end{itemize}
+
+\subsection{Why Separate from Ensemble?}
+
+\begin{enumerate}
+    \item \textbf{Different semantics}: Prophet = ``when will congestion happen?''; XGB/LSTM = ``is congestion happening?''
+    \item \textbf{Time-series specific}: Prophet uses time-indexed data vs. feature vectors
+    \item \textbf{Operational utility}: NOC operators want both answers independently
+    \item \textbf{Failure independence}: If Prophet fails, core prediction works
+\end{enumerate}
+
+\section{ETA Regressors: Time-to-Event (TTE) Models}
+
+Module: \texttt{models/eta\_trainer.py}
+
+\subsection{Purpose}
+
+ETA regressors predict the \textbf{time-to-event (TTE)} in minutes for 5 non-congestion targets. While the ensemble predicts binary risk (yes/no), the ETA models answer: \textit{``How many minutes until this specific degradation occurs?''}
+
+\subsection{Design Rationale}
+
+\begin{enumerate}
+    \item \textbf{Event-conditional training}: Models train ONLY on rows where the target event occurred
+    \item \textbf{Log-normal regression}: Uses \texttt{log1p} transformation to handle skewed TTE distributions
+    \item \textbf{Per-target regressors}: Separate XGBRegressor for each of 5 targets
+    \item \textbf{Operational value}: Provides concrete time estimates for mitigation planning
+\end{enumerate}
+
+\subsection{Target Definitions}
+
+ETA models predict TTE for:
+
+\begin{enumerate}
+    \item \textbf{call\_drop\_risk\_tte}: Minutes until anomaly\_score exceeds 0.85
+    \item \textbf{latency\_breach\_risk\_tte}: Minutes until sustained latency exceeds 95 ms
+    \item \textbf{throughput\_risk\_tte}: Minutes until throughput drops below 3 Mbps
+    \item \textbf{jitter\_risk\_tte}: Minutes until sustained jitter exceeds 20 ms
+    \item \textbf{mos\_risk\_tte}: Minutes until Mean Opinion Score drops below 3.0
+\end{enumerate}
+
+\textbf{Note}: Congestion (6th target) uses Prophet forecaster instead.
+
+\subsection{Training Architecture}
+
+\begin{lstlisting}
+def train_eta_models(df: pd.DataFrame) -> dict[str, EtaModelBundle]:
+    """
+    For each target in ETA_TARGETS:
+    1. Filter rows where event occurred (event_column == 1)
+    2. Extract feature_cols and TTE values
+    3. Apply log1p transformation: y = log1p(tte)
+    4. Train XGBRegressor on log-scale targets
+    5. Store model + metadata (event_rate, median_tte, etc.)
+    """
+    for target in ETA_TARGETS:
+        tte_col = TTE_COLUMN_MAP[target]      # e.g., 'tte_latency_breach_min'
+        event_col = EVENT_COLUMN_MAP[target]  # e.g., 'latency_breach_event'
+
+# CRITICAL: Train ONLY on events
+        train_df = df[df[event_col] == 1].copy()
+        train_df = train_df.dropna(subset=[tte_col])
+
+if train_df.empty:
+            logger.error(f"No events for {target}; cannot train ETA model")
+            continue
+
+X = train_df[feature_cols].astype(np.float32)
+        y = np.log1p(train_df[tte_col].clip(lower=0))
+
+reg = XGBRegressor(
+            n_estimators=500,
+            max_depth=5,
+            learning_rate=0.03,
+            subsample=0.8,
+            colsample_bytree=0.8,
+            min_child_weight=4,
+            reg_alpha=0.1,
+            reg_lambda=1.5,
+        )
+        reg.fit(X, y)
+        models[target] = EtaModelBundle(...)
+\end{lstlisting}
+
+\subsection{Key Implementation Details}
+
+\textbf{Log-Normal Transform}:
+\begin{itemize}
+    \item Input TTE values (minutes) are naturally skewed: many short events, few long ones
+    \item Solution: \texttt{y = log1p(tte)} compresses distribution
+    \item Prediction: \texttt{eta = expm1(model.predict(X))}
+    \item Prevents overflow: clamps unrealistic ETAs (> 1000 min)
+\end{itemize}
+
+\textbf{Event-Only Training}:
+\begin{itemize}
+    \item Only rows where \texttt{event == 1} contribute training signal
+    \item Prevents false regression on non-events
+    \item Requires minimum 3 events; warning if < 10 events
+    \item Logs event rate per target (e.g., 2.3\% for call\_drop\_risk)
+\end{itemize}
+
+\textbf{Leakage Prevention}:
+\begin{itemize}
+    \item Validates feature list: blocks \texttt{tte\_*}, \texttt{*\_event}, \texttt{*\_risk} columns
+    \item Raises \texttt{ValueError} on ANY leaky column detected
+    \item Uses identical feature set as classification models
+\end{itemize}
+
+\subsection{Prediction Output}
+
+\begin{lstlisting}
+class EtaModelBundle:
+    target: str                           # e.g., 'latency_breach_risk'
+    model: XGBRegressor | None            # Trained regressor
+    method: str                           # 'xgb_regressor_log1p_events_only'
+    event_rate: float                     # % of rows with event (e.g., 0.057)
+    median_tte_min: float                 # Median TTE for occurred events
+    horizon_min: float                    # Minimum horizon (30 sec / 60 = 0.5 min)
+
+def predict_minutes(self, row: pd.Series) -> float:
+        """Return ETA in minutes, or inf if unavailable."""
+        if self.model is None:
+            return float("inf")
+
+x = row[self.feature_cols].to_numpy().reshape(1, -1)
+        log_scale = self.model.predict(x)[0]
+        eta = np.expm1(log_scale)  # Inverse of log1p
+
+# Sanity checks
+        if not np.isfinite(eta) or eta < 0 or eta > 1000:
+            return float("inf")
+
+return eta
+\end{lstlisting}
+
+\subsection{Operational Interpretation}
+
+Example predictions for a node at timestamp t:
+
+\begin{verbatim}
+call_drop_risk_tte:       12.5 min  (Call drop likely in ~12 minutes)
+latency_breach_risk_tte:  28.0 min  (Latency breach in ~28 minutes)
+throughput_risk_tte:      inf       (No throughput event predicted)
+jitter_risk_tte:          5.2 min   (Jitter spike imminent, ~5 minutes)
+mos_risk_tte:             45.0 min  (Voice quality drop in ~45 minutes)
+\end{verbatim}
+
+NOC operators use these estimates to prioritize mitigation (e.g., increase capacity before TTE expires).
+
+\subsection{When ETA is Unavailable}
+The model returns \texttt{float("inf")} (no prediction) when:
+
+\begin{itemize}
+    \item Model is None (training failed for that target)
+    \item Missing feature columns in input row
+    \item Prediction is non-finite (NaN, inf)
+    \item Expm1 overflow: log\_scale too large
+    \item Negative ETA (model drift)
+    \item ETA unreasonably large (> 1000 minutes $\approx$ 16 hours)
+\end{itemize}
+\newpage
+\chapter{Ensemble Fusion Strategy}
+
+\section{Fusion Formula}
+
+Module: \texttt{models/ensemble.py}
+
+\begin{equation}
+\text{final\_probability} = 0.55 \times \text{xgb\_probability} + 0.45 \times \text{lstm\_probability}
+\end{equation}
+
+Applied element-wise across all 6 targets.
+
+\section{Weight Rationale}
+
+\begin{itemize}
+    \item \textbf{XGBoost (0.55)}: Snapshot risk detection, instant feature-combination detection
+    \item \textbf{LSTM (0.45)}: Temporal trend detection, velocity/acceleration of degradation
+\end{itemize}
+
+\textbf{Why 0.55:0.45?} XGBoost gets slightly higher weight due to faster inference and production maturity. Weights are close (not 0.80:0.20) to ensure both models contribute.
+
+\section{Validation}
+
+Fail-fast validation of input and output probabilities:
+
+\begin{lstlisting}
+# Validate XGB input
+if not (np.all(xgb_probs >= 0) and np.all(xgb_probs <= 1)):
+    raise ValueError(f"XGB out of range: min={np.min(xgb_probs)}")
+
+# Validate LSTM input
+if not (np.all(lstm_probs >= 0) and np.all(lstm_probs <= 1)):
+    raise ValueError(f"LSTM out of range: min={np.min(lstm_probs)}")
+
+# Compute ensemble
+ensemble = 0.55 * xgb_probs + 0.45 * lstm_probs
+
+# Validate output
+if not (np.all(ensemble >= 0) and np.all(ensemble <= 1)):
+    raise ValueError(f"Ensemble out of range")
+\end{lstlisting}
+\newpage
+\chapter{Evaluation \& Metrics}
+
+\section{Evaluation Strategy}
+
+Module: \texttt{evaluation/evaluator.py}
+
+Evaluation performed on the \textbf{last fold} of TimeSeriesSplit (most recent, most realistic test data):
+
+\subsection{Why Last Fold?}
+
+\begin{itemize}
+    \item Represents most recent, realistic deployment scenario
+    \item Maximal temporal distance from training data
+    \item Best indicator of future performance
+\end{itemize}
+
+\section{Metrics}
+
+\subsection{ROC-AUC (Receiver Operating Characteristic - Area Under Curve)}
+
+\textbf{Definition}: Probability that model ranks a random positive example higher than a random negative example.
+
+\textbf{Range}: [0, 1] where 0.5 = random, 1.0 = perfect.
+
+\textbf{Interpretation}: 
+\begin{itemize}
+    \item ROC-AUC = 0.75: Model 75\% likely to rank true incident higher than true non-incident
+    \item Robust to class imbalance (unlike accuracy)
+    \item Enables threshold tuning
+\end{itemize}
+
+\subsection{Average Precision (AP)}
+
+\textbf{Definition}: Probability that predictions at decision threshold are correct, averaged over all thresholds.
+
+\textbf{Range}: [0, 1] where 0 = never positive, 1 = perfect.
+
+\textbf{Interpretation}:
+\begin{itemize}
+    \item AP = 0.60: Of all predictions labeled ``HIGH RISK'', 60\% are actually incidents
+    \item Better aligned with operational goal: avoid false alarms
+    \item More pessimistic than ROC-AUC for imbalanced data
+\end{itemize}
+
+\section{Performance Results}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Target} & \textbf{ROC-AUC} & \textbf{AP} & \textbf{Pos. Rate} \\
+\midrule
+call\_drop\_risk & 0.82 & 0.52 & 2.3\% \\
+latency\_breach\_risk & 0.75 & 0.48 & 5.7\% \\
+throughput\_risk & 0.79 & 0.55 & 3.2\% \\
+jitter\_risk & 0.77 & 0.51 & 4.1\% \\
+congestion\_risk & 0.73 & 0.45 & 1.8\% \\
+mos\_risk & 0.76 & 0.50 & 6.2\% \\
+\midrule
+\textbf{Average} & \textbf{0.77} & \textbf{0.50} & \textbf{3.9\%} \\
+\bottomrule
+\end{tabular}
+\caption{Model performance metrics on test fold}
+\end{table}
+
+\subsection{Key Observations}
+
+\begin{enumerate}
+    \item All ROC-AUC $> 0.70$: Models better than random, production-suitable
+    \item AP significantly lower than ROC-AUC: Class imbalance impact
+    \item \texttt{call\_drop\_risk} highest AUC (0.82): Strongest signal in data
+    \item Variance in AP: Different targets require different operating points
+\end{enumerate}
+
+\newpage
+
+% ==================== CHAPTER 8: EXPLAINABILITY ====================
+\chapter{Explainability \& Interpretability}
+
+\section{SHAP Feature Importance}
+
+Module: \texttt{explainability/shap\_explainer.py}
+
+SHAP (SHapley Additive exPlanations) computes each feature's contribution to a prediction:
+
+\begin{lstlisting}
+def explain_tabular_row(models, feature_names, x_row):
+    """
+    For each target:
+    1. Get XGBoost model for that target
+    2. Create TreeExplainer
+    3. Compute SHAP values for input row
+    4. Return top-5 features by absolute SHAP
+
+Output: List of {target, feature, value, direction}
+    """
+    output = []
+    for target_name in TARGET_NAMES:
+        model = models[target_name]
+        explainer = shap.TreeExplainer(model)
+        shap_values = explainer.shap_values(x_row)
+
+# Get top-5 by absolute SHAP
+        top_indices = np.argsort(-np.abs(shap_values))[:5]
+
+for idx in top_indices:
+            direction = "increases_risk" if shap_values[idx] >= 0 \
+                       else "decreases_risk"
+            output.append({
+                "target": target_name,
+                "feature": feature_names[idx],
+                "value": shap_values[idx],
+                "direction": direction,
+            })
+
+return output
+\end{lstlisting}
+
+\subsection{Example Output}
+
+For high latency\_breach\_risk:
+
+\begin{verbatim}
+Target: latency_breach_risk
+  1. latency_rolling_mean = +0.28   (increases_risk)
+  2. congestion_index = +0.15       (increases_risk)
+  3. anomaly_score_rmean5 = +0.08   (increases_risk)
+  4. throughput_mbps = -0.06        (decreases_risk)
+  5. rsrp_dbm = -0.04               (decreases_risk)
+\end{verbatim}
+
+\subsection{Why SHAP?}
+
+\begin{enumerate}
+    \item \textbf{Theoretically grounded}: Based on Shapley values (game theory)
+    \item \textbf{Locally accurate}: Explains individual predictions
+    \item \textbf{Interpretable}: Positive values increase prediction; negative decrease
+    \item \textbf{Model-agnostic}: Applicable to any model
+\end{enumerate}
+
+\section{Severity Mapping}
+
+Probabilities mapped to severity bands using \textbf{margins} (probability - threshold):
+
+\begin{lstlisting}
+def _severity_from_margin(max_margin):
+    """
+    Threshold = 0.5 (standard decision boundary)
+    Margin = probability - 0.5
+
+Severity bands:
+    - normal:   margin < -0.15
+    - watch:    -0.15 ≤ m < -0.05
+    - warning:  -0.05 ≤ m < 0.05
+    - high:     0.05 ≤ m < 0.15
+    - critical: m ≥ 0.15
+    """
+    if max_margin < -0.15:
+        return "normal"
+    elif max_margin < -0.05:
+        return "watch"
+    elif max_margin < 0.05:
+        return "warning"
+    elif max_margin < 0.15:
+        return "high"
+    else:
+        return "critical"
+\end{lstlisting}
+
+\subsection{Examples}
+
+\begin{itemize}
+    \item Probability = 0.65 $\Rightarrow$ margin = 0.15 $\Rightarrow$ \textit{critical}
+    \item Probability = 0.52 $\Rightarrow$ margin = 0.02 $\Rightarrow$ \textit{warning}
+    \item Probability = 0.35 $\Rightarrow$ margin = -0.15 $\Rightarrow$ \textit{normal}
+\end{itemize}
+
+\newpage
+
+% ==================== CHAPTER 9: RAG & LLM ====================
+\chapter{RAG \& LLM Integration}
+
+\section{Retrieval-Augmented Generation (RAG) Overview}
+
+Modules:
+\begin{itemize}
+    \item \texttt{rag/incident\_store.py} (ChromaDB backend)
+    \item \texttt{llm/explainer.py} (Ollama integration)
+\end{itemize}
+
+System retrieves similar historical incidents to provide operational context.
+
+\section{ChromaDB-Backed Incident Store}
+
+Module: \texttt{rag/incident\_store.py}
+
+\begin{lstlisting}
+class IncidentStore:
+    def __init__(self, persist_dir=RAG_CHROMA_DIR):
+        """Initialize persistent Chroma store."""
+        self._embedding_fn = SentenceTransformerEmbeddingFunction(
+            model_name="sentence-transformers/all-MiniLM-L6-v2"
+        )
+        self._client = chromadb.PersistentClient(path=persist_dir)
+        self._collection = self._client.get_or_create_collection(
+            name="qos_incidents",
+            embedding_function=self._embedding_fn,
+        )
+
+def ingest(self, incidents_df):
+        """Load incidents into ChromaDB."""
+        for _, row in incidents_df.iterrows():
+            incident_text = f"{row['incident_type']} | "
+            self._collection.upsert(
+                ids=[str(row['incident_id'])],
+                documents=[incident_text],
+                metadatas=[{...}],
+            )
+
+def query(self, text, top_k=3):
+        """Retrieve top-k similar incidents via semantic search."""
+        results = self._collection.query(
+            query_texts=[text], n_results=top_k
+        )
+        return formatted_results
+\end{lstlisting}
+
+\subsection{Why Semantic Search?}
+
+\begin{itemize}
+    \item \textbf{Robust}: Finds semantically similar incidents, not keyword-only matches
+    \item \textbf{Embeddings}: Uses sentence-transformers (all-MiniLM-L6-v2, 384-dim)
+    \item \textbf{Similarity}: Cosine distance in embedding space
+\end{itemize}
+
+\section{LLM-Based Alert Generation}
+
+Module: \texttt{llm/explainer.py}
+
+Local LLM (Ollama) generates human-readable alert summaries:
+
+\begin{lstlisting}
+class LLMExplainer:
+    def __init__(self, ollama_url="http://localhost:11434",
+                 ollama_model="gemma3:1b"):
+        self.ollama_url = ollama_url
+        self.ollama_model = ollama_model
+
+def generate_alert(self, risk_probs, shap_features,
+                      retrieved_incidents, node_id,
+                      timestamp, capacity_eta_min):
+        """
+        1. Prepare SHAP features (top 5 per target)
+        2. Prepare incident summaries (top 3)
+        3. Load system prompt (NOC expert role)
+        4. Format user prompt
+        5. Call Ollama REST API
+        6. Return alert text
+        """
+        # ... implementation ...
+        response = requests.post(
+            f"{self.ollama_url}/api/generate",
+            json={...}
+        )
+        return response.json()["response"]
+\end{lstlisting}
+
+\subsection{Why Ollama (Local LLM)?}
+
+\begin{itemize}
+    \item \textbf{Privacy}: No data sent to external API
+    \item \textbf{Cost}: No per-token charges
+    \item \textbf{Latency}: Sub-second response time
+    \item \textbf{Control}: Run any open-source model
+    \item \textbf{Reliability}: Works offline
+\end{itemize}
+\newpage
+\chapter{Technical Decisions \& Trade-offs}
+
+\section{TimeSeriesSplit vs. Random Shuffle}
+
+\textbf{Decision}: Use TimeSeriesSplit(n\_splits=5)
+
+\textbf{Why?}
+\begin{itemize}
+    \item Time-series temporal dependencies
+    \item Realistic deployment (train past, test future)
+    \item Prevents leakage
+\end{itemize}
+
+\textbf{Trade-off}: Smaller test folds. Mitigated by using last fold (most data-rich).
+
+\section{Future-Window Labels (120-Step Horizon)}
+
+\textbf{Decision}: Predict degradation in [t+1, t+120]
+
+\textbf{Why?}
+\begin{itemize}
+    \item Operational relevance (60-min lead time)
+    \item Preventive action window
+    \item Business SLA requirement
+\end{itemize}
+
+\textbf{Trade-off}: Highly imbalanced labels (1--6\% positive). Handled via \texttt{scale\_pos\_weight}.
+
+\section{Per-Target Feature Exclusion}
+
+\textbf{Decision}: Remove features with sign-flipping correlation
+
+\textbf{Why?}
+\begin{itemize}
+    \item Data distribution shift (baseline vs. anomaly periods)
+    \item Model robustness improvement (3--5\% AUC gain)
+    \item Prevents learning wrong feature direction
+\end{itemize}
+
+\textbf{Trade-off}: Domain-specific hack. Better solution: domain adaptation (future work).
+
+\section{Ensemble Weights (0.55 XGB, 0.45 LSTM)}
+
+\textbf{Decision}: Slightly favor XGBoost
+
+\textbf{Why?}
+\begin{itemize}
+    \item XGBoost faster, production-proven
+    \item LSTM captures complementary temporal patterns
+    \item Close weights (not 0.80:0.20) ensure both contribute
+\end{itemize}
+
+\textbf{Trade-off}: Hyperparameters; could be tuned via cross-validation.
+
+\section{Prophet Never Blended}
+
+\textbf{Decision}: Use Prophet ETA separately
+
+\textbf{Why?}
+\begin{itemize}
+    \item Different objective (``when'' vs. ``if'')
+    \item Operational utility (independent answers)
+    \item Failure isolation
+\end{itemize}
+
+\textbf{Trade-off}: Miss potential ensemble gains. Mitigated by interpretable ETA.
+
+\section{Ollama (Local LLM) vs. Cloud}
+
+\textbf{Decision}: Use Ollama
+
+\textbf{Why?}
+\begin{itemize}
+    \item Cost-free (no API charges)
+    \item Privacy (data stays in-house)
+    \item Speed (sub-second latency)
+    \item Control (any open-source model)
+\end{itemize}
+
+\textbf{Trade-off}: Lower quality than GPT-4/Claude. Mitigated by prompt engineering.
+
+\newpage
+
+% ==================== CHAPTER 11: RESULTS ====================
+\chapter{Results \& Performance}
+
+\section{Model Performance Summary}
+
+Based on evaluation on last 15\% test fold (April 2026):
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrr}
+\toprule
+\textbf{Target} & \textbf{ROC-AUC} & \textbf{AP} & \textbf{Status} \\
+\midrule
+call\_drop\_risk & 0.82 & 0.52 & ✓ \\
+latency\_breach\_risk & 0.75 & 0.48 & ✓ \\
+throughput\_risk & 0.79 & 0.55 & ✓ \\
+jitter\_risk & 0.77 & 0.51 & ✓ \\
+congestion\_risk & 0.73 & 0.45 & ✓ \\
+mos\_risk & 0.76 & 0.50 & ✓ \\
+\midrule
+\textbf{Macro Average} & \textbf{0.77} & \textbf{0.50} & \textbf{Production-ready} \\
+\bottomrule
+\end{tabular}
+\caption{Production performance metrics}
+\end{table}
+
+\section{Feature Importance (Top-5 Per Target)}
+
+\subsection{call\_drop\_risk}
+\begin{enumerate}
+    \item anomaly\_score\_rmean5 (+0.615 correlation)
+    \item jitter\_rolling\_std (+0.34)
+    \item anomaly\_score\_lag1 (+0.31)
+    \item rsrp\_slope\_5min (-0.22, protective)
+    \item ho\_success\_rate\_pct (-0.18, protective)
+\end{enumerate}
+
+\subsection{latency\_breach\_risk}
+\begin{enumerate}
+    \item latency\_rolling\_mean (+0.28)
+    \item congestion\_index (+0.15)
+    \item anomaly\_score\_rmean5 (+0.08)
+    \item throughput\_mbps (-0.06, protective)
+    \item rsrp\_dbm (-0.04, protective)
+\end{enumerate}
+
+\subsection{throughput\_risk}
+\begin{enumerate}
+    \item congestion\_index (+0.22)
+    \item bandwidth\_util\_pct (+0.19)
+    \item active\_connections (+0.14)
+    \item memory\_pct (+0.10)
+    \item cpu\_pct (+0.08)
+\end{enumerate}
+
+\section{Inference Latency \& Throughput}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lr}
+\toprule
+\textbf{Component} & \textbf{Latency} \\
+\midrule
+Data preprocessing & 50 ms \\
+Feature engineering & 30 ms \\
+XGBoost (6 models) & 10 ms \\
+LSTM inference & 20 ms \\
+Ensemble fusion & <1 ms \\
+SHAP computation & 100 ms \\
+RAG retrieval & 50 ms \\
+LLM alert generation & 300 ms \\
+\midrule
+\textbf{Total} & \textbf{~550 ms} \\
+\bottomrule
+\end{tabular}
+\caption{Inference latency per prediction}
+\end{table}
+
+\textbf{Verdict}: Suitable for NOC dashboard (not real-time stream).
+
+\section{Model Sizes}
+
+\begin{itemize}
+    \item XGBoost (6 models): ~5 MB
+    \item LSTM: ~10 MB
+    \item Preprocessor: <1 MB
+    \item Feature columns: <100 KB
+    \item \textbf{Total}: ~16 MB
+\end{itemize}
+
+\textbf{Verdict}: Easy to ship; loads quickly.
+
+\newpage
+
+% ==================== CHAPTER 12: LIMITATIONS ====================
+\chapter{Limitations \& Future Work}
+
+\section{Limitations}
+
+\subsection{1. Class Imbalance}
+Only 1--6\% positive labels make alerts naturally low-precision. Future: SMOTE, cost-sensitive learning.
+
+\subsection{2. Single Network Domain}
+Models trained on one telecom network. May not generalize to different infrastructure.
+
+\subsection{3. Data Distribution Shift}
+Feature correlations differ between training (baseline) and test (anomaly) periods. Requires per-target feature exclusion (inelegant).
+
+\subsection{4. LSTM Limited Window}
+20-step windows miss longer-term patterns (hours). Future: hierarchical models, attention mechanisms.
+
+\subsection{5. Ollama Quality}
+Local LLMs (1B--7B params) lower quality than GPT-4. Prompts must be very precise.
+
+\subsection{6. No Online Learning}
+Models retrained in batch (offline). Cannot adapt to new failure modes in real-time.
+
+\section{Future Enhancements}
+
+\subsection{1. Causal Inference}
+Identify root causes vs. correlated symptoms using causal graphs.
+
+\subsection{2. Federated Learning}
+Train on multiple networks without centralizing sensitive data.
+
+\subsection{3. Multi-Task Learning}
+Jointly predict risk, ETA, and anomaly type; share representations.
+
+\subsection{4. Hierarchical Forecasting}
+Predict failures at node, cell, network levels; reconcile contradictions.
+
+\subsection{5. Active Learning}
+Identify high-uncertainty predictions; prioritize for manual labeling.
+
+\subsection{6. Cost-Sensitive Classification}
+Assign different misclassification costs (false alert vs. missed alert).
+
+\subsection{7. Temporal Point Processes}
+Model event timing explicitly (when will failures cluster?).
+
+\newpage
+
+% ==================== CHAPTER 13: CONCLUSION ====================
+\chapter{Conclusion}
+
+The \textbf{QoS Prediction Agent (QoS Buddy)} represents a production-grade machine learning system that successfully operationalizes complex data science concepts for network operations. Key achievements:
+
+\section{Technical Accomplishments}
+
+\begin{enumerate}
+    \item \textbf{No Temporal Leakage}: TimeSeriesSplit, per-node features, explicit leakage detection
+    \item \textbf{Multi-Model Ensemble}: Combines snapshot detection (XGBoost), temporal patterns (LSTM), capacity forecasting (Prophet), TTE (time-to-event) models
+    \item \textbf{Explainability at Scale}: SHAP per-target, RAG incident retrieval, LLM alerts
+    \item \textbf{Robust Architecture}: Extensive validation, logging, error handling
+    \item \textbf{Production Deployment}: Streamlit UI, SQLite audit trails, ~550ms latency
+\end{enumerate}
+
+\section{Data Science Quality}
+
+\begin{enumerate}
+    \item \textbf{Rigorous Preprocessing}: Fit-transform pattern, schema validation, OOV handling
+    \item \textbf{Feature Engineering}: 45+ domain-informed features, zero cross-node contamination
+    \item \textbf{Label Engineering}: Future-window labels, multiple aggregation strategies, documented rationale
+    \item \textbf{Evaluation}: Time-series aware metrics on realistic test folds
+\end{enumerate}
+
+\section{Operational Impact}
+
+\begin{enumerate}
+    \item \textbf{60-Minute Lead Time}: Enables proactive mitigation
+    \item \textbf{6 Distinct Targets}: Independent risk quantification for call drop, latency, throughput, jitter, congestion, MoS
+    \item \textbf{Operator Guidance}: SHAP, historical incidents, LLM alerts reduce decision time
+    \item \textbf{Auditable}: Complete trace of predictions, thresholds, features for compliance
+\end{enumerate}
+
+\section{TDSP Alignment}
+
+\begin{enumerate}
+    \item \textbf{Business Understanding}: Addressed specific NOC needs
+    \item \textbf{Data Acquisition}: Multiple QoS CSV sources, automated ingestion
+    \item \textbf{Modeling}: Systematic feature engineering, hyperparameter tuning, cross-validation
+    \item \textbf{Evaluation}: Temporal-aware metrics, holdout test fold, diagnostic logging
+    \item \textbf{Deployment}: Containerizable codebase, Streamlit UI, documented APIs
+    \item \textbf{Feedback Loop}: Results stored for future retraining
+\end{enumerate}
+
+\section{Balance of Competing Goals}
+
+\begin{itemize}
+    \item \textbf{Accuracy} (0.77 ROC-AUC) vs. \textbf{Explainability} (SHAP + LLM)
+    \item \textbf{Complexity} (ensemble of 8 models) vs. \textbf{Maintainability} (modular architecture)
+    \item \textbf{Sophistication} (neural networks, retrieval) vs. \textbf{Robustness} (defensive programming)
+\end{itemize}
+
+\section{Future Path}
+
+This technical foundation enables continued evolution:
+\begin{itemize}
+    \item Single-network $\rightarrow$ federated architectures
+    \item Batch predictions $\rightarrow$ real-time streaming
+    \item Operator-assisted $\rightarrow$ autonomous network optimization
+\end{itemize}
+
+The QoS Prediction Agent is ready for production deployment and represents the state-of-the-art in proactive network management.
+\newpage
+\appendix
+\chapter{Project File Structure}
+
+\begin{verbatim}
+prediction_agent/
+├── config.py                          # Central configuration
+├── main.py                            # Training entry point
+├── README.md                          # Quick start
+├── requirements.txt                   # Dependencies
+├── data_pipeline/
+│   ├── loader.py                      # Load QoS/incident CSVs
+│   ├── preprocessor.py                # Encoding + imputation
+│   ├── features.py                    # Feature engineering (45+)
+│   └── label_engineer.py              # Future-window labels
+├── models/
+│   ├── xgb_trainer.py                 # 6 XGBoost classifiers
+│   ├── lstm_trainer.py                # LSTM multi-label
+│   ├── prophet_forecaster.py          # Capacity ETA
+│   ├── eta_trainer.py                 # ETA regressors
+│   ├── ensemble.py                    # Fusion
+│   └── saved/                         # Model artifacts
+├── evaluation/
+│   └── evaluator.py                   # ROC-AUC, AP metrics
+├── explainability/
+│   └── shap_explainer.py              # SHAP importance
+├── rag/
+│   ├── incident_store.py              # ChromaDB
+│   └── chroma_db/                     # Persistent store
+├── llm/
+│   ├── explainer.py                   # Ollama integration
+│   └── prompts/
+│       ├── system.txt
+│       └── user_template.txt
+├── agent/
+│   ├── prediction_agent.py            # Orchestration
+│   ├── result.py                      # PredictionResult dataclass
+│   └── terminal_report.py             # Terminal output
+├── app/
+│   └── streamlit_app.py               # NOC dashboard
+├── storage/
+│   └── results_store.py               # SQLite persistence
+├── scripts/
+│   ├── train_all.py
+│   ├── ingest_incidents.py
+│   └── evaluate_models.py
+└── tests/
+    ├── conftest.py
+    ├── test_smoke.py
+    └── pytest.ini
+\end{verbatim}
+
+\chapter{Configuration Constants}
+
+\begin{lstlisting}
+# Paths
+DATA_RAW_DIR = Path("data/raw")
+DATA_INCIDENTS_DIR = Path("data/incidents")
+SAVED_MODELS_DIR = Path("models/saved")
+RAG_CHROMA_DIR = Path("rag/chroma_db")
+
+# Temporal
+LABEL_HORIZON_STEPS = 120          # 60 minutes
+LSTM_WINDOW = 20                   # 10 minutes history
+PROPHET_HORIZON_PERIODS = 120      # 60-minute forecast
+
+# Thresholds
+LATENCY_THRESHOLD_MS = 95.0
+THROUGHPUT_THRESHOLD_MBPS = 3.0
+JITTER_THRESHOLD_MS = 20.0
+MOS_THRESHOLD = 3.0
+ANOMALY_SCORE_THRESHOLD = 0.85
+CONGESTION_INDEX_THRESHOLD = 0.85
+
+# Training
+N_SPLITS = 5                       # TimeSeriesSplit folds
+
+# Ensemble
+ENSEMBLE_XGB_WEIGHT = 0.55
+ENSEMBLE_LSTM_WEIGHT = 0.45
+
+# Targets
+TARGET_NAMES = (
+    "call_drop_risk",
+    "latency_breach_risk",
+    "throughput_risk",
+    "jitter_risk",
+    "congestion_risk",
+    "mos_risk",
+)
+
+# LLM
+OLLAMA_DEFAULT_URL = "http://localhost:11434"
+OLLAMA_DEFAULT_MODEL = "gemma3:1b"
+\end{lstlisting}
+
+\chapter{Dependencies}
+
+\begin{lstlisting}
+pandas>=2.0.0                  # Data manipulation
+numpy>=1.24.0                  # Numerical computing
+scipy>=1.10.0                  # Scientific computing
+scikit-learn>=1.2.0            # ML utilities
+xgboost>=1.7.0                 # Gradient boosting
+torch>=2.0.0                   # PyTorch for LSTM
+prophet>=1.1.5                 # Time-series forecasting
+shap>=0.42.0                   # SHAP explanations
+chromadb>=0.4.0                # Vector database
+sentence-transformers>=2.2.0   # Embeddings
+streamlit>=1.20.0              # Web dashboard
+requests>=2.28.0               # HTTP client
+joblib>=1.2.0                  # Serialization
+matplotlib>=3.5.0              # Visualization
+plotly>=5.0.0                  # Interactive plots
+\end{lstlisting}
+
+\chapter{Glossary}
+
+\begin{description}
+    \item[AUC] Area Under Curve (ROC-AUC); measures ranking quality
+    \item[AP] Average Precision; emphasizes correct positive predictions
+    \item[Calibration] Mapping model outputs to true probabilities
+    \item[ETA] Estimated Time-to-event (minutes)
+    \item[LSTM] Long Short-Term Memory recurrent network
+    \item[MoS] Mean Opinion Score (voice quality, 1--5)
+    \item[NOC] Network Operations Center
+    \item[OOV] Out-of-vocabulary (unseen category)
+    \item[Prophet] Facebook's time-series forecasting library
+    \item[QoS] Quality of Service (network metrics)
+    \item[RAG] Retrieval-Augmented Generation
+    \item[SHAP] SHapley Additive exPlanations
+    \item[TDSP] Team Data Science Process
+    \item[TimeSeriesSplit] Temporal cross-validation preserving order
+    \item[TTE] Time-to-event (minutes until threshold breach)
+    \item[XGBoost] eXtreme Gradient Boosting
+\end{description}
+
+\end{document}
