@@ -1,0 +1,5 @@
+incident_id,start_timestamp,end_timestamp,node_id,incident_type,severity,time_to_detect_sec,duration_sec,samples,max_score
+INC_1774838704_low_throug,2026-03-30T03:45:04.494754,2026-03-30T03:45:04.494754,N1,low_throughput,critical,30,0,1,0.96
+INC_1774838783_latency_de,2026-03-30T03:46:23.759154,2026-03-30T03:46:23.759154,N1,latency_degradation,low,30,0,1,0.241
+INC_1774839500_high_laten,2026-03-30T03:58:20.776575,2026-03-30T03:58:20.776575,N1,high_latency,high,30,0,1,0.716
+INC_1774839573_severe_pac,2026-03-30T03:59:33.878302,2026-03-30T04:01:22.534176,N1,severe_packet_loss,critical,30,108,2,0.88

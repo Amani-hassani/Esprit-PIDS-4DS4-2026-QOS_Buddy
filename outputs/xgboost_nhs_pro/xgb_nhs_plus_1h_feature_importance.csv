@@ -1,0 +1,8 @@
+feature,importance
+mean_latency_1h,0.28762957
+mean_throughput_1h,0.17530985
+nb_incidents_1h,0.16278043
+day_of_week,0.14166239
+mean_jitter_1h,0.13245547
+is_peak_hour,0.07677438
+max_severity_1h,0.023387926

@@ -1,0 +1,8 @@
+{
+  "n_hourly_rows": 25,
+  "targets_trained": [
+    "target_nhs_plus_1h",
+    "target_nhs_plus_2h",
+    "target_nhs_plus_6h"
+  ]
+}

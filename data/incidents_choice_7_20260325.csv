@@ -1,0 +1,4 @@
+incident_id,start_timestamp,end_timestamp,node_id,incident_type,severity,time_to_detect_sec,duration_sec,samples,max_score
+INC_1774381749_low_throug,2026-03-24T20:49:09.804412,2026-03-25T00:58:01.753374,N1,low_throughput,critical,30,14931,196,1.0
+INC_1774381898_high_laten,2026-03-24T20:51:38.199171,2026-03-24T21:52:19.347497,N1,high_latency,high,30,3641,3,0.739
+INC_1774384423_high_jitte,2026-03-24T21:33:43.654334,2026-03-24T23:01:37.917755,N1,high_jitter,critical,30,5274,3,0.871

@@ -1,0 +1,12 @@
+{
+  "n_samples": 124,
+  "n_outliers": 13,
+  "outlier_ratio": 0.1048,
+  "contamination": 0.1,
+  "feature_names": [
+    "max_score",
+    "duration_sec",
+    "severity_rank",
+    "incident_weight"
+  ]
+}

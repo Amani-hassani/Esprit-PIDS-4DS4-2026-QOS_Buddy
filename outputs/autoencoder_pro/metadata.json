@@ -1,0 +1,19 @@
+{
+  "framework": "PyTorch",
+  "n_total_samples": 668,
+  "n_training_normal_samples": 486,
+  "n_dl_anomalies": 34,
+  "dl_anomaly_ratio": 0.0509,
+  "threshold_95": 1.5492298563590499,
+  "threshold_99": 21.459044538484267,
+  "feature_names": [
+    "latency_ms",
+    "jitter_ms",
+    "packet_loss_pct",
+    "throughput_mbps",
+    "rsrp_dbm",
+    "sinr_db",
+    "channel_util_pct"
+  ],
+  "epochs_trained": 50
+}

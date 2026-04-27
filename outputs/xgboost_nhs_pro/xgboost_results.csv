@@ -1,0 +1,4 @@
+model_name,target,mae,rmse,r2,baseline_mae,baseline_rmse,train_size,test_size
+xgb_nhs_plus_1h,target_nhs_plus_1h,4.6586,5.8588,-44.0322,12.3483,12.3791,19,5
+xgb_nhs_plus_2h,target_nhs_plus_2h,9.661,10.7368,-150.2333,11.5594,11.5923,18,5
+xgb_nhs_plus_6h,target_nhs_plus_6h,14.4014,22.3081,-551.4186,10.0096,10.0545,15,4

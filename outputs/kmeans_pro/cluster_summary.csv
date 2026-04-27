@@ -1,0 +1,4 @@
+cluster_id,duration_sec,max_score,severity_rank,hour_of_day,incident_weight,samples,dominant_incident_type,dominant_severity,cluster_size,cluster_label
+0,5.82,0.333,1.377,13.016,0.527,1.082,high_retransmission,low,61,Minor Incidents
+1,149.177,0.837,3.532,7.968,3.018,1.161,high_latency,critical,62,Critical Incidents
+2,14931.0,1.0,4.0,20.0,4.0,196.0,low_throughput,critical,1,Critical Incidents

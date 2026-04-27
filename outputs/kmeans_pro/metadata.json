@@ -1,0 +1,13 @@
+{
+  "chosen_k": 3,
+  "feature_names": [
+    "duration_sec",
+    "max_score",
+    "severity_rank",
+    "hour_of_day",
+    "incident_weight",
+    "samples"
+  ],
+  "n_samples": 124,
+  "silhouette_final": 0.4941605489321675
+}

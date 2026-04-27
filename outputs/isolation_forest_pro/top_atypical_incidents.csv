@@ -1,0 +1,16 @@
+incident_type,severity,duration_sec,max_score,severity_rank,incident_weight,isolation_score,outlier_flag,outlier_label,source_file,start_timestamp
+low_throughput,critical,14931,1.0,4,4.0,-0.25007376059113384,yes,Highly Atypical Critical Incident,incidents_choice_7_20260325.csv,2026-03-24 20:49:09.804412
+high_jitter,critical,5274,0.871,4,3.484,-0.1575892334913418,yes,Highly Atypical Critical Incident,incidents_choice_7_20260325.csv,2026-03-24 21:33:43.654334
+high_latency,high,3641,0.739,3,2.217,-0.12944943893511063,yes,Highly Atypical Critical Incident,incidents_choice_7_20260325.csv,2026-03-24 20:51:38.199171
+latency_degradation,low,0,0.002,1,0.002,-0.0887708323657952,yes,Atypical Incident,incidents_choice_11_20260329.csv,2026-03-29 22:33:23.885267
+latency_degradation,low,109,0.358,1,0.358,-0.08778213448001959,yes,Atypical Incident,incidents_choice_7_20260329.csv,2026-03-29 22:55:51.727107
+jitter_degradation,low,103,0.192,1,0.192,-0.08239369879235692,yes,Atypical Incident,incidents_choice_7_20260329.csv,2026-03-29 23:05:59.031489
+high_retransmission,medium,38,0.418,2,0.836,-0.0685623417850586,yes,Atypical Incident,incidents_choice_11_20260329.csv,2026-03-29 22:21:51.772682
+jitter_degradation,low,105,0.243,1,0.243,-0.061692993620290015,yes,Atypical Incident,incidents_choice_7_20260329.csv,2026-03-29 23:53:31.402196
+severe_packet_loss,critical,108,0.88,4,3.52,-0.048508602161737024,yes,Typical Incident,incidents_choice_13_20260330.csv,2026-03-30 03:59:33.878302
+high_latency,critical,142,1.0,4,4.0,-0.04510705867869691,yes,Typical Incident,incidents_choice_12_20260328.csv,2026-03-28 12:57:18.974607
+high_latency,critical,0,0.817,4,3.268,-0.011699097305209238,yes,Typical Incident,incidents_choice_11_20260330.csv,2026-03-30 12:36:52.822550
+high_jitter,critical,0,0.85,4,3.4,-0.006643616419318654,yes,Typical Incident,incidents_choice_11_20260325.csv,2026-03-25 03:29:20.641251
+high_retransmission,medium,0,0.4,2,0.8,-0.0005752309569704295,yes,Typical Incident,incidents_choice_12_20260328.csv,2026-03-28 00:52:23.991030
+low_throughput,critical,0,0.9,4,3.6,0.0013422055662642984,no,Typical Incident,incidents_choice_11_20260330.csv,2026-03-30 11:38:58.160148
+low_throughput,low,0,0.04,1,0.04,0.006272743294125971,no,Typical Incident,incidents_choice_11_20260325.csv,2026-03-25 04:38:22.438984
