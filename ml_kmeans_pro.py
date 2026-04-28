@@ -95,19 +95,82 @@ def elbow_and_silhouette(X_scaled: np.ndarray, k_values=range(2, 7)) -> pd.DataF
 
 
 def choose_cluster_name(row: pd.Series) -> str:
-    severity = row.get("severity_rank", 0)
-    score = row.get("max_score", 0)
-    duration = row.get("duration_sec", 0)
+    """
+    Génère un label descriptif basé sur le profil réel du cluster :
+    type d'incident dominant + sévérité + durée.
+    """
+    severity     = str(row.get("dominant_severity", "")).lower()
+    inc_type     = str(row.get("dominant_incident_type", "")).lower()
+    score        = float(row.get("max_score", 0)) if pd.notna(row.get("max_score")) else 0.0
+    duration     = float(row.get("duration_sec", 0)) if pd.notna(row.get("duration_sec")) else 0.0
 
-    if severity >= 3 or score >= 0.7 or duration >= 100:
-        return "Critical Incidents"
-    if severity >= 2 or score >= 0.4 or duration >= 30:
-        return "Moderate Incidents"
-    return "Minor Incidents"
+    # ── Gravité ──
+    if severity == "critical" or score >= 0.85:
+        gravity = "Critical"
+    elif severity == "high" or score >= 0.5:
+        gravity = "High"
+    elif severity == "medium" or score >= 0.3:
+        gravity = "Moderate"
+    else:
+        gravity = "Minor"
+
+    # ── Type d'incident ──
+    type_map = {
+        "high_latency":        "Latency",
+        "high_jitter":         "Jitter",
+        "low_throughput":      "Throughput",
+        "high_retransmission": "Retransmission",
+        "congestion":          "Congestion",
+        "severe_packet_loss":  "Packet Loss",
+        "latency_degradation": "Latency Degradation",
+        "jitter_degradation":  "Jitter Degradation",
+        "poor_voice_quality":  "Voice Quality",
+    }
+    type_label = "Mixed"
+    for key, label in type_map.items():
+        if key in inc_type:
+            type_label = label
+            break
+
+    # ── Durée ──
+    if duration >= 3600:
+        duration_label = "Persistent"
+    elif duration >= 300:
+        duration_label = "Extended"
+    elif duration >= 60:
+        duration_label = "Short"
+    else:
+        duration_label = "Transient"
+
+    return f"{gravity} {type_label} ({duration_label})"
+
+
+def assign_unique_cluster_labels(cluster_summary: pd.DataFrame) -> pd.DataFrame:
+    """
+    Génère des labels uniques pour chaque cluster.
+    Si 2 clusters ont le même label, ajoute un suffixe A / B / C.
+    """
+    result = cluster_summary.copy()
+    result["cluster_label"] = result.apply(choose_cluster_name, axis=1)
+
+    label_counts = result["cluster_label"].value_counts()
+    seen = {}
+    new_labels = []
+    for label in result["cluster_label"]:
+        if label_counts[label] > 1:
+            idx = seen.get(label, 0)
+            suffix = chr(65 + idx)   # A, B, C ...
+            new_labels.append(f"{label} — {suffix}")
+            seen[label] = idx + 1
+        else:
+            new_labels.append(label)
+
+    result["cluster_label"] = new_labels
+    return result
 
 
 def run_kmeans(k: int = 3):
-    print(" Lancement K-Means professionnel...", flush=True)
+    print("Lancement K-Means professionnel...", flush=True)
 
     incidents = load_incidents()
     print(f"Nombre d'incidents chargés : {len(incidents)}", flush=True)
@@ -121,7 +184,7 @@ def run_kmeans(k: int = 3):
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
 
-    # Elbow + silhouette
+    # ── Elbow + silhouette ──
     eval_df = elbow_and_silhouette(X_scaled, k_values=range(2, 7))
     eval_df.to_csv(OUTPUT_DIR / "kmeans_model_selection.csv", index=False)
 
@@ -145,14 +208,14 @@ def run_kmeans(k: int = 3):
     plt.savefig(OUTPUT_DIR / "silhouette_scores.png", dpi=150)
     plt.close()
 
-    # Final model
+    # ── Modèle final ──
     model = KMeans(n_clusters=k, random_state=42, n_init=20)
     labels = model.fit_predict(X_scaled)
 
     clustered = incidents_ready.copy()
     clustered["cluster_id"] = labels
 
-    # PCA
+    # ── PCA 2D ──
     pca = PCA(n_components=2, random_state=42)
     X_pca = pca.fit_transform(X_scaled)
     clustered["pca_1"] = X_pca[:, 0]
@@ -162,7 +225,6 @@ def run_kmeans(k: int = 3):
     for cluster in sorted(clustered["cluster_id"].unique()):
         subset = clustered[clustered["cluster_id"] == cluster]
         plt.scatter(subset["pca_1"], subset["pca_2"], label=f"Cluster {cluster}", alpha=0.7)
-
     plt.title("Projection PCA des clusters K-Means")
     plt.xlabel("PCA 1")
     plt.ylabel("PCA 2")
@@ -172,7 +234,7 @@ def run_kmeans(k: int = 3):
     plt.savefig(OUTPUT_DIR / "clusters_pca.png", dpi=150)
     plt.close()
 
-    # Cluster summary
+    # ── Cluster summary ──
     summary_features = [f for f in feature_names if f in clustered.columns]
     cluster_summary = clustered.groupby("cluster_id")[summary_features].mean().round(3)
 
@@ -190,31 +252,30 @@ def run_kmeans(k: int = 3):
 
     cluster_summary["cluster_size"] = clustered["cluster_id"].value_counts().sort_index()
 
-    # Add business labels
-    cluster_summary["cluster_label"] = cluster_summary.apply(choose_cluster_name, axis=1)
+    # ── Labels uniques et descriptifs ──
+    cluster_summary = assign_unique_cluster_labels(cluster_summary)
 
     cluster_summary.to_csv(OUTPUT_DIR / "cluster_summary.csv")
-
-    # Save clustered incidents
     clustered.to_csv(OUTPUT_DIR / "incidents_clustered.csv", index=False)
 
-    # Save model artifacts
-    joblib.dump(model, OUTPUT_DIR / "kmeans_model.joblib")
-    joblib.dump(scaler, OUTPUT_DIR / "kmeans_scaler.joblib")
-    joblib.dump(feature_names, OUTPUT_DIR / "kmeans_features.joblib")
+    # ── Sauvegarde modèle ──
+    joblib.dump(model,        OUTPUT_DIR / "kmeans_model.joblib")
+    joblib.dump(scaler,       OUTPUT_DIR / "kmeans_scaler.joblib")
+    joblib.dump(feature_names,OUTPUT_DIR / "kmeans_features.joblib")
 
     metadata = {
-        "chosen_k": k,
-        "feature_names": feature_names,
-        "n_samples": int(len(clustered)),
-        "silhouette_final": float(silhouette_score(X_scaled, labels)),
+        "chosen_k":        k,
+        "feature_names":   feature_names,
+        "n_samples":       int(len(clustered)),
+        "silhouette_final":float(silhouette_score(X_scaled, labels)),
     }
 
     with open(OUTPUT_DIR / "metadata.json", "w", encoding="utf-8") as f:
         json.dump(metadata, f, indent=2)
 
-    print("\nK-Means termine.", flush=True)
-    print(cluster_summary, flush=True)
+    print("\nK-Means terminé.", flush=True)
+    print(cluster_summary[["cluster_label", "cluster_size", "dominant_severity",
+                            "dominant_incident_type", "max_score"]], flush=True)
 
 
 if __name__ == "__main__":

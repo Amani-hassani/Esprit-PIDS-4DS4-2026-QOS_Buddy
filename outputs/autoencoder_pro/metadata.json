@@ -4,8 +4,8 @@
   "n_training_normal_samples": 486,
   "n_dl_anomalies": 34,
   "dl_anomaly_ratio": 0.0509,
-  "threshold_95": 1.5492298563590499,
-  "threshold_99": 21.459044538484267,
+  "threshold_95": 1.1503037379882026,
+  "threshold_99": 19.77300372098289,
   "feature_names": [
     "latency_ms",
     "jitter_ms",
