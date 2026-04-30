@@ -60,3 +60,12 @@ logs/
 
 # OS
 Thumbs.db
+# Environnement virtuel lourd
+.venv/
+
+# Outputs ML (fichiers lourds)
+outputs/audio_reports/
+outputs/**/*.joblib
+outputs/**/*.pt
+outputs/**/*.png
+outputs/**/*.csv
