@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+pytest-cache-files-*/
+.mypy_cache/
+.ruff_cache/
+.coverage
+
+# Virtualenv
+.venv/
+venv/
+
+# Notebook
+.ipynb_checkpoints/
+
+# MLflow / runtime
+mlruns/
+deployment_runtime/
+deployment/store/*.db
+deployment/store/*.db-journal
+deployment/store/*.db-wal
+deployment/store/*.db-shm
+mlartifacts/
+
+# Frontend build
+frontend/node_modules/
+frontend/.svelte-kit/
+frontend/build/
+deployment/static/app/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Misc tool metadata
+.sixth/
+.claude/
+memory/
+
+# Local env (real credentials live here, never commit)
+.env
+.env.local

@@ -1,0 +1,120 @@
+{
+  "realm": "qos-buddy",
+  "enabled": true,
+  "displayName": "QOS-Buddy",
+  "displayNameHtml": "<strong>QOS-Buddy</strong> — Qosmic NOC",
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": false,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+  "accessTokenLifespan": 1800,
+  "ssoSessionIdleTimeout": 3600,
+  "ssoSessionMaxLifespan": 36000,
+
+  "roles": {
+    "realm": [
+      {"name": "noc_viewer",     "description": "Read-only NOC dashboard access"},
+      {"name": "noc_executive",  "description": "NOC Executive — approve/reject actions"},
+      {"name": "ai_engineer",    "description": "AI Engineer — full technical view"},
+      {"name": "site_admin",     "description": "Site Admin — chaos, rollback, all streams"}
+    ]
+  },
+
+  "users": [
+    {
+      "username": "noc-exec",
+      "enabled": true,
+      "email": "exec@qos-buddy.local",
+      "firstName": "NOC",
+      "lastName": "Executive",
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "demo", "temporary": false}],
+      "realmRoles": ["noc_executive"]
+    },
+    {
+      "username": "noc-engineer",
+      "enabled": true,
+      "email": "noc.engineer@qos-buddy.local",
+      "firstName": "NOC",
+      "lastName": "Engineer",
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "demo", "temporary": false}],
+      "realmRoles": ["noc_executive"]
+    },
+    {
+      "username": "engineer",
+      "enabled": true,
+      "email": "engineer@qos-buddy.local",
+      "firstName": "AI",
+      "lastName": "Engineer",
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "demo", "temporary": false}],
+      "realmRoles": ["ai_engineer"]
+    },
+    {
+      "username": "admin-noc",
+      "enabled": true,
+      "email": "admin@qos-buddy.local",
+      "firstName": "Site",
+      "lastName": "Admin",
+      "emailVerified": true,
+      "credentials": [{"type": "password", "value": "demo", "temporary": false}],
+      "realmRoles": ["site_admin"]
+    }
+  ],
+
+  "clients": [
+    {
+      "clientId": "qos-buddy-shell",
+      "name": "QOS-Buddy Next.js Shell",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "rootUrl": "http://localhost:3000",
+      "baseUrl": "http://localhost:3000",
+      "redirectUris": [
+        "http://localhost:3000/*",
+        "http://shell:3000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3000",
+        "http://shell:3000"
+      ],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost:3000/*##http://shell:3000/*"
+      },
+      "protocolMappers": [
+        {
+          "name": "audience-mapping",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.client.audience": "qos-buddy-shell",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "realm-roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "config": {
+            "claim.name": "realm_access.roles",
+            "jsonType.label": "String",
+            "multivalued": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>QoS Buddy Diagnostic Agent</title>
+    <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-icon">~</div>
+          <div>
+            <strong>QoS Buddy</strong>
+            <span>Diagnostic Agent</span>
+          </div>
+        </div>
+        <div class="agent-state">
+          <span class="pulse"></span>
+          <div>
+            <strong>AGENT ACTIVE</strong>
+            <small>ANALYZE phase -- Running</small>
+          </div>
+        </div>
+        <nav>
+          <button class="nav-link active" data-view="dashboard">Live Dashboard <b id="nav-count">0</b></button>
+          <button class="nav-link" data-view="incident">Incident Detail</button>
+          <button class="nav-link" data-view="pipeline">Pipeline Status</button>
+          <button class="nav-link" data-view="health">Model & Health</button>
+        </nav>
+        <div class="system-ok"><span></span> All systems operational</div>
+      </aside>
+
+      <main class="shell">
+        <header class="topbar">
+          <div class="phase-pill danger">ANALYZE PHASE -- ACTIVE</div>
+          <div class="phase-pill update">Updated <span id="updated-seconds">12</span>s ago</div>
+          <div class="top-actions">
+            <button id="refresh-btn">Refresh Now</button>
+            <button id="demo-ingest-btn">Inject Test Event</button>
+            <span class="live-pill">LIVE -- Auto-refresh 5s</span>
+            <span class="mode-pill">Light</span>
+            <span class="avatar">OP</span>
+          </div>
+        </header>
+
+        <section id="dashboard-view" class="view active">
+          <div class="page-heading">
+            <div>
+              <h1>QoS Buddy -- Diagnostic Agent <span>ANALYZE - Active</span></h1>
+              <p>Real-time anomaly detection. Last refresh: <strong id="last-refresh"></strong></p>
+            </div>
+          </div>
+
+          <section class="kpi-grid" id="kpi-grid"></section>
+
+          <section class="panel live-panel">
+            <div class="panel-title">
+              <h2>Live Monitoring Feed -- Latest Sample</h2>
+              <span class="telemetry">Receiving Telemetry</span>
+            </div>
+            <div class="monitor-grid" id="monitor-grid"></div>
+          </section>
+
+          <section class="panel incident-panel">
+            <div class="filters">
+              <input id="search" placeholder="Search incidents..." />
+              <select id="scope-filter">
+                <option value="all">All Scopes</option>
+                <option value="RADIO">Radio</option>
+                <option value="TRANSPORT">Transport</option>
+                <option value="CAPACITY">Capacity</option>
+                <option value="MIXED">Mixed</option>
+              </select>
+              <select id="cause-filter">
+                <option value="all">All Root Causes</option>
+              </select>
+              <span class="min-conf">Min Conf: 0%</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Timestamp</th>
+                    <th>Anomaly Type</th>
+                    <th>Root Cause</th>
+                    <th>Confidence</th>
+                    <th>Score</th>
+                    <th>SLA Risk</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="incident-rows"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+
+        <section id="incident-view" class="view">
+          <button class="back-btn" data-view="dashboard">&lt; Back to Live Dashboard</button>
+          <div id="incident-detail"></div>
+        </section>
+
+        <section id="pipeline-view" class="view">
+          <div class="panel wide">
+            <h2>Diagnostic Protocol Status</h2>
+            <div class="pipeline" id="protocol-pipeline"></div>
+          </div>
+        </section>
+
+        <section id="health-view" class="view">
+          <div class="panel wide" id="health-panel"></div>
+        </section>
+      </main>
+    </div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

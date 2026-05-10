@@ -1,0 +1,4 @@
+incident_id,start_timestamp,end_timestamp,node_id,incident_type,severity,time_to_detect_sec,duration_sec,samples,max_score
+INC_1775167049_weak_signa,2026-04-02T22:57:29.482350,2026-04-02T22:58:14.595829,N1,weak_signal,critical,30,45,2,0.8
+INC_1775167454_low_throug,2026-04-02T23:04:14.088047,2026-04-02T23:04:14.088047,N1,low_throughput,critical,30,0,1,0.9
+INC_1775167670_low_throug,2026-04-02T23:07:50.056097,2026-04-02T23:07:50.056097,N1,low_throughput,critical,30,0,1,0.96

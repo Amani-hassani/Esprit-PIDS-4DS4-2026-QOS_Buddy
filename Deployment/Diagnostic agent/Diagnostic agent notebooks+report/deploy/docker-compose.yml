@@ -1,0 +1,16 @@
+services:
+  qos-buddy-diagnostic:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: qos-buddy-diagnostic:8rc-faiss
+    container_name: qos-buddy-diagnostic
+    ports:
+      - "8000:8000"
+    environment:
+      QOS_ARTIFACT_DIR: /app/outputs_8rc
+      QOS_SEED_DEMO_INCIDENTS: "true"
+      QOS_LLM_REQUIRED: "false"
+      QOS_LLM_MODEL: gpt-4.1-mini
+      AUTO_SEND_TO_OPTIMIZATION: "false"
+    restart: unless-stopped

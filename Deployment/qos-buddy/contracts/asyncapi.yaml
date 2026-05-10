@@ -1,0 +1,87 @@
+asyncapi: '2.6.0'
+info:
+  title: QOS-Buddy bus
+  version: '1.0.0'
+  description: |
+    Event-driven contracts between the 6 QOS-Buddy agents.
+    Transport is Redis Streams (consumer groups, replay, DLQ).
+    Schemas live in qos-buddy/contracts/schemas.py and are the source of truth.
+
+defaultContentType: application/json
+
+servers:
+  redis:
+    url: redis://redis:6379
+    protocol: redis
+
+channels:
+  qos.metrics.raw:
+    description: Live KPI samples from the monitoring agent (1 Hz typical).
+    publish:
+      message:
+        $ref: '#/components/messages/MetricEvent'
+  qos.alerts:
+    description: Anomalies and forecasted breaches.
+    publish:
+      message:
+        $ref: '#/components/messages/AlertEvent'
+  qos.diagnosis:
+    description: Pattern matches against the historical incident corpus.
+    publish:
+      message:
+        $ref: '#/components/messages/DiagnosisEvent'
+  qos.insight:
+    description: RAG-derived lessons learned and recommended posture.
+    publish:
+      message:
+        $ref: '#/components/messages/InsightEvent'
+  qos.action.proposed:
+    description: Optimization agent's proposed action with safety-check verdict.
+    publish:
+      message:
+        $ref: '#/components/messages/ProposedActionEvent'
+  qos.action.executed:
+    description: Outcome of an executed (simulated or real) action.
+    publish:
+      message:
+        $ref: '#/components/messages/ExecutedActionEvent'
+  qos.audit:
+    description: Hash-chained audit log of every actor decision.
+    publish:
+      message:
+        $ref: '#/components/messages/AuditEvent'
+  qos.dlq:
+    description: Dead-letter queue for unprocessable events.
+  qos.jira.outbox:
+    description: Outbox pattern for Jira ticket creation on DEFERRED actions.
+
+components:
+  messages:
+    MetricEvent:
+      payload:
+        type: object
+        description: See qos_buddy.contracts.schemas.MetricEvent
+    AlertEvent:
+      payload:
+        type: object
+        description: See qos_buddy.contracts.schemas.AlertEvent
+    DiagnosisEvent:
+      payload:
+        type: object
+        description: See qos_buddy.contracts.schemas.DiagnosisEvent
+    InsightEvent:
+      payload:
+        type: object
+        description: See qos_buddy.contracts.schemas.InsightEvent
+    ProposedActionEvent:
+      payload:
+        type: object
+        description: See qos_buddy.contracts.schemas.ProposedActionEvent
+    ExecutedActionEvent:
+      payload:
+        type: object
+        description: See qos_buddy.contracts.schemas.ExecutedActionEvent
+    AuditEvent:
+      payload:
+        type: object
+        description: See qos_buddy.contracts.schemas.AuditEvent

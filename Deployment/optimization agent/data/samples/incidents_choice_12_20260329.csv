@@ -1,0 +1,7 @@
+incident_id,start_timestamp,end_timestamp,node_id,incident_type,severity,time_to_detect_sec,duration_sec,samples,max_score
+INC_1774755104_high_laten,2026-03-29T04:31:44.846743,2026-03-29T04:31:44.846743,N1,high_latency,critical,30,0,1,1.0
+INC_1774755501_jitter_deg,2026-03-29T04:38:21.525004,2026-03-29T04:38:21.525004,N1,jitter_degradation,low,30,0,1,0.147
+INC_1774755880_high_laten,2026-03-29T04:44:40.756682,2026-03-29T04:45:50.467211,N1,high_latency,critical,30,69,2,1.0
+INC_1774756341_high_laten,2026-03-29T04:52:21.868481,2026-03-29T04:52:21.868481,N1,high_latency,medium,30,0,1,0.592
+INC_1774757002_latency_de,2026-03-29T05:03:22.735831,2026-03-29T05:03:22.735831,N1,latency_degradation,low,30,0,1,0.069
+INC_1774757924_high_laten,2026-03-29T05:18:44.640968,2026-03-29T05:18:44.640968,N1,high_latency,critical,30,0,1,0.93

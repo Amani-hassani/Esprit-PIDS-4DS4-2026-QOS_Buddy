@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend.dockerfile
+    container_name: qos-prediction-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - OLLAMA_URL=http://ollama:11434
+      - LOG_LEVEL=INFO
+      - MLFLOW_DB_PATH=/app/mlflow-data/mlflow.db
+      - MLFLOW_ARTIFACTS_DIR=/app/mlflow-data/mlruns
+      - MLFLOW_TRACKING_URI=sqlite:////app/mlflow-data/mlflow.db
+      - RAG_CHROMA_DIR=/app/rag/chroma_db
+      - OLLAMA_URL=http://ollama:11434
+      - OLLAMA_MODEL=qwen2.5:3b-instruct-q4_K_M
+    volumes:
+      - ./logs:/app/logs
+      - ./models/saved:/app/models/saved
+      - ./rag/chroma_db:/app/rag/chroma_db
+      - ./mlflow-data:/app/mlflow-data
+      - ./app_store.db:/app/app_store.db
+    depends_on:
+      - ollama
+    networks:
+      - qos-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: dockerfile
+    container_name: qos-prediction-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/node_modules:/app/node_modules
+    environment:
+      - VITE_API_URL=http://backend:8000
+    depends_on:
+      - backend
+    networks:
+      - qos-network
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: qos-prediction-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - qos-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:latest
+    container_name: qos-prediction-mlflow
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./mlflow-data:/mlflow
+    command: mlflow server --backend-store-uri sqlite:///mlflow/mlflow.db --default-artifact-root ./mlflow/artifacts -h 0.0.0.0
+    networks:
+      - qos-network
+
+volumes:
+  ollama-data:
+
+networks:
+  qos-network:
+    driver: bridge

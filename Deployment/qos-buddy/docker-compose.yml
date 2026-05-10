@@ -1,0 +1,556 @@
+﻿name: qos-buddy
+
+x-resources:
+  tiny: &resources_tiny
+    deploy:
+      resources:
+        limits:
+          memory: 256m
+          cpus: "0.5"
+        reservations:
+          memory: 128m
+  default: &resources_default
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus: "0.5"
+        reservations:
+          memory: 128m
+  agent: &resources_agent
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+          cpus: "1"
+        reservations:
+          memory: 128m
+  prediction: &resources_prediction
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+          cpus: "1.5"
+        reservations:
+          memory: 512m
+# Single-laptop tuned: ~7 GB RAM steady-state, models lazy-loaded.
+# Bring everything up:    docker compose up -d
+# Tail the live data:     docker compose logs -f monitoring gateway
+# Open the dashboard:     http://localhost:3000
+
+services:
+  # â”€â”€â”€ data plane â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+  redis:
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+          cpus: "0.5"
+        reservations:
+          memory: 128m
+    image: redis:7-alpine
+    container_name: qos-redis
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "768mb", "--maxmemory-policy", "allkeys-lru"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./docker-data/redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 10
+    networks: [qosnet]
+
+  postgres:
+    <<: *resources_default
+    image: postgres:15-alpine
+    container_name: qos-postgres
+    environment:
+      POSTGRES_USER: qos
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: qos
+      # Keycloak gets its own DB on the same instance.
+      POSTGRES_MULTIPLE_DATABASES: keycloak
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker-data/postgres-data:/var/lib/postgresql/data
+      - ./infra/postgres/init-multi-db.sh:/docker-entrypoint-initdb.d/00-init-multi-db.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U qos -d qos"]
+      interval: 5s
+      timeout: 2s
+      retries: 10
+    networks: [qosnet]
+
+  # â”€â”€â”€ shared RAG store (Chroma + sentence-transformers) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  rag:
+    <<: *resources_default
+    build:
+      context: .
+      dockerfile: rag-service/Dockerfile
+    container_name: qos-rag
+    environment:
+      RAG_PERSIST_DIR: /app/chroma
+      RAG_DEFAULT_COLLECTION: qos_incidents
+      RAG_OPERATOR_MEMORY_COLLECTION: qos_operator_memory
+      RAG_RUNBOOK_COLLECTION: qos_runbooks
+      RAG_INCIDENT_DATA_DIR: /app/incident-data
+      OLLAMA_URL: http://host.docker.internal:11434
+      LLM_PRIMARY: qwen2.5:latest
+      LLM_FALLBACK: qwen2.5:latest
+      LLM_TIMEOUT_SECONDS: "8"
+      LOG_LEVEL: INFO
+    expose:
+      - "8000"
+    ports:
+      - "8088:8000"
+    volumes:
+      - ./docker-data/rag-data:/app/chroma
+      - ./docker-data/rag-cache:/app/.cache
+      - ../prediction_agent/prediction_agent/data/incidents:/app/incident-data:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    restart: unless-stopped
+    networks: [qosnet]
+
+  # â”€â”€â”€ observability â€” OTLP collector + UI â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  jaeger:
+    <<: *resources_default
+    image: jaegertracing/all-in-one:1.60
+    container_name: qos-jaeger
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "16686:16686"   # Jaeger UI
+      - "4317:4317"     # OTLP/gRPC
+      - "4318:4318"     # OTLP/HTTP
+    restart: unless-stopped
+    networks: [qosnet]
+
+  # â”€â”€â”€ auth â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+  keycloak:
+    <<: *resources_default
+    image: quay.io/keycloak/keycloak:25.0
+    container_name: qos-keycloak
+    command: ["start-dev", "--import-realm", "--http-port=8080"]
+    environment:
+      # Bootstrap admin â€” both var names set so whichever the running Keycloak
+      # build honours will create the `admin` user on first start. Only takes
+      # effect when the Keycloak DB has no admin yet (fresh volume).
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: qos
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      KC_HOSTNAME_STRICT: "false"
+      KC_HEALTH_ENABLED: "true"
+      KC_PROXY: edge
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./infra/keycloak/qos-buddy-realm.json:/opt/keycloak/data/import/qos-buddy-realm.json:ro
+      - ./docker-data/keycloak-data:/opt/keycloak/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # No healthcheck: Keycloak 25 splits ready/live across ports and the
+    # in-container shell tooling is too thin to probe reliably. The gateway
+    # depends on `service_started` and retries JWKS on its own.
+    networks: [qosnet]
+
+  # â”€â”€â”€ llm runtime â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+  # â”€â”€â”€ qos-buddy services â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+  monitoring:
+    <<: *resources_agent
+    build:
+      context: .
+      dockerfile: bus/Dockerfile
+    container_name: qos-monitoring
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      QOS_MONITORING_JSONL: /data/network_stream.jsonl
+      # Tail the live collector JSONL. Set QOS_MONITORING_MODE=replay only
+      # for an intentional offline backfill.
+      QOS_MONITORING_MODE: tail
+      QOS_REPLAY_INTERVAL_SECONDS: "1.0"
+      QOS_REPLAY_SPEED: "1.0"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_SERVICE_NAME: monitoring-bridge
+      LOG_LEVEL: INFO
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      QOS_JIRA_ENABLED: ${QOS_JIRA_ENABLED:-false}
+      JIRA_URL: ${JIRA_URL:-}
+      JIRA_EMAIL: ${JIRA_EMAIL:-}
+      JIRA_TOKEN: ${JIRA_TOKEN:-}
+      JIRA_PROJECT_KEY: ${JIRA_PROJECT_KEY:-QOS}
+    volumes:
+      - ../monitoring:/data:ro
+      - ./infra/validate-env.sh:/app/infra/validate-env.sh:ro
+    entrypoint: ["/bin/sh", "/app/infra/validate-env.sh"]
+    command: ["python", "-m", "bus.monitoring_bridge"]
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks: [qosnet]
+
+  # â”€â”€â”€ real detection agent (Keras autoencoder) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  detection:
+    <<: *resources_agent
+    build:
+      # Build context is the parent directory so we can pull the operator's
+      # actual `detection agent/backend/` source verbatim into the image.
+      context: ..
+      dockerfile: qos-buddy/agents-bridge/detection.Dockerfile
+    container_name: qos-detection
+    environment:
+      # Local file store keeps the agent self-contained â€” no MLflow server needed.
+      MLFLOW_TRACKING_URI: file:///app/mlruns
+      DEFAULT_THRESHOLD: "0.2564"
+    expose:
+      - "8000"
+    volumes:
+      # Mount the trained artifacts read-only so rebuilds keep the same model.
+      - "../detection agent/backend/models:/app/models:ro"
+      - ./docker-data/detection-data:/app/data
+      - ./docker-data/detection-mlruns:/app/mlruns
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/api/v1/health',timeout=2).status==200 else 1)\""]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    restart: unless-stopped
+    networks: [qosnet]
+
+  detection-bridge:
+    <<: *resources_agent
+    build:
+      context: .
+      dockerfile: bus/Dockerfile
+    container_name: qos-detection-bridge
+    command: ["python", "-m", "bus.detection_bridge"]
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DETECTION_URL: http://detection:8000
+      DETECTION_ALERT_COOLDOWN_SECONDS: "45"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_SERVICE_NAME: detection-bridge
+      LOG_LEVEL: INFO
+    depends_on:
+      redis:
+        condition: service_healthy
+      detection:
+        condition: service_healthy
+    restart: unless-stopped
+    networks: [qosnet]
+
+  # â”€â”€â”€ real diagnostic agent (RF + GRU + FAISS, 8 root-cause contracts) â”€â”€
+  diagnostic:
+    <<: *resources_agent
+    build:
+      context: "../Diagnostic agent/Diagnostic agent notebooks+report"
+      dockerfile: ../../qos-buddy/agents-bridge/diagnostic.Dockerfile
+    container_name: qos-diagnostic
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health',timeout=2).read()\""]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    restart: unless-stopped
+    networks: [qosnet]
+
+  diagnostic-bridge:
+    <<: *resources_agent
+    build:
+      context: .
+      dockerfile: bus/Dockerfile
+    container_name: qos-diagnostic-bridge
+    command: ["python", "-m", "bus.diagnostic_bridge"]
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      DIAGNOSTIC_URL: http://diagnostic:8000
+      RAG_URL: http://rag:8000
+      OLLAMA_URL: http://host.docker.internal:11434
+      LLM_PRIMARY: qwen2.5:latest
+      LLM_FALLBACK: qwen2.5:latest
+      LLM_TIMEOUT_SECONDS: "30"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_SERVICE_NAME: diagnostic-bridge
+      LOG_LEVEL: INFO
+    depends_on:
+      redis:
+        condition: service_healthy
+      diagnostic:
+        condition: service_healthy
+      rag:
+        condition: service_healthy
+    restart: unless-stopped
+    networks: [qosnet]
+
+  # â”€â”€â”€ real prediction agent (LSTM + RAG/ChromaDB + MLflow) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  prediction:
+    <<: *resources_prediction
+    build:
+      context: ../prediction_agent/prediction_agent
+      dockerfile: ../../qos-buddy/agents-bridge/prediction.Dockerfile
+    container_name: qos-prediction
+    environment:
+      MLFLOW_DB_PATH: /app/mlflow-data/mlflow.db
+      MLFLOW_ARTIFACTS_DIR: /app/mlflow-data/mlruns
+      MLFLOW_TRACKING_URI: sqlite:////app/mlflow-data/mlflow.db
+      RAG_CHROMA_DIR: /app/rag/chroma_db
+      OLLAMA_URL: http://host.docker.internal:11434
+      OLLAMA_MODEL: qwen2.5:latest
+    expose:
+      - "8000"
+    volumes:
+      # Bind the packaged trained artifacts and incident memory so a fresh
+      # deployment does not hide them behind empty Docker volumes.
+      - ../prediction_agent/prediction_agent/models/saved:/app/models/saved:ro
+      - ../prediction_agent/prediction_agent/rag/chroma_db:/app/rag/chroma_db
+      - ./docker-data/prediction-mlruns:/app/mlflow-data
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import json,urllib.request,sys; data=json.load(urllib.request.urlopen('http://localhost:8000/api/health',timeout=3)); sys.exit(0 if data.get('models_ready') else 1)\""]
+      interval: 15s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    restart: unless-stopped
+    networks: [qosnet]
+
+  prediction-bridge:
+    <<: *resources_agent
+    build:
+      context: .
+      dockerfile: bus/Dockerfile
+    container_name: qos-prediction-bridge
+    command: ["python", "-m", "bus.prediction_bridge"]
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      PREDICTION_URL: http://prediction:8000
+      PREDICTION_FLUSH_SECS: "60"
+      PREDICTION_WINDOW_ROWS: "30"
+      PREDICTION_MIN_ROWS: "30"
+      PREDICTION_TIMEOUT_SECONDS: "45"
+      PREDICTION_RETRY_BACKOFF_SECS: "15"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_SERVICE_NAME: prediction-bridge
+      LOG_LEVEL: INFO
+    depends_on:
+      redis:
+        condition: service_healthy
+      prediction:
+        condition: service_healthy
+    restart: unless-stopped
+    networks: [qosnet]
+
+  # â”€â”€â”€ real optimization agent (MAB + LLMops + Jira + policy gate) â”€â”€â”€
+  optimization:
+    <<: *resources_agent
+    build:
+      context: "../optimization agent"
+      dockerfile: ../qos-buddy/agents-bridge/optimization.Dockerfile
+    container_name: qos-optimization
+    environment:
+      QOS_RUNTIME_MODE: prod
+      # Internal service tokens used by the bridge for agent-to-agent calls.
+      QOS_TOKENS_VIEWER: viewer-dev-token
+      QOS_TOKENS_ENGINEER: engineer-dev-token
+      QOS_TOKENS_LEAD: lead-dev-token
+      QOS_OLLAMA_URL: http://host.docker.internal:11434/api/generate
+      QOS_OLLAMA_TAGS_URL: http://host.docker.internal:11434/api/tags
+      QOS_LLM_MODEL: qwen2.5:latest
+      # Live Jira: copy .env.example â†’ .env, fill creds, then restart optimization.
+      QOS_JIRA_ENABLED: ${QOS_JIRA_ENABLED:-false}
+      JIRA_URL: ${JIRA_URL:-}
+      JIRA_EMAIL: ${JIRA_EMAIL:-}
+      JIRA_TOKEN: ${JIRA_TOKEN:-}
+      JIRA_PROJECT_KEY: ${JIRA_PROJECT_KEY:-QOS}
+      REDIS_URL: redis://redis:6379/0
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/ping"]
+      interval: 15s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    restart: unless-stopped
+    networks: [qosnet]
+
+  optimization-bridge:
+    <<: *resources_agent
+    build:
+      context: .
+      dockerfile: bus/Dockerfile
+    container_name: qos-optimization-bridge
+    command: ["python", "-m", "bus.optimization_bridge"]
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      OPTIMIZATION_URL: http://optimization:8000
+      OPTIMIZATION_TOKEN: engineer-dev-token
+      OPTIMIZATION_SNAPSHOT_COOLDOWN_SECONDS: "5"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_SERVICE_NAME: optimization-bridge
+      LOG_LEVEL: INFO
+    depends_on:
+      redis:
+        condition: service_healthy
+      optimization:
+        condition: service_healthy
+    restart: unless-stopped
+    networks: [qosnet]
+
+  reporting:
+    <<: *resources_default
+    build:
+      context: .
+      dockerfile: reporting-service/Dockerfile
+    container_name: qos-reporting
+    environment:
+      OLLAMA_URL: http://host.docker.internal:11434
+      LLM_PRIMARY: qwen2.5:latest
+      LLM_FALLBACK: qwen2.5:latest
+      LLM_TIMEOUT_SECONDS: "30"
+      RAG_URL: http://rag:8000
+      DATABASE_URL: postgresql://qos:${POSTGRES_PASSWORD}@postgres:5432/qos
+      LOG_LEVEL: INFO
+    expose:
+      - "8000"
+    ports:
+      - "8089:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      rag:
+        condition: service_healthy
+    restart: unless-stopped
+    networks: [qosnet]
+
+  synthesis:
+    <<: *resources_default
+    build:
+      context: .
+      dockerfile: synthesis/Dockerfile
+    container_name: qos-synthesis
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      OLLAMA_URL: http://host.docker.internal:11434
+      LLM_PRIMARY: qwen2.5:latest
+      LLM_FALLBACK: qwen2.5:latest
+      LLM_TIMEOUT_SECONDS: "8"
+      SYNTHESIS_API_PORT: "8090"
+      ALERT_COOLDOWN_SECONDS: "30"
+      DASHBOARD_BASE_URL: http://localhost:3000
+      QOS_JIRA_ENABLED: ${QOS_JIRA_ENABLED:-false}
+      JIRA_URL: ${JIRA_URL:-}
+      JIRA_EMAIL: ${JIRA_EMAIL:-}
+      JIRA_TOKEN: ${JIRA_TOKEN:-}
+      JIRA_PROJECT_KEY: ${JIRA_PROJECT_KEY:-QOS}
+      RAG_URL: http://rag:8000
+      LOG_LEVEL: INFO
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks: [qosnet]
+
+  gateway:
+    <<: *resources_default
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    container_name: qos-gateway
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      # Keycloak authentication: the gateway validates browser access tokens.
+      GATEWAY_DEMO_MODE: "false"
+      # Internal URL used by the gateway to fetch JWKS from inside the docker
+      # network (Keycloak hostname only resolves between containers).
+      KEYCLOAK_INTERNAL_URL: http://keycloak:8080
+      KEYCLOAK_URL: http://keycloak:8080
+      KEYCLOAK_REALM: qos-buddy
+      KEYCLOAK_AUDIENCE: qos-buddy-shell
+      # Issuer must match what the browser sees â€” Keycloak bakes the public
+      # URL into the token's `iss` claim, so token validation has to use it.
+      KEYCLOAK_ISSUER: http://localhost:8081/realms/qos-buddy
+      GATEWAY_CORS: http://localhost:3000,http://shell:3000
+      # Require Keycloak JWTs at the gateway.
+      QOS_CHAOS_ENABLED: "false"
+      QOS_JIRA_ENABLED: ${QOS_JIRA_ENABLED:-false}
+      JIRA_URL: ${JIRA_URL:-}
+      JIRA_EMAIL: ${JIRA_EMAIL:-}
+      JIRA_TOKEN: ${JIRA_TOKEN:-}
+      JIRA_PROJECT_KEY: ${JIRA_PROJECT_KEY:-QOS}
+      JIRA_ISSUE_TYPE: ${JIRA_ISSUE_TYPE:-Task}
+      OPTIMIZATION_URL: http://optimization:8000
+      SYNTHESIS_API_URL: http://synthesis:8090
+      RAG_URL: http://rag:8000
+      OLLAMA_URL: http://host.docker.internal:11434
+      OLLAMA_MODEL: qwen2.5:latest
+      RAG_LIVE_COLLECTION: qos_live_memory
+      RAG_INGEST_INTERVAL_SECONDS: "30"
+      LOG_LEVEL: INFO
+    ports:
+      - "8080:8080"
+    depends_on:
+      redis:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+      rag:
+        condition: service_healthy
+    restart: unless-stopped
+    networks: [qosnet]
+
+  shell:
+    <<: *resources_tiny
+    build:
+      context: ./shell
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_GATEWAY_URL: http://localhost:8080
+        NEXT_PUBLIC_KEYCLOAK_URL: http://localhost:8081
+        NEXT_PUBLIC_KEYCLOAK_REALM: qos-buddy
+        NEXT_PUBLIC_KEYCLOAK_CLIENT_ID: qos-buddy-shell
+        # Use Keycloak login and role-based access.
+        NEXT_PUBLIC_DEMO_MODE: "false"
+        NEXT_PUBLIC_RAG_URL: "http://localhost:8088"
+        NEXT_PUBLIC_REPORTING_URL: "http://localhost:8089"
+        NEXT_PUBLIC_QOS_JIRA_ENABLED: ${QOS_JIRA_ENABLED:-false}
+    container_name: qos-shell
+    environment:
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+    depends_on:
+      gateway:
+        condition: service_started
+    restart: unless-stopped
+    networks: [qosnet]
+
+networks:
+  qosnet:
+    name: qos-buddy-net
+    driver: bridge
+
+

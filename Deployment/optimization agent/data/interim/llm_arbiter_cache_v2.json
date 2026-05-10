@@ -1,0 +1,2598 @@
+{
+  "d7c7c07438c391967f210e97": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "7e288ba829d4c527e92598cd958ba0478c50746e9a1d993ea6902d5e7085c4ec",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.157355
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "2f5c6c26d556a25048bf0af6": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "fb0053eb710afdfefab4f24f0d960372aab5a1fe4eb6b034250d41ccb4424e8c",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.15949
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "128ce9c0cc74bd8e1a51a1a8": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "74d8c355f64c19b64f5356711dfebf835f9d09f9fb34a60638ecc4061c250b34",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.161456
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "ac6368f33b79ab1ea2d564ea": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "43660f6e7fb51d044c6e0c91d32c1c2ccfc2082ddeef4da8ea52789757d27903",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.143702
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "9a5a183032b8b26a17990ff0": {
+    "chosen": "ACT_QOS_THROTTLE_BULK",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "58b0cb085cdda88ca3239e147f97618752aa236709a22765547a040ac641dad6",
+    "shortlist": [
+      "ACT_QOS_THROTTLE_BULK",
+      "ACT_PATH_REROUTE",
+      "ACT_QUEUE_MANAGE"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 0.757322,
+      "ACT_QOS_THROTTLE_BULK": 0.790865,
+      "ACT_PATH_REROUTE": 0.787516,
+      "ACT_MODEM_SOFT_RESET": 0.639338
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "75496993d19a86daf4143fe5": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "37c622d0fcdae53d5a9359483dfaba7f8fab77c14b19b247c7927596582d61ea",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.150729
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "707285e700c26f764850053f": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "05b0e75469ce1450b3eb615916259de7e47bbb93ae905971dde7e0745b2669ac",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.153693
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "4b37f679502300bf4be945b9": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "9972baed0c83ade38b0c70729b2c41c2b4162988c559a9d27e27fa6acc0d3ac8",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.149118
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "8ebe054df4f92f0753e394e2": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "3667665e37f03b52aa9059f57a89862602cca2db6611662741e498f1c10e9177",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.160423
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "5abdeda8eb7e3bca4e9bc991": {
+    "chosen": "ACT_PATH_REROUTE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "3cff61a16bf911d21cae4e4b258a02312f48a5e757587826da496fa2ba8a8973",
+    "shortlist": [
+      "ACT_PATH_REROUTE",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 0.831597,
+      "ACT_QOS_THROTTLE_BULK": 0.768758,
+      "ACT_PATH_REROUTE": 0.846156,
+      "ACT_MODEM_SOFT_RESET": 0.743922
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "90d788903512fd467e685178": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "735b5a07ab87f4424aeaa5b781853f0cbaf162d106e3acb4dbcd68b175c4eb10",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.158982
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "147cef7bce345634c4bdce55": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "2c359c99dfadd4fa8a02e1579f11230a976bdba0dda21b01f49b155c6db0c2db",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.152002
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "6ac682ec682549b39e3fc3e1": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "8d92042e50de243c155b6e623687211d0b581f1740e17069f4b6e9e228edc3cf",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.170845
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "8de5d657da962b5902e4a960": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "dd449ac998b991ab21a00007f7d2e001440c3446c6b3646cfd5fcd3a5a056e91",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.17605
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "7b11bd72cb0d28da7844f2f1": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "c24eb487a381900e13063c9191c60318802f7cec92f3bac165108790cb0afdb7",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_PATH_REROUTE"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.060163,
+      "ACT_QOS_THROTTLE_BULK": 0.971392,
+      "ACT_PATH_REROUTE": 0.982688,
+      "ACT_MODEM_SOFT_RESET": 1.067087
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "6e1461f99e4722db737d4b5c": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "9db6761e9e968780f5ae2dfb81f865ce03de8f4269c481352466f28dd15bf4b5",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.198721
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "b52ad68faf62fbab11003065": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "1d5dc97cb620da17d42c7df064e87ce97a6220c6df2fa71f72e2c39793024655",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.166495
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "80c7c87caf9036853f5498e9": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "e2b0a562db9efc46b8d5424fd03bf640a13a65e3152b42854d7f667d66e69bc6",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.202945
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "06a3c4ecb7a9b22c322446f7": {
+    "chosen": "ACT_PATH_REROUTE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "40daa12e7f6c7dc385d809db00d6a31721c24e40792f1cea7a8a6decffe063cd",
+    "shortlist": [
+      "ACT_PATH_REROUTE",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 0.830103,
+      "ACT_QOS_THROTTLE_BULK": 0.809567,
+      "ACT_PATH_REROUTE": 0.891479,
+      "ACT_MODEM_SOFT_RESET": 0.797549
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "512e517f8cf5f62b2cc66173": {
+    "chosen": "ACT_PATH_REROUTE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "09807378b91121a4f414d3d82d682550bb616af1df477bedb00859eb9b80069e",
+    "shortlist": [
+      "ACT_PATH_REROUTE",
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 0.856125,
+      "ACT_QOS_THROTTLE_BULK": 0.792383,
+      "ACT_PATH_REROUTE": 0.866081,
+      "ACT_MODEM_SOFT_RESET": 0.801874
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "e1fad2617e180f11bc38aae0": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "34919bf7984683e302e6e7f3955dca0ccf87e15d416244dfab51f45b0123080f",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.177639
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "0a000a0d6417209be2631e4a": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "5618fb9bf350259526296a7afe329cdea2a27368df321e0fdbdc9e7667f08778",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.177452
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "1f93b43b4684ec839c39b292": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "ea1420a45fba6f45bea72d6b860a2c2585c10976fb002c7348af3851482dc614",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_PATH_REROUTE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.182972,
+      "ACT_QOS_THROTTLE_BULK": 0.986859,
+      "ACT_PATH_REROUTE": 1.114474,
+      "ACT_MODEM_SOFT_RESET": 0.98005
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "c330b7168b734e2aca3b8c59": {
+    "chosen": "ACT_SWITCH_LINK_CELL",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "814be02fb666b006eb733abddf78522eecbc454ccb845476a182462f74679f04",
+    "shortlist": [
+      "ACT_SWITCH_LINK_CELL",
+      "ACT_SWITCH_LINK_WIFI",
+      "ACT_ESCALATE"
+    ],
+    "ucb_scores": {
+      "ACT_SWITCH_LINK_CELL": 4.618143,
+      "ACT_SWITCH_LINK_WIFI": 2.618143,
+      "ACT_ESCALATE": 2.618143
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "e65448c054df75cb14b44cfe": {
+    "chosen": "ACT_LOAD_BALANCE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "f6c5dcb38b523f2786b8140e359468db192f36ed515ad96c1cdc005c27431a8f",
+    "shortlist": [
+      "ACT_LOAD_BALANCE",
+      "ACT_ESCALATE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QOS_THROTTLE_BULK": 2.271582,
+      "ACT_DEFER_OFFPEAK": 2.254416,
+      "ACT_LOAD_BALANCE": 2.508363,
+      "ACT_ESCALATE": 2.413381
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "811e32d82bd3e8cde95697a9": {
+    "chosen": "ACT_LOAD_BALANCE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "a3f88c1c2050bf2800b03d6f252776b7ca7029f96b674a75947dd577f64929c6",
+    "shortlist": [
+      "ACT_LOAD_BALANCE",
+      "ACT_DEFER_OFFPEAK",
+      "ACT_ESCALATE"
+    ],
+    "ucb_scores": {
+      "ACT_QOS_THROTTLE_BULK": 1.957607,
+      "ACT_DEFER_OFFPEAK": 2.770291,
+      "ACT_LOAD_BALANCE": 2.939467,
+      "ACT_ESCALATE": 2.259044
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "635e648b52bc94030a4de7ea": {
+    "chosen": "ACT_SWITCH_LINK_CELL",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "1b4d7a9869c24cd93eda52e5cc2ca7027d518afce99e515793c7f26b4d3ee403",
+    "shortlist": [
+      "ACT_SWITCH_LINK_CELL",
+      "ACT_SWITCH_LINK_WIFI",
+      "ACT_ESCALATE"
+    ],
+    "ucb_scores": {
+      "ACT_SWITCH_LINK_CELL": 6.055525,
+      "ACT_SWITCH_LINK_WIFI": 4.055525,
+      "ACT_ESCALATE": 4.055525
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "d850340355cc235fe46614be": {
+    "chosen": "ACT_SWITCH_LINK_CELL",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "5caefc7d7f99934fc099dfddd45e7d96273102c67164219d869302c8a6bdf9b3",
+    "shortlist": [
+      "ACT_SWITCH_LINK_CELL",
+      "ACT_SWITCH_LINK_WIFI",
+      "ACT_ESCALATE"
+    ],
+    "ucb_scores": {
+      "ACT_SWITCH_LINK_CELL": 4.694446,
+      "ACT_SWITCH_LINK_WIFI": 2.694446,
+      "ACT_ESCALATE": 2.694446
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "e992c000daa4f53830c60e4b": {
+    "chosen": "ACT_SWITCH_LINK_CELL",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "ed25d338c06d2bb03c297bb1e9c9be296e4a6b1a3a4ac70832f3cec1f3a9b56a",
+    "shortlist": [
+      "ACT_SWITCH_LINK_CELL",
+      "ACT_SWITCH_LINK_WIFI",
+      "ACT_ESCALATE"
+    ],
+    "ucb_scores": {
+      "ACT_SWITCH_LINK_CELL": 5.216653,
+      "ACT_SWITCH_LINK_WIFI": 3.216653,
+      "ACT_ESCALATE": 3.216653
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "653ab89ce7af5d1401bd3459": {
+    "chosen": "ACT_SWITCH_LINK_CELL",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "b3314526ed7782caab2c5057e3f68c618b3454a8fa899ada3ec6c9c230c5707b",
+    "shortlist": [
+      "ACT_SWITCH_LINK_CELL",
+      "ACT_SWITCH_LINK_WIFI",
+      "ACT_ESCALATE"
+    ],
+    "ucb_scores": {
+      "ACT_SWITCH_LINK_CELL": 4.731616,
+      "ACT_SWITCH_LINK_WIFI": 2.731616,
+      "ACT_ESCALATE": 2.731616
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "331d1248e59e87de9f4cff07": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "f4b06a518ac910aacf630a72aed30dcbaacaa56894fcd4a91554cf32f0767788",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.849954
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "e5dc06d66f5abf27caa7538a": {
+    "chosen": "ACT_ESCALATE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "9726a65077ee9f1a5141b4787ee0f71e47a23f733824966be349d9aafbeea929",
+    "shortlist": [
+      "ACT_ESCALATE",
+      "ACT_MCS_CAP",
+      "ACT_FORCE_HO"
+    ],
+    "ucb_scores": {
+      "ACT_CHANNEL_CHANGE": 1.90218,
+      "ACT_MCS_CAP": 2.731408,
+      "ACT_FORCE_HO": 2.654141,
+      "ACT_ESCALATE": 2.834613
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "5d3ae9c15ed5e9923940cdd0": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "b661a798aedc6791b35483e04b3097faf8d0cc6edf1d7d371ef27d91b3ba3601",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 2.029653,
+      "ACT_QOS_THROTTLE_BULK": 1.667842,
+      "ACT_PATH_REROUTE": 1.660421,
+      "ACT_MODEM_SOFT_RESET": 1.690347
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "b1a7b9b92f1a7b78a283d13a": {
+    "chosen": "ACT_DEFER_OFFPEAK",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "d5009aa1dd7de6e8a28e4e2df8cfe09fe19858793cd377101a5d70f064bfb1b8",
+    "shortlist": [
+      "ACT_DEFER_OFFPEAK",
+      "ACT_ESCALATE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QOS_THROTTLE_BULK": 2.20937,
+      "ACT_DEFER_OFFPEAK": 2.368381,
+      "ACT_LOAD_BALANCE": 2.207718,
+      "ACT_ESCALATE": 2.239409
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "dcc4771c37b6a21f8a75418a": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "734bea769740cbbedf1ec99c78c00e291d6fe5988e2781ac05063d68de458466",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_PATH_REROUTE"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.724492,
+      "ACT_QOS_THROTTLE_BULK": 1.651891,
+      "ACT_PATH_REROUTE": 1.653938,
+      "ACT_MODEM_SOFT_RESET": 1.840515
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "413588284ed11c516bf0f6c0": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "9f7a3c4b4c621a1c5d5843ea19a29974a214a1d20fb49eb0fe46b19193e6db6f",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_PATH_REROUTE"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.767275,
+      "ACT_QOS_THROTTLE_BULK": 1.616708,
+      "ACT_PATH_REROUTE": 1.627335,
+      "ACT_MODEM_SOFT_RESET": 1.773746
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "93381999246e6afdef6c55ea": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "31705414fa000edeb18a17e028ec96de9f5e5571bd6b499cd6ed344c9928547e",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.721002,
+      "ACT_QOS_THROTTLE_BULK": 1.650483,
+      "ACT_PATH_REROUTE": 1.618353,
+      "ACT_MODEM_SOFT_RESET": 1.780897
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "ae09636483a29f96829ea262": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "3cf560816b402e98c6921a556d34ceb78a86a5e78388e75a5d879c90b190cbe9",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.947012,
+      "ACT_QOS_THROTTLE_BULK": 1.752303,
+      "ACT_PATH_REROUTE": 1.726427,
+      "ACT_MODEM_SOFT_RESET": 1.805928
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "96c5ae1a8da4fb758a05cde2": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "574f2f85a02d19270b7d9c2796828c20eb12eb3654a31b8a1d4943df5decbf03",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.764605,
+      "ACT_QOS_THROTTLE_BULK": 1.63466,
+      "ACT_PATH_REROUTE": 1.547669,
+      "ACT_MODEM_SOFT_RESET": 1.712645
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "dbffc528d717dcba4203c659": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "c036b2ad47d67795307186e0f06db1690172f54b0043a7b3b31e4c8b2d7a7278",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_PATH_REROUTE",
+      "ACT_QUEUE_MANAGE"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.731945,
+      "ACT_QOS_THROTTLE_BULK": 1.688569,
+      "ACT_PATH_REROUTE": 1.779472,
+      "ACT_MODEM_SOFT_RESET": 2.068835
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "97f7cb1fd3172facedca132c": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "7ba8890f3c86a42a4bdf788e7f1cfc96c1e0f9428fc48bd4d5917aa455d8ba8f",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.714128,
+      "ACT_QOS_THROTTLE_BULK": 1.603968,
+      "ACT_PATH_REROUTE": 1.525645,
+      "ACT_MODEM_SOFT_RESET": 1.677695
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "12ab01dadf7a89508e81580f": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "b2c8e7f167b9f955566ab2d154d594459b876456f8430873f1e2d838ad399cce",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.837254,
+      "ACT_QOS_THROTTLE_BULK": 1.598591,
+      "ACT_PATH_REROUTE": 1.508853,
+      "ACT_MODEM_SOFT_RESET": 1.665808
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "719345a0aeffeaa2bc135a66": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "3ec6d4315ed1481d50c08d58111fc149aa20f8fb2d4858fdadc04fa074778dd2",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.890851,
+      "ACT_QOS_THROTTLE_BULK": 1.677975,
+      "ACT_PATH_REROUTE": 1.558243,
+      "ACT_MODEM_SOFT_RESET": 1.748622
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "0aeb29ce1a11c730b237ff53": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "550d82bf68b2ee827e0741b2275671a0c0695c3c52f49e3e0053afbe17c0d660",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.699331,
+      "ACT_QOS_THROTTLE_BULK": 1.655954,
+      "ACT_PATH_REROUTE": 1.548458,
+      "ACT_MODEM_SOFT_RESET": 1.723611
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "ac03bec140c4a6fd48add05f": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "d910bc99bcdaa70fe12224cb8d17a315fef49f4321f140023e6861fc92f552ad",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK",
+      "ACT_QUEUE_MANAGE"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.65342,
+      "ACT_QOS_THROTTLE_BULK": 1.684067,
+      "ACT_PATH_REROUTE": 1.566726,
+      "ACT_MODEM_SOFT_RESET": 1.74128
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "0c7f9a02721d7b373dba0ef1": {
+    "chosen": "ACT_BAND_STEER_5G",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "8876deb7aef05c3faba9ca5e5cff5bf793a5b1213f210ed6e54dd8fdb6eb26fc",
+    "shortlist": [
+      "ACT_BAND_STEER_5G",
+      "ACT_SWITCH_LINK_CELL",
+      "ACT_FORCE_HO"
+    ],
+    "ucb_scores": {
+      "ACT_BAND_STEER_5G": 2.455094,
+      "ACT_SWITCH_LINK_CELL": 2.304229,
+      "ACT_FORCE_HO": 2.244626,
+      "ACT_ESCALATE": 2.078068
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "56bfcd7dd8b575d4b08d2682": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "17a564090bc47fbdf9d0823866c8f476e86e286b2eefd5632be48ae1dc56c554",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.836554
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "3c6a5033f8b8f25565729c05": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "c1ec3c893241563d76b135b16f9cc003239517f3c2ffb6ae286cec447fed7051",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.983825,
+      "ACT_QOS_THROTTLE_BULK": 1.699427,
+      "ACT_PATH_REROUTE": 1.594335,
+      "ACT_MODEM_SOFT_RESET": 1.782124
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "b111502accf19fe8bcb9b1c6": {
+    "chosen": "ACT_BAND_STEER_5G",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "010c0577f0d4804cdc0dfd8bed2ce64b24a0690ce1807f4cb460d47ad0fbd274",
+    "shortlist": [
+      "ACT_BAND_STEER_5G",
+      "ACT_SWITCH_LINK_CELL",
+      "ACT_FORCE_HO"
+    ],
+    "ucb_scores": {
+      "ACT_BAND_STEER_5G": 2.375291,
+      "ACT_SWITCH_LINK_CELL": 2.171403,
+      "ACT_FORCE_HO": 2.137245,
+      "ACT_ESCALATE": 2.001016
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "2c9a1d0a32c8c82c56de3b4b": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "eafac19f16c0603c61cdb948735aa0fe604c53cef1e6e2e131fe542baf107d4a",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK",
+      "ACT_QUEUE_MANAGE"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.621893,
+      "ACT_QOS_THROTTLE_BULK": 1.632435,
+      "ACT_PATH_REROUTE": 1.533137,
+      "ACT_MODEM_SOFT_RESET": 1.663058
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "34af3fda01286add03595af5": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "f890ca8788498192b5ab5f37a3e8d829f2f97ef3973f4315a6b222feff5c367c",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.65223,
+      "ACT_QOS_THROTTLE_BULK": 1.608244,
+      "ACT_PATH_REROUTE": 1.547902,
+      "ACT_MODEM_SOFT_RESET": 1.707819
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "0b9fdc62920d5b5aeb97a52d": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "1df865b054e341f555fd474920a5a04b343d203f6264f078d606446a6af8cb29",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.719668,
+      "ACT_QOS_THROTTLE_BULK": 1.657029,
+      "ACT_PATH_REROUTE": 1.611502,
+      "ACT_MODEM_SOFT_RESET": 1.75306
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "23dcaf7976c161f813ff80e6": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "a425f325c9b12d2cf7d767a91df9fe76e00f0a38330c44178b6ef13c65b96f07",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.675075,
+      "ACT_QOS_THROTTLE_BULK": 1.615856,
+      "ACT_PATH_REROUTE": 1.559003,
+      "ACT_MODEM_SOFT_RESET": 1.684929
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "ff5d06b94812a6461288b01f": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "a683cf223be9da9353758250a1ff44a445b64a65e003e5214679da597886951d",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.928773,
+      "ACT_QOS_THROTTLE_BULK": 1.615571,
+      "ACT_PATH_REROUTE": 1.557979,
+      "ACT_MODEM_SOFT_RESET": 1.691547
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "40154150544bf26ddf64864a": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "aacc885c2ba6af6f39190b75a76e583dc322beeed7724f14140771e45147cb02",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.643043,
+      "ACT_QOS_THROTTLE_BULK": 1.627127,
+      "ACT_PATH_REROUTE": 1.540741,
+      "ACT_MODEM_SOFT_RESET": 1.689776
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "360d912c9bdc6be0ba2e2c10": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "e2e944c732f167b09e508b33469018ecab82c5551f1676e3680d9cac65bbade9",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.647506,
+      "ACT_QOS_THROTTLE_BULK": 1.606642,
+      "ACT_PATH_REROUTE": 1.555537,
+      "ACT_MODEM_SOFT_RESET": 1.707818
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "7c384ff081291304de7c9537": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "54d5ade5b2a88189b2b024cc213ea773c222662cc5db3151000a91f8bc66a80a",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.66956,
+      "ACT_QOS_THROTTLE_BULK": 1.619788,
+      "ACT_PATH_REROUTE": 1.564626,
+      "ACT_MODEM_SOFT_RESET": 1.721154
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "6407dfe71c11c2b654b88203": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "09dc3d15eed02f745af47f3da53f292229efcf8129b19d31aa1876d3b3363b9a",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.973654,
+      "ACT_QOS_THROTTLE_BULK": 1.672926,
+      "ACT_PATH_REROUTE": 1.604573,
+      "ACT_MODEM_SOFT_RESET": 1.780052
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "d3af667f228bc5143949e681": {
+    "chosen": "ACT_MCS_CAP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "6f19057d2e9ea87d5b238b6de89a3d38a79dcdccb3a41c476424b98bbcb50102",
+    "shortlist": [
+      "ACT_MCS_CAP",
+      "ACT_ESCALATE",
+      "ACT_FORCE_HO"
+    ],
+    "ucb_scores": {
+      "ACT_CHANNEL_CHANGE": 1.862745,
+      "ACT_MCS_CAP": 2.511946,
+      "ACT_FORCE_HO": 2.41169,
+      "ACT_ESCALATE": 2.420436
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "8b507b7baecfa3c1af43350e": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "ba76a398ebf29d8986e4b88c2d3fe054fce211efd403478fe68165dcf1213804",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.832063,
+      "ACT_QOS_THROTTLE_BULK": 1.619186,
+      "ACT_PATH_REROUTE": 1.558738,
+      "ACT_MODEM_SOFT_RESET": 1.696965
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "3224d168cc005c91f4fb5a76": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "2ffba86e44910ef349f88588673e607e54353aab02764db503cc0bc16eb35f27",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.977543,
+      "ACT_QOS_THROTTLE_BULK": 1.691139,
+      "ACT_PATH_REROUTE": 1.615744,
+      "ACT_MODEM_SOFT_RESET": 1.783828
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "7e1306fb25907bff0242a696": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "64c7fd5df9798a73b39005367b1d01b3c9fb59ba227ff7883f8f7dc409a2b143",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.752156,
+      "ACT_QOS_THROTTLE_BULK": 1.669303,
+      "ACT_PATH_REROUTE": 1.597854,
+      "ACT_MODEM_SOFT_RESET": 1.781749
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "6f1d3e8adea15e5a2ae820e7": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "efae7eccaea5ac84777b5f917b405cefdcc864a222ad2572b9df5b5719c29550",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.733142,
+      "ACT_QOS_THROTTLE_BULK": 1.686318,
+      "ACT_PATH_REROUTE": 1.625384,
+      "ACT_MODEM_SOFT_RESET": 1.762401
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "3db3b9b72f2bb60dc365d730": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "da87e1fd20d21f1f401386d3589a491a76e1c57808ee86bc9236e91cda1dca9f",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.834821,
+      "ACT_QOS_THROTTLE_BULK": 1.656831,
+      "ACT_PATH_REROUTE": 1.567343,
+      "ACT_MODEM_SOFT_RESET": 1.74112
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "846b94dc92e8a21735f049eb": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "7aec29750e36bb2a25583aea3c6623648a4eca370e194cd3bd1c1bb309368afc",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.800549
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "5a850f3d1663072113333651": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "3db6fbe2709f901b095dc4d6759923f5ea2718cde29d51455675849c782eace8",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.919714,
+      "ACT_QOS_THROTTLE_BULK": 1.698915,
+      "ACT_PATH_REROUTE": 1.624471,
+      "ACT_MODEM_SOFT_RESET": 1.787357
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "b84c9a40e5c171fa0495645e": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "515af0e0cff6b62853cabdbcf4acf87655b2bfe78dd2c8a634930d9f5c0eebc9",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_PATH_REROUTE"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.819902,
+      "ACT_QOS_THROTTLE_BULK": 1.683161,
+      "ACT_PATH_REROUTE": 1.778202,
+      "ACT_MODEM_SOFT_RESET": 2.029698
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "9ac5f424c8fcb80de14acccb": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "c1d0bed746504ef765d3d2e824c8b8a0e93c772de192322f723a0f19a95a9560",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.711253,
+      "ACT_QOS_THROTTLE_BULK": 1.699116,
+      "ACT_PATH_REROUTE": 1.61971,
+      "ACT_MODEM_SOFT_RESET": 1.797908
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "8c3c41e73893ddc4f90187d4": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "0cb8e0fb7b6800c34971a2fb85a236ed41a4385729c1c8f96e5f020ea14c331c",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.82589
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "eec8ea83ac21757ca567a31f": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "224582a54494c730ecefe2c9593fc43c70c5b954f57bc6978aae98ecbb52b0fe",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.824819
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "22b106eaaed4056077ed1b64": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "05b02bb9c4e9afd8a5a4bfdc8c2e7b119f61acff9ef4b1c9f32ed1021b1b1b7e",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.814001
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "570d428f588e88caff5268d1": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "c1f5131e34dc02e269d596983f26088d440a3b756a35a25eb41ba791659b68ff",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.783163
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "d7cba6e2e4f66e3f83494f59": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "6c1da52c49e8af2b3efda39b11eb1ba2eef785b03aeb1cb0bb4691240fe00d52",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.801187
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "d9c294c2b69cefe2955f565c": {
+    "chosen": "ACT_MCS_CAP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "95f1d90697b85117a885df73bdec77cc4631563b2cf6b0ec54d50ce2864c8194",
+    "shortlist": [
+      "ACT_MCS_CAP",
+      "ACT_FORCE_HO",
+      "ACT_ESCALATE"
+    ],
+    "ucb_scores": {
+      "ACT_CHANNEL_CHANGE": 1.961708,
+      "ACT_MCS_CAP": 2.347557,
+      "ACT_FORCE_HO": 2.333481,
+      "ACT_ESCALATE": 2.28659
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "8b0e4e56940c8be1beea9c98": {
+    "chosen": "ACT_MCS_CAP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "01ac2dc046f7e8afb6a4801475c2f854cb36bcf8406977fc0448bc3658e82d5c",
+    "shortlist": [
+      "ACT_MCS_CAP",
+      "ACT_ESCALATE",
+      "ACT_FORCE_HO"
+    ],
+    "ucb_scores": {
+      "ACT_CHANNEL_CHANGE": 1.863352,
+      "ACT_MCS_CAP": 2.389776,
+      "ACT_FORCE_HO": 2.259749,
+      "ACT_ESCALATE": 2.301537
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "f6bfc980f2746850c3d30e9e": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "3ddee662fdceaa1c0dbae3b9402d61a86e2e56e7c043663078935171a8085c93",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.822068,
+      "ACT_QOS_THROTTLE_BULK": 1.665399,
+      "ACT_PATH_REROUTE": 1.570634,
+      "ACT_MODEM_SOFT_RESET": 1.725992
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "65c031e36150dca5a06eaa13": {
+    "chosen": "ACT_BAND_STEER_5G",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "008ec7c3f5fcda1c8f198c2c9d4c620d2828c5bd097eaa276a5bf9119366623d",
+    "shortlist": [
+      "ACT_BAND_STEER_5G",
+      "ACT_SWITCH_LINK_CELL",
+      "ACT_FORCE_HO"
+    ],
+    "ucb_scores": {
+      "ACT_BAND_STEER_5G": 2.491454,
+      "ACT_SWITCH_LINK_CELL": 2.30378,
+      "ACT_FORCE_HO": 2.200937,
+      "ACT_ESCALATE": 2.090148
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "f80711438d8a1b7c69a19276": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "0eeeba264554489e9afc6baaa897e3ee57d016720801033ab4a87b453063eae9",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.663999,
+      "ACT_QOS_THROTTLE_BULK": 1.65762,
+      "ACT_PATH_REROUTE": 1.568314,
+      "ACT_MODEM_SOFT_RESET": 1.7656
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "0282bf781fd47836432a5bed": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "789ac3803a83e11a51df2253f85898a668e50bb0be96d38dfacde38e1cd23008",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.786187
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "3c1472f7e5c48f4b38d8cd8a": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "06fa4a0051b19f12424cbcafa3f0d236c5a60d2e8b7c18d2dfcc1fced91705e0",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.929269,
+      "ACT_QOS_THROTTLE_BULK": 1.608091,
+      "ACT_PATH_REROUTE": 1.530429,
+      "ACT_MODEM_SOFT_RESET": 1.655853
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "77808605c207d3017dd2e1c1": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "b0f7224d952381d018b210135b84d9c430b7e99c83cb9bca3ae25acf5a991585",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.675005,
+      "ACT_QOS_THROTTLE_BULK": 1.588986,
+      "ACT_PATH_REROUTE": 1.566448,
+      "ACT_MODEM_SOFT_RESET": 1.673927
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "fd54d402538015bbc0c0bfbc": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "70715b5166a00ef0432f4e7f88d26c4435a2f2192bc493f9d3398a71ef398d1c",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 2.083602,
+      "ACT_QOS_THROTTLE_BULK": 1.647401,
+      "ACT_PATH_REROUTE": 1.583831,
+      "ACT_MODEM_SOFT_RESET": 1.72692
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "896771b95abf6cfa6e9590fb": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "f7b82e9c10080098790ad6a6fddf1068706a97320c9658de04f0b072f63ae301",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.901542,
+      "ACT_QOS_THROTTLE_BULK": 1.658008,
+      "ACT_PATH_REROUTE": 1.58179,
+      "ACT_MODEM_SOFT_RESET": 1.746217
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "7f4e715bf142a23c4952d4aa": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "50812dd12592523fcaa9839c43ef2eb12f6de498092c54c06f8f8cb6f65c0339",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK",
+      "ACT_QUEUE_MANAGE"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.695176,
+      "ACT_QOS_THROTTLE_BULK": 1.70986,
+      "ACT_PATH_REROUTE": 1.595263,
+      "ACT_MODEM_SOFT_RESET": 1.779114
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "a6fde61ba4271fd44974b471": {
+    "chosen": "ACT_BAND_STEER_5G",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "e19985bbfa6caf90a9a90ad6c1c40ffda597f9e194c34f295f1e0b196296b3c0",
+    "shortlist": [
+      "ACT_BAND_STEER_5G",
+      "ACT_SWITCH_LINK_CELL",
+      "ACT_FORCE_HO"
+    ],
+    "ucb_scores": {
+      "ACT_BAND_STEER_5G": 2.608698,
+      "ACT_SWITCH_LINK_CELL": 2.441864,
+      "ACT_FORCE_HO": 2.329141,
+      "ACT_ESCALATE": 2.213402
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "4fd8fcfabea2691cfa05d6c3": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "5398a678f232eeeae0726cde0f315cba40d6ca86f3310207b7e735529c1acaea",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.675104
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "551fb6a4eb26dfdecfce3de4": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "662a9872e16b119918f3332cf63bbd08571c5dfbc400a7ca4ee94f865d38da30",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.820559
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "152b32ba7a5612789e433d75": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "ef1af714bae5e71c57ff75d1a9fc0a22d00deda7be26505b061411de1d96c02e",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.804321
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "683e4680800528eeb327c34c": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "f795a52a0581c0a96cc7942e4e3e1e10f5b906d8fc4efa155eeeb1ddd801823c",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 2.028434,
+      "ACT_QOS_THROTTLE_BULK": 1.61375,
+      "ACT_PATH_REROUTE": 1.605313,
+      "ACT_MODEM_SOFT_RESET": 1.738763
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "6dbd43e3ff37f1ef0c84cbc9": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "e6a1564699051bcac41d7e5f3d682bd1b94419c7aba55bb19c9643442386c3f1",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.775498,
+      "ACT_QOS_THROTTLE_BULK": 1.637094,
+      "ACT_PATH_REROUTE": 1.587811,
+      "ACT_MODEM_SOFT_RESET": 1.758057
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "192837623ebbae2294930b69": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "db107b54d2c00db20b9fe1e05c1574e60ec9abab7429abb5b801fbc106d6700c",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.830567
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "f13b8e9e02343f6c26f44c8b": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "b125f4fce8fbb383815bc46f86bbdf31af3678b5bdc0ba8f51807ecda5254ff4",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_PATH_REROUTE",
+      "ACT_QUEUE_MANAGE"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.743319,
+      "ACT_QOS_THROTTLE_BULK": 1.720637,
+      "ACT_PATH_REROUTE": 1.827552,
+      "ACT_MODEM_SOFT_RESET": 2.077818
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "21c2ae788f8cab68f6281e1d": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "a81ec8cd2164d2e75c125ac7f90210a92b6a14bd180563a9752f6f5623c4bc84",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.73401,
+      "ACT_QOS_THROTTLE_BULK": 1.716381,
+      "ACT_PATH_REROUTE": 1.649705,
+      "ACT_MODEM_SOFT_RESET": 1.832392
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "64088697fdc3f2f3436b654a": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "fe33e521b77e96a9e1187a8d319c60f370895b605306cfffd6ead42663a68ddd",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.676062,
+      "ACT_QOS_THROTTLE_BULK": 1.645477,
+      "ACT_PATH_REROUTE": 1.594403,
+      "ACT_MODEM_SOFT_RESET": 1.780054
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "9143ad26b454142bc752051c": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "34e4c7fd22717f89b46a4134783f23bf100d5fbfc6df5665d5d5a945834b9651",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_PATH_REROUTE"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.972132,
+      "ACT_QOS_THROTTLE_BULK": 1.666635,
+      "ACT_PATH_REROUTE": 1.768768,
+      "ACT_MODEM_SOFT_RESET": 1.951979
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "86aa34fba785277dabcc1752": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "fa41af4e1c9a132677b29512217dcbd41ae1d23347e7cde71b04b8ee67c65205",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.704026,
+      "ACT_QOS_THROTTLE_BULK": 1.68132,
+      "ACT_PATH_REROUTE": 1.600123,
+      "ACT_MODEM_SOFT_RESET": 1.791859
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "38e9fc7f589d930fcffafd9d": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "6027098d79148257244a173fd36f97c397cfb3fa19d6d79f7b2f6e419b654c46",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.835261
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "d50a19be7d5b1a22e9c924e8": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "a239921c07b0db2528d0987370ce78c0cab8af934a0d008fb3abbae583eb3f44",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.702039,
+      "ACT_QOS_THROTTLE_BULK": 1.69758,
+      "ACT_PATH_REROUTE": 1.602661,
+      "ACT_MODEM_SOFT_RESET": 1.792784
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "26642f0d1da0b01da339ac19": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "fdfab231b444cd74b25279b8791440dcb5f1c0e9d156e37fe3b5274101c0b644",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 2.10877,
+      "ACT_QOS_THROTTLE_BULK": 1.761542,
+      "ACT_PATH_REROUTE": 1.652681,
+      "ACT_MODEM_SOFT_RESET": 1.824189
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "81554b24309a1adf11f99819": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "0c557d14a8fdf8b66cf2207a82d58e85e352fabc2f229f8fe8e6e78c9477b5b7",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.978766,
+      "ACT_QOS_THROTTLE_BULK": 1.673664,
+      "ACT_PATH_REROUTE": 1.603034,
+      "ACT_MODEM_SOFT_RESET": 1.802288
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "564653955304099991d91c90": {
+    "chosen": "ACT_QUEUE_MANAGE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "85a23bd0a7bcb850e27bbe98cba272622686960c50f63c24c06581d11734e5e4",
+    "shortlist": [
+      "ACT_QUEUE_MANAGE",
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.872363,
+      "ACT_QOS_THROTTLE_BULK": 1.670777,
+      "ACT_PATH_REROUTE": 1.582572,
+      "ACT_MODEM_SOFT_RESET": 1.768081
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "9b88a15b57f9894e71d91735": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "c0ef1cba9d886c874034ca6b2e87182d9a043574c91c946baf061cbd64c71d11",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.682064,
+      "ACT_QOS_THROTTLE_BULK": 1.650585,
+      "ACT_PATH_REROUTE": 1.555135,
+      "ACT_MODEM_SOFT_RESET": 1.709531
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "f8b0d314f95487dbf836063f": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "d309b2e90fa2becef07ef36f7aa31fcb2e455e73bf2eb3a71555d81711c73431",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.844264
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "60d9870bd5755da5ed822f84": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "2207836eda3e14c362011e53d019511ba6818833baee9d6d76b7b6170d2f7c61",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.834235
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "29d53e4ebc7b3ead15ab3865": {
+    "chosen": "ACT_MODEM_SOFT_RESET",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "afc681d358133691600a71bd903f9ec096a65841e994e03b570cbc07004bdbbc",
+    "shortlist": [
+      "ACT_MODEM_SOFT_RESET",
+      "ACT_QUEUE_MANAGE",
+      "ACT_QOS_THROTTLE_BULK"
+    ],
+    "ucb_scores": {
+      "ACT_QUEUE_MANAGE": 1.673339,
+      "ACT_QOS_THROTTLE_BULK": 1.651425,
+      "ACT_PATH_REROUTE": 1.573277,
+      "ACT_MODEM_SOFT_RESET": 1.739331
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "913b43f442fc973976869a87": {
+    "chosen": "ACT_NO_OP",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "4ccc8142eeb9fa8a57aa5b0f36272fcad6093fe935ac7c05b0aaf38a708c3a08",
+    "shortlist": [
+      "ACT_NO_OP"
+    ],
+    "ucb_scores": {
+      "ACT_NO_OP": 1.830128
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "350ef0ba227676b583ca4d6f": {
+    "chosen": "ACT_SWITCH_LINK_CELL",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "9e11ab99dc2c58729c832130481d662593d27a248ae0bd8e9a902132b966b3ae",
+    "shortlist": [
+      "ACT_SWITCH_LINK_CELL",
+      "ACT_SWITCH_LINK_WIFI",
+      "ACT_ESCALATE"
+    ],
+    "ucb_scores": {
+      "ACT_SWITCH_LINK_CELL": 4.787544,
+      "ACT_SWITCH_LINK_WIFI": 2.787544,
+      "ACT_ESCALATE": 2.787544
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "08d7efabf3ccc20e218439a8": {
+    "chosen": "ACT_SWITCH_LINK_CELL",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "1a1d449829aa93c95f6128d6e987ea26952694eb401946821a2e465c177e4118",
+    "shortlist": [
+      "ACT_SWITCH_LINK_CELL",
+      "ACT_SWITCH_LINK_WIFI",
+      "ACT_ESCALATE"
+    ],
+    "ucb_scores": {
+      "ACT_SWITCH_LINK_CELL": 4.704689,
+      "ACT_SWITCH_LINK_WIFI": 2.704689,
+      "ACT_ESCALATE": 2.704689
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "20577464ea81ce60bf869ace": {
+    "chosen": "ACT_SWITCH_LINK_CELL",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "f1ea016108e6916b5967b3d437215dcd60dc2dd7c2fd81dfd23cc0efbd76b58b",
+    "shortlist": [
+      "ACT_SWITCH_LINK_CELL",
+      "ACT_SWITCH_LINK_WIFI",
+      "ACT_ESCALATE"
+    ],
+    "ucb_scores": {
+      "ACT_SWITCH_LINK_CELL": 4.750858,
+      "ACT_SWITCH_LINK_WIFI": 2.750858,
+      "ACT_ESCALATE": 2.750858
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "b23b372c5d8502830229a58a": {
+    "chosen": "ACT_ESCALATE",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "f3b5fee84d0d80c181d1ce5e1e6f91a91e96987f68583cca7c1d25872e83f385",
+    "shortlist": [
+      "ACT_ESCALATE",
+      "ACT_LOAD_BALANCE",
+      "ACT_DEFER_OFFPEAK"
+    ],
+    "ucb_scores": {
+      "ACT_QOS_THROTTLE_BULK": 2.017361,
+      "ACT_DEFER_OFFPEAK": 2.280236,
+      "ACT_LOAD_BALANCE": 2.373893,
+      "ACT_ESCALATE": 2.397995
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  },
+  "c365780e3dcb2fb2d84bc856": {
+    "chosen": "ACT_SWITCH_LINK_CELL",
+    "confidence": 0.0,
+    "action_scores": {},
+    "reasoning": "LLM backend unavailable during this reproducible run; UCB fallback used.",
+    "ok": false,
+    "schema": 2,
+    "model": "qwen2.5:3b",
+    "prompt_version": "v4_score_blend",
+    "action_catalog": "579c11c1925410373153",
+    "prompt_hash": "81914c57406e2b9f58bd82056b13a515af3e4eb99ea9c9f72685f7e4c4f537f3",
+    "shortlist": [
+      "ACT_SWITCH_LINK_CELL",
+      "ACT_SWITCH_LINK_WIFI",
+      "ACT_ESCALATE"
+    ],
+    "ucb_scores": {
+      "ACT_SWITCH_LINK_CELL": 4.869273,
+      "ACT_SWITCH_LINK_WIFI": 2.869273,
+      "ACT_ESCALATE": 2.869273
+    },
+    "raw": "",
+    "created_at": "2026-04-22T11:55:53Z"
+  }
+}

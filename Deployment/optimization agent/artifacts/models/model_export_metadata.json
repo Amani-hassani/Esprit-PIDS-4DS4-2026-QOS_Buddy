@@ -1,0 +1,87 @@
+{
+  "created_at_utc": "2026-04-22T15:27:12+00:00",
+  "notebook": "01_benchmark_and_defence2.ipynb",
+  "notebook_sha256": "cb3362245a70dce57b5a578486040febeef900f4977943ce74e809d0145d305b",
+  "exported": {
+    "notebook_hybrid_bundle": "artifacts\\models\\notebook_hybrid_bundle.cloudpickle.pkl",
+    "m8_policy": "artifacts\\models\\m8_policy.cloudpickle.pkl",
+    "base_eg_robust_bandit": "artifacts\\models\\base_eg_robust_bandit.cloudpickle.pkl",
+    "base_m6_robust_bandit": "artifacts\\models\\base_m6_robust_bandit.cloudpickle.pkl",
+    "base_m7_robust_bandit": "artifacts\\models\\base_m7_robust_bandit.cloudpickle.pkl",
+    "ACTION_BY_CODE": "artifacts\\models\\ACTION_BY_CODE.joblib",
+    "ACTION_CODES": "artifacts\\models\\ACTION_CODES.joblib",
+    "ACTIONS": "artifacts\\models\\ACTIONS.joblib",
+    "arbiter_cache": "artifacts\\models\\arbiter_cache.joblib",
+    "eg_trace": "artifacts\\models\\eg_trace.joblib",
+    "final_score_table": "artifacts\\models\\final_score_table.joblib",
+    "hybrid_decisions": "artifacts\\models\\hybrid_decisions.joblib",
+    "hybrid_trace": "artifacts\\models\\hybrid_trace.joblib",
+    "m6_trace": "artifacts\\models\\m6_trace.joblib",
+    "m7_trace": "artifacts\\models\\m7_trace.joblib",
+    "m8_trace": "artifacts\\models\\m8_trace.joblib",
+    "model_role_table": "artifacts\\models\\model_role_table.joblib",
+    "RC_SCOPE": "artifacts\\models\\RC_SCOPE.joblib",
+    "RC_TO_ACTIONS": "artifacts\\models\\RC_TO_ACTIONS.joblib",
+    "RC_VOCAB": "artifacts\\models\\RC_VOCAB.joblib",
+    "rule_trace": "artifacts\\models\\rule_trace.joblib",
+    "train_stats": "artifacts\\models\\train_stats.joblib"
+  },
+  "missing": [],
+  "scorecard": [
+    {
+      "policy": "Hybrid Orchestrator",
+      "mean_intent_reward": 0.6455855855855858,
+      "mean_regret": 0.02288288288288288,
+      "oracle_hits": 96,
+      "episodes": 111,
+      "deployment_role": "combined deployment policy",
+      "norm_intent_reward": 0.8035712904747545
+    },
+    {
+      "policy": "RuleLookup",
+      "mean_intent_reward": 0.6351351351351354,
+      "mean_regret": 0.03333333333333333,
+      "oracle_hits": 92,
+      "episodes": 111,
+      "deployment_role": "transparent safety anchor",
+      "norm_intent_reward": 0.7138636908490527
+    },
+    {
+      "policy": "M8 RewardRanker",
+      "mean_intent_reward": 0.6351351351351354,
+      "mean_regret": 0.03333333333333333,
+      "oracle_hits": 92,
+      "episodes": 111,
+      "deployment_role": "offline reward-ranker lens",
+      "norm_intent_reward": 0.7138636908490527
+    },
+    {
+      "policy": "EpsilonGreedy",
+      "mean_intent_reward": 0.6279279279279281,
+      "mean_regret": 0.04054054054054054,
+      "oracle_hits": 102,
+      "episodes": 111,
+      "deployment_role": "best online learner",
+      "norm_intent_reward": 0.6519963807623599
+    },
+    {
+      "policy": "M6 LinUCB",
+      "mean_intent_reward": 0.6150450450450453,
+      "mean_regret": 0.05342342342342342,
+      "oracle_hits": 80,
+      "episodes": 111,
+      "deployment_role": "contextual bandit baseline",
+      "norm_intent_reward": 0.5414085639823999
+    },
+    {
+      "policy": "M7 LinUCB+LLM",
+      "mean_intent_reward": 0.6114414414414417,
+      "mean_regret": 0.05702702702702703,
+      "oracle_hits": 80,
+      "episodes": 111,
+      "deployment_role": "auditable reasoning layer",
+      "norm_intent_reward": 0.5104749089390545
+    }
+  ],
+  "load_note": "Use deployment.model_loader.load_notebook_bundle() for the exact notebook bundle. Notebook custom policy objects are exported as .cloudpickle.pkl; tables/contracts are exported as .joblib."
+}

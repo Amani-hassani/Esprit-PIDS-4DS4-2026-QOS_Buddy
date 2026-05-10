@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ───────────────────────── theme tokens ─────────────────────────
+ * Dark = NOC primary (3 AM oncall vibe).
+ * Light = Executive briefing (boardroom vibe).
+ * Both must look intentional — never the default Tailwind look.
+ */
+
+:root {
+  --font-inter: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-jet: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  /* light (Executive briefing) */
+  --bg-0: 220 30% 98%;
+  --bg-1: 0 0% 100%;
+  --bg-2: 220 25% 96%;
+  --bg-3: 220 20% 92%;
+  --bg-elev: 220 25% 99%;
+
+  --line-subtle: 220 20% 90%;
+  --line: 220 20% 84%;
+  --line-strong: 220 20% 70%;
+
+  --ink-0: 222 47% 11%;
+  --ink-1: 220 20% 26%;
+  --ink-2: 220 15% 45%;
+  --ink-3: 220 12% 60%;
+  --color-ink-1: hsl(var(--ink-1));
+
+  --cy: 199 89% 48%;
+  --cy-soft: 199 89% 92%;
+  --teal: 165 67% 45%;
+  --vio: 262 83% 58%;
+  --vio-soft: 262 83% 96%;
+  --ok: 152 60% 42%;
+  --ok-soft: 152 60% 92%;
+  --warn: 32 94% 44%;
+  --warn-soft: 32 94% 92%;
+  --bad: 350 84% 52%;
+  --bad-soft: 350 84% 95%;
+  --info: 199 89% 48%;
+  --info-soft: 199 89% 92%;
+}
+
+.dark {
+  /* dark (NOC) */
+  --bg-0: 213 53% 7%;
+  --bg-1: 213 47% 10%;
+  --bg-2: 213 41% 13%;
+  --bg-3: 218 41% 18%;
+  --bg-elev: 219 39% 22%;
+
+  --line-subtle: 219 38% 19%;
+  --line: 219 35% 27%;
+  --line-strong: 219 35% 36%;
+
+  --ink-0: 216 70% 96%;
+  --ink-1: 220 35% 79%;
+  --ink-2: 220 22% 58%;
+  --ink-3: 222 18% 45%;
+  --color-ink-1: hsl(var(--ink-1));
+
+  --cy: 190 100% 50%;
+  --cy-soft: 198 60% 15%;
+  --teal: 162 60% 60%;
+  --vio: 260 100% 74%;
+  --vio-soft: 252 50% 16%;
+  --ok: 158 64% 52%;
+  --ok-soft: 158 50% 12%;
+  --warn: 38 92% 50%;
+  --warn-soft: 35 50% 14%;
+  --bad: 350 89% 60%;
+  --bad-soft: 350 60% 14%;
+  --info: 199 89% 60%;
+  --info-soft: 213 60% 14%;
+}
+
+html,
+body {
+  background: hsl(var(--bg-0));
+  color: hsl(var(--ink-0));
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* glassy elevated surfaces */
+.glass {
+  background: linear-gradient(
+    180deg,
+    hsl(var(--bg-elev) / 0.55),
+    hsl(var(--bg-2) / 0.55)
+  );
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid hsl(var(--line-subtle));
+}
+
+.ring-glow {
+  box-shadow: 0 0 0 1px hsl(var(--cy) / 0.35), 0 0 32px hsl(var(--cy) / 0.18);
+}
+
+/* status pulse dot */
+.pulse-dot {
+  position: relative;
+}
+.pulse-dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  box-shadow: 0 0 0 0 currentColor;
+  animation: pulse 1.6s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 0.55;
+  }
+  70% {
+    box-shadow: 0 0 0 10px transparent;
+    opacity: 0;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+    opacity: 0;
+  }
+}
+
+/* scrollbar polish */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--line));
+  border-radius: 8px;
+  border: 2px solid hsl(var(--bg-0));
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--line-strong));
+}

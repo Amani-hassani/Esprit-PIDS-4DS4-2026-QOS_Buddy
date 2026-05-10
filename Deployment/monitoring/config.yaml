@@ -1,0 +1,180 @@
+
+# QoS Buddy Configuration File
+# Version: 1.0
+
+# -----------------------------------------------------------------------------
+# Tunisian Network Baseline Parameters
+# -----------------------------------------------------------------------------
+# These thresholds are optimized for the Tunisian telecom context, including
+# major ISPs like OTC (Tunisie Telecom), Orange, and Ooredoo, covering
+# ADSL, 3G, and 4G network standards.
+# -----------------------------------------------------------------------------
+
+network:
+  # --- Latency Thresholds (in milliseconds) ---
+  latency:
+    baseline_ms: 50      # Typical RTT to a local ISP gateway (e.g., OTC ADSL)
+    warning_ms: 150      # "Yellow flag": Latency is becoming noticeable, impacting real-time apps
+    critical_ms: 250     # "Red flag": Severe latency, likely due to backbone congestion or int'l link issues
+
+  # --- Jitter Thresholds (in milliseconds) ---
+  # Jitter is the variance in latency. High jitter is bad for real-time apps.
+  jitter:
+    acceptable_ms: 50    # Good quality VoIP/video (MOS > 4.0)
+    warning_ms: 75       # Degrading quality (MOS < 3.5)
+    critical_ms: 150     # Poor quality, unsuitable for most real-time applications
+
+  # --- Packet Loss Thresholds (in percentage) ---
+  packet_loss:
+    threshold_pct: 2.0   # Tolerable loss; may be perceptible
+    warning_pct: 5.0     # Noticeable degradation and service impact
+    critical_pct: 10.0   # Severe network problem
+
+  # --- Throughput Expectations (in Megabits per second) ---
+  throughput:
+    baseline_mbps: 3.0   # Expected speed for a standard ADSL/4G connection
+    max_mbps: 15.0       # Realistic maximum for typical Tunisian service tiers
+    min_mbps: 0.5        # Below this indicates a significant connection issue
+
+  # --- Ping Targets ---
+  # Define multiple targets to assess different network segments.
+  ping_targets:
+    local_gateway: "auto"        # "auto" → resolved from the OS routing table at startup. Override with a literal IP if needed.
+    isp_dns: "8.8.8.8"           # A reliable, global target (Google DNS)
+    regional_server: "41.231.1.1"  # A regional server (e.g., OTC)
+
+# -----------------------------------------------------------------------------
+# System Resource Monitoring
+# -----------------------------------------------------------------------------
+# Thresholds for detecting if local machine performance is affecting network quality.
+# -----------------------------------------------------------------------------
+
+resources:
+  cpu:
+    warning_pct: 75.0    # CPU usage is high
+    critical_pct: 90.0   # CPU is a bottleneck, likely impacting app performance
+  memory:
+    warning_pct: 80.0    # Memory usage is high
+    critical_pct: 95.0   # System is close to swapping, high risk of performance impact
+
+# -----------------------------------------------------------------------------
+# Time-Based Context (Tunisian Work/Social Patterns)
+# -----------------------------------------------------------------------------
+# Based on UTC+1 (Tunisia local time).
+# -----------------------------------------------------------------------------
+
+time_context:
+  # --- Primary Peak Hours (Evening) ---
+  peak_hours:
+    start: 18            # 6 PM
+    end: 23              # 11 PM
+
+  # --- Secondary Peak Hours (Lunchtime) ---
+  secondary_peak:
+    start: 12            # Noon
+    end: 14              # 2 PM
+
+# -----------------------------------------------------------------------------
+# Anomaly Detection Parameters
+# -----------------------------------------------------------------------------
+# Fine-tune the sensitivity of the anomaly detection engine.
+# -----------------------------------------------------------------------------
+
+anomaly_detection:
+  # --- Congestion Detection ---
+  # Anomaly triggered if BOTH latency and throughput spike simultaneously.
+  congestion:
+    latency_spike_ms: 120   # Latency must be this much *above* baseline
+    throughput_spike_pct: 60  # Throughput must be at least this percentage of max_mbps
+
+  # --- Link Failure Detection ---
+  # Anomaly triggered if 100% packet loss is sustained.
+  link_failure:
+    packet_loss_pct: 100.0 # Must be total packet loss
+    duration_sec: 5        # For this many seconds
+
+# -----------------------------------------------------------------------------
+# Feature Engineering Parameters
+# -----------------------------------------------------------------------------
+# Coefficients for synthetic feature generation.
+# -----------------------------------------------------------------------------
+
+feature_engineering:
+  # --- Queue Length Modeling ---
+  # A synthetic metric to estimate network queue depth.
+  # queue = (alpha * throughput) + (beta * latency) + (gamma * packet_loss)
+  queue_modeling:
+    alpha: 0.3
+    beta: 0.5
+    gamma: 0.2
+
+# ============================================================================
+# ROUTER METRICS CONFIGURATION
+# ============================================================================
+# Configuration for extracting cellular metrics (RSRP, RSRQ, SINR, CQI, MCS)
+# from router web admin interfaces.
+#
+# Supported Router Types:
+#   - 'auto'         — Auto-detect (tries all below in order)
+#   - 'huawei'       — Huawei B315/B525/B818 → /api/device/signal API
+#   - 'zte'          — ZTE MF/MC series → /goform/goform_get_cmd_process API
+#   - 'luci'         — OpenWrt/LuCI → /cgi-bin/luci/admin/status APIs (MCS via /get_band_info)
+#   - 'zte_selenium' — ZTE with Selenium (browser automation, slower)
+#
+# If you have multiple routers, set the gateway IP and type here to avoid
+# auto-detection delays.
+# ============================================================================
+
+router:
+  # Router IP address (gateway). "auto" reads the OS default route at startup
+  # so the same config works on any LAN. Override with a literal IP only if
+  # you need to target a non-default router (e.g., a second WAN).
+  gateway: "auto"              # "auto" | "192.168.8.1" | "192.168.1.1" | ...
+
+  # Router type (auto-detection if 'auto')
+  type: "auto"                 # Options: 'auto', 'huawei', 'zte', 'luci', 'zte_selenium'
+  
+  # Credentials (for routers that require authentication)
+  username: "admin"            # Default for most routers
+  password: ""         # Router admin password
+
+# ============================================================================
+# Feature Engineering Parameters
+# ============================================================================
+
+# -----------------------------------------------------------------------------
+# iperf3 Remote Server Configuration
+# -----------------------------------------------------------------------------
+# Used for congestion, packet_loss, and throughput scenarios.
+# The server pool is tried in order; busy servers are skipped automatically.
+# -----------------------------------------------------------------------------
+
+iperf3:
+  primary_server: "iperf3.moji.fr"
+  primary_port: 5200
+  server_pool:
+    # Paris — Moji 100Gbps (ports 5200-5240)
+    - {server: "iperf3.moji.fr", port: 5200}
+    - {server: "iperf3.moji.fr", port: 5201}
+    - {server: "iperf3.moji.fr", port: 5202}
+    - {server: "iperf3.moji.fr", port: 5203}
+    # Paris — Scaleway 100Gbps (ports 5200-5209)
+    - {server: "ping.online.net", port: 5200}
+    - {server: "ping.online.net", port: 5201}
+    - {server: "ping.online.net", port: 5202}
+    - {server: "ping.online.net", port: 5203}
+    # Paris — MilkyWan 40Gbps
+    - {server: "speedtest.milkywan.fr", port: 9200}
+    - {server: "speedtest.milkywan.fr", port: 9201}
+    # Paris — Bouygues 10Gbps
+    - {server: "paris.bbr.iperf.bytel.fr", port: 9200}
+    - {server: "paris.bbr.iperf.bytel.fr", port: 9201}
+    # Netherlands — Serverius 10Gbps
+    - {server: "speedtest.serverius.net", port: 5002}
+    # Ukraine — Volia BBR
+    - {server: "iperf.volia.net", port: 5201}
+
+  # UDP flood settings for packet_loss scenario
+  udp_flood:
+    bandwidth: "100M"   # Target bandwidth (set higher than link speed to saturate)
+    reverse: true       # Flood download direction (server→client)

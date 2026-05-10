@@ -1,0 +1,4 @@
+split,backend,accuracy,balanced_accuracy,macro_f1,weighted_f1,top3_hit_rate,top5_hit_rate,search_time_sec
+train,sklearn_exact_fallback,1.0,1.0,1.0,1.0,1.0,1.0,1.0142979621887207
+val,sklearn_exact_fallback,1.0,1.0,1.0,1.0,1.0,1.0,0.013523340225219727
+test,sklearn_exact_fallback,0.8165322580645161,0.8123371237773568,0.80456171989444,0.7990469156703842,0.8709677419354839,0.8850806451612904,0.014128923416137695

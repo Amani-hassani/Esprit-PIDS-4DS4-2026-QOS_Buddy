@@ -1,0 +1,676 @@
+from __future__ import annotations
+
+from dataclasses import asdict, dataclass, field
+from datetime import datetime, timedelta, timezone
+from typing import Any
+
+from ..actions import execute_action
+from ..contracts import ACTION_TOOLS, ActionHistoryEntry, Decision, PolicyRequest, action_contract
+from ..core.clock import utc_now
+from ..core.settings import get_settings
+from ..data import latest_cell_row
+from ..hybrid_optimizer import get_optimizer
+from ..integrations import open_change_ticket
+from ..llmops.client import LLMCall, ReasonerClient
+from ..mlops import log_decision
+from ..policy_gate import evaluate_policy
+from ..simulation import simulate_action
+from ..store.repos import ApprovalsRepo, DecisionsRepo
+from ..tools import TOOL_REGISTRY, ToolContext, run_tool
+from ..tracing import agent_span, set_attributes as set_span_attributes, set_outputs as set_span_outputs
+
+
+CAUSAL_CHAINS = {
+    "RC_WEAK_SIGNAL": "Weak radio signal reduces throughput; power and coverage changes need human review.",
+    "RC_SINR_DEGRADED": "Interference rise lowers SINR and can be mitigated by band balancing.",
+    "RC_HO_FAILURE": "Broken handover behavior points to A3 offset and TTT tuning.",
+    "RC_PRB_CONGESTION": "PRB exhaustion has site-wide implications when carrier aggregation is triggered.",
+    "RC_TRANSPORT_DELAY": "Queue build-up raises latency; reducing buffer size is reversible and local.",
+    "RC_CQI_MISMATCH": "CQI mismatch can be handled by scheduling priority without radio config changes.",
+    "RC_COVERAGE_HOLE": "Coverage holes imply infrastructure planning and are never auto-executed.",
+    "RC_CAPACITY_OVERLOAD": "Cell saturation requires load balancing but has broader blast radius.",
+    "RC_NONE": "No problem detected; observe with no remediation.",
+}
+
+
+def _heuristic_reasoning(
+    *,
+    root_cause: str,
+    rc_confidence: float,
+    selected_action: str,
+    selected_source: str,
+    hybrid_score: float,
+    candidates_payload: list[dict[str, Any]],
+    evidence: list[str],
+    kpis: dict[str, Any],
+    sim: dict[str, Any] | None,
+    llm_error: str | None,
+) -> str:
+    """Compose a multi-line operator-grade explanation when Local Qwen is offline.
+
+    The output reads as a paragraph in the dashboard (the UI renders it with
+    `white-space: pre-wrap`) and surfaces the same shape an LLM response would:
+    diagnosis → causal chain → why-this-action → KPI deltas → ranking → caveats.
+    """
+    lines: list[str] = []
+    chain = CAUSAL_CHAINS.get(root_cause, "Inspect KPI patterns and pick the lowest-risk reversible action.")
+    lines.append(f"Diagnosis · {root_cause} (confidence {rc_confidence * 100:.0f}%).")
+    lines.append(f"Causal chain · {chain}")
+
+    def _fmt_kpi(name: str, unit: str = "", digits: int = 1) -> str | None:
+        value = kpis.get(name)
+        if value is None:
+            return None
+        try:
+            return f"{name}={float(value):.{digits}f}{unit}"
+        except Exception:
+            return None
+
+    snapshot_bits = [
+        _fmt_kpi("rssi_dbm", " dBm", 1),
+        _fmt_kpi("sinr_db", " dB", 1),
+        _fmt_kpi("throughput_mbps", " Mbps", 1),
+        _fmt_kpi("latency_ms", " ms", 0),
+        _fmt_kpi("packet_loss_pct", "%", 2),
+    ]
+    snapshot_bits = [b for b in snapshot_bits if b]
+    if snapshot_bits:
+        lines.append("Snapshot · " + ", ".join(snapshot_bits) + ".")
+
+    if evidence:
+        lines.append("Evidence · " + "; ".join(str(e) for e in evidence[:3]) + ".")
+
+    lines.append(
+        f"Action · {selected_action} chosen by {selected_source} with hybrid score {hybrid_score:.2f}."
+    )
+
+    if candidates_payload:
+        ranked = sorted(candidates_payload, key=lambda c: -float(c.get("score", 0.0)))[:3]
+        ranked_str = ", ".join(
+            f"{c.get('action_code')} ({c.get('source')}, {float(c.get('score', 0.0)):.2f})"
+            for c in ranked
+        )
+        lines.append(f"Shortlist · {ranked_str}.")
+
+    if sim:
+        before = sim.get("before_health_score")
+        after = sim.get("after_health_score")
+        try:
+            delta = float(after) - float(before)  # type: ignore[arg-type]
+            verdict = "improves" if delta > 0 else ("regresses" if delta < 0 else "holds")
+            lines.append(f"Forecast · simulator {verdict} health by Δ{delta:+.2f} ({before:.1f} → {after:.1f}).")
+        except Exception:
+            pass
+        deltas = sim.get("changed_kpis") or {}
+        if isinstance(deltas, dict) and deltas:
+            tops = list(deltas.items())[:3]
+            bits = []
+            for key, change in tops:
+                try:
+                    bits.append(f"{key} {float(change.get('before', 0.0)):.1f}→{float(change.get('after', 0.0)):.1f}")
+                except Exception:
+                    continue
+            if bits:
+                lines.append("Expected KPI shift · " + ", ".join(bits) + ".")
+
+    note = f"Local Qwen offline ({llm_error or 'no-connect'}); explanation generated by deterministic ensemble."
+    lines.append(note)
+    return "\n".join(lines)
+
+
+def _with_policy_outcome(reasoning: str, *, gate_decision: Decision, gate_reason: str) -> str:
+    suffix = f"Policy outcome · {gate_decision.value}. {gate_reason}"
+    if suffix in reasoning:
+        return reasoning
+    return f"{reasoning}\n{suffix}".strip()
+
+
+def _fallback_rejection_motive(
+    *,
+    selected_action: str,
+    gate_reason: str,
+    risk_level: str,
+    impact_radius: str,
+    evidence: list[str],
+) -> dict[str, Any]:
+    return {
+        "motive": f"Policy rejected automatic execution of {selected_action}: {gate_reason}.",
+        "human_request": (
+            f"Please review whether {selected_action} should proceed with manual controls "
+            f"because the action is {risk_level} risk with {impact_radius} impact."
+        ),
+        "urgency": risk_level,
+        "evidence_summary": [str(item) for item in evidence[:3]],
+    }
+
+
+def _fuse_actions(
+    *,
+    hybrid: Any,
+    shortlist: list[str],
+    llm_response: Any,
+    diagnostic_action: str | None,
+) -> tuple[str, str, list[dict[str, Any]]]:
+    weights = {"models": 0.45, "diagnostic": 0.35, "llm": 0.20}
+    aggregate: dict[str, dict[str, Any]] = {}
+
+    def ensure(action_code: str) -> dict[str, Any]:
+        return aggregate.setdefault(action_code, {"score": 0.0, "signals": []})
+
+    model_candidates = [candidate for candidate in hybrid.candidates if candidate.action_code in shortlist]
+    if model_candidates:
+        top_score = max(float(candidate.score) for candidate in model_candidates) or 1.0
+        for candidate in model_candidates:
+            normalized = max(float(candidate.score), 0.0) / top_score
+            bucket = ensure(candidate.action_code)
+            bucket["score"] += weights["models"] * normalized
+            bucket["signals"].append(f"{candidate.source}:{normalized:.2f}")
+
+    if isinstance(diagnostic_action, str) and diagnostic_action in shortlist:
+        bucket = ensure(diagnostic_action)
+        bucket["score"] += weights["diagnostic"]
+        bucket["signals"].append("DiagnosticContract:1.00")
+
+    if llm_response.available and isinstance(llm_response.content, dict):
+        proposed = llm_response.content.get("chosen")
+        raw_confidence = llm_response.content.get("confidence")
+        if isinstance(proposed, str) and proposed in shortlist:
+            confidence = float(raw_confidence) if isinstance(raw_confidence, (int, float)) else 0.75
+            confidence = max(0.0, min(1.0, confidence))
+            bucket = ensure(proposed)
+            bucket["score"] += weights["llm"] * confidence
+            bucket["signals"].append(f"M7 LocalQwen:{confidence:.2f}")
+
+    if not aggregate:
+        return hybrid.selected_action, hybrid.selected_source, []
+
+    ranked = sorted(aggregate.items(), key=lambda item: (-float(item[1]["score"]), item[0]))
+    details = [
+        {
+            "action_code": action_code,
+            "score": round(float(payload["score"]), 4),
+            "signals": list(payload["signals"]),
+        }
+        for action_code, payload in ranked
+    ]
+    return ranked[0][0], "WeightedFusion", details
+
+
+@dataclass
+class AgentResult:
+    decision_id: str
+    cell_id: str
+    root_cause: str
+    rc_confidence: float
+    selected_action: str
+    selected_tool: str
+    selected_source: str
+    gate_decision: str
+    gate_reason: str
+    risk_level: str
+    impact_radius: str
+    auto_executed: bool
+    approval_id: str | None
+    hybrid_score: float
+    kpi_before: dict[str, Any]
+    kpi_after: dict[str, Any]
+    health_before: float
+    health_after: float
+    candidates: list[dict[str, Any]]
+    validators: list[dict[str, Any]]
+    llm_available: bool
+    llm_reasoning: str
+    llm_cached: bool
+    reasoning_id: str | None
+    tool_trace: list[dict[str, Any]] = field(default_factory=list)
+    mlflow_run_id: str | None = None
+    execution_mode: str | None = None
+    execution_snapshot_id: str | None = None
+    ticket_provider: str | None = None
+    ticket_key: str | None = None
+    ticket_url: str | None = None
+    ticket_local_id: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+def _sla_deadline(risk_level: str) -> datetime:
+    alerts = get_settings().alerts
+    seconds = {
+        "low": alerts.sla_low_s,
+        "medium": alerts.sla_medium_s,
+        "high": alerts.sla_high_s,
+        "critical": alerts.sla_critical_s,
+    }.get(risk_level, alerts.sla_medium_s)
+    return utc_now() + timedelta(seconds=seconds)
+
+
+def _serialize_candidate(candidate: Any) -> dict[str, Any]:
+    return {
+        "source": candidate.source,
+        "action_code": candidate.action_code,
+        "tool_name": candidate.tool_name,
+        "score": round(float(candidate.score), 4),
+        "rationale": candidate.rationale,
+    }
+
+
+def _recent_history_entries(cell_id: str, limit: int = 30) -> list[ActionHistoryEntry]:
+    entries: list[ActionHistoryEntry] = []
+    for row in DecisionsRepo.list_recent(limit=limit, cell_id=cell_id):
+        try:
+            ts = datetime.fromisoformat(row.created_at.replace("Z", "+00:00"))
+        except ValueError:
+            ts = datetime.now(timezone.utc)
+        try:
+            decision = Decision(row.gate_decision)
+        except ValueError:
+            decision = Decision.APPROVED
+        entries.append(
+            ActionHistoryEntry(
+                cell_id=row.cell_id,
+                action_code=row.selected_action,
+                timestamp=ts,
+                decision=decision,
+            )
+        )
+    return entries
+
+
+def decide(
+    cell_id: str | None = None,
+    *,
+    principal_token: str | None = None,
+    principal_role: str | None = None,
+    human_approved: bool = False,
+    reasoner: ReasonerClient | None = None,
+) -> AgentResult:
+    """Run the full agent loop. Always persists a Decision row and (if pending) an Approval."""
+    row = latest_cell_row(cell_id)
+    resolved_cell_id = str(row.get("cell_id", cell_id or "unknown"))
+    agent_ctx = agent_span(
+        "agent.decide",
+        session_id=resolved_cell_id,
+        inputs={"cell_id": resolved_cell_id, "human_approved": human_approved},
+        attributes={
+            "qos.cell_id": resolved_cell_id,
+            "qos.principal_role": principal_role or "",
+        },
+    )
+    with agent_ctx as _root_span:
+        ctx = ToolContext(
+            decision_id=None,
+            principal_token=principal_token,
+            principal_role=principal_role,
+        )
+        # Gather context with tool calls (no decision_id yet — buffer them until we insert the row).
+        read_kpis_out = run_tool("read_kpis", {"cell_id": cell_id}, ctx)
+        topology_out = run_tool("query_topology", {}, ctx)
+        history_out = run_tool("fetch_history", {"cell_id": resolved_cell_id}, ctx)
+        incidents_out = run_tool("fetch_incidents", {"cell_id": resolved_cell_id, "limit": 5}, ctx)
+
+        hybrid = get_optimizer().decide(row)
+        candidates_payload = [_serialize_candidate(c) for c in hybrid.candidates]
+        shortlist = sorted({c.action_code for c in hybrid.candidates})
+        diagnostic_action = row.get("__diagnostic_recommended_action__")
+        if isinstance(diagnostic_action, str) and diagnostic_action and diagnostic_action not in shortlist:
+            shortlist.append(diagnostic_action)
+            candidates_payload.append(
+                {
+                    "source": "DiagnosticContract",
+                    "action_code": diagnostic_action,
+                    "tool_name": ACTION_TOOLS.get(diagnostic_action, "external-diagnostic"),
+                    "score": round(float(hybrid.hybrid_score), 4),
+                    "rationale": "Recommended by the external diagnostic contract.",
+                }
+            )
+
+        neighbors_compact = [
+            {"id": n["id"], "rc": n["root_cause"], "health": round(n["health"], 1)}
+            for n in topology_out.get("nodes", [])[:6]
+        ]
+        history_compact = [
+            {
+                "action": h["selected_action"],
+                "gate": h["gate_decision"],
+                "ts": h["created_at"],
+            }
+            for h in history_out.get("history", [])[:5]
+        ]
+
+        llm = reasoner or ReasonerClient()
+        llm_call = LLMCall(
+            prompt_name="agent.decision",
+            kind="agent",
+            variables={
+                "root_cause": hybrid.root_cause,
+                "rc_confidence": float(hybrid.confidence),
+                "causal_chain": CAUSAL_CHAINS.get(hybrid.root_cause, ""),
+                "kpis": read_kpis_out.get("kpis", {}),
+                "evidence": hybrid.evidence,
+                "candidates": candidates_payload,
+                "hybrid_action": hybrid.selected_action,
+                "diagnostic_action": diagnostic_action,
+                "shortlist": shortlist,
+                "history": history_compact,
+                "neighbors": neighbors_compact,
+            },
+        )
+        llm_response = llm.call(llm_call)
+        llm_reasoning = ""
+        if llm_response.available and isinstance(llm_response.content, dict):
+            proposed = llm_response.content.get("chosen")
+            raw_confidence = llm_response.content.get("confidence")
+            if isinstance(proposed, str) and proposed in shortlist:
+                llm_score = float(raw_confidence) if isinstance(raw_confidence, (int, float)) else 0.75
+                candidates_payload.append(
+                    {
+                        "source": "M7 LocalQwen",
+                        "action_code": proposed,
+                        "tool_name": ACTION_TOOLS.get(proposed, "llm-proposed-action"),
+                        "score": round(max(0.0, min(1.0, llm_score)), 4),
+                        "rationale": str(llm_response.content.get("reasoning") or "Local Qwen selected this action."),
+                    }
+                )
+            llm_reasoning = str(llm_response.content.get("reasoning") or "")
+
+        selected_action, selected_source, fusion_details = _fuse_actions(
+            hybrid=hybrid,
+            shortlist=shortlist,
+            llm_response=llm_response,
+            diagnostic_action=diagnostic_action if isinstance(diagnostic_action, str) else None,
+        )
+        candidates_payload.extend(
+            {
+                "source": "WeightedFusion",
+                "action_code": item["action_code"],
+                "tool_name": ACTION_TOOLS.get(item["action_code"], "weighted-fusion"),
+                "score": item["score"],
+                "rationale": ", ".join(item["signals"]),
+            }
+            for item in fusion_details
+        )
+
+        contract = action_contract(selected_action)
+        req = PolicyRequest(
+            root_cause=hybrid.root_cause,
+            action_code=selected_action,
+            risk_level=contract.risk_level,
+            is_reversible=contract.is_reversible,
+            estimated_impact=contract.estimated_impact,
+            current_time=utc_now(),
+            action_history=_recent_history_entries(resolved_cell_id),
+            human_approved=human_approved,
+            cell_id=resolved_cell_id,
+            requires_human=contract.requires_human,
+            rollback_available=contract.is_reversible,
+            metadata={
+                "hybrid_score": hybrid.hybrid_score,
+                "selected_source": selected_source,
+                "llm_reasoning": llm_reasoning,
+                "llm_cached": llm_response.cached,
+            },
+        )
+        gate = evaluate_policy(req)
+        validators = [asdict(v) for v in gate.validators]
+
+        kpi_before = {k: read_kpis_out["kpis"].get(k) for k in read_kpis_out.get("kpis", {}).keys()}
+        sim = simulate_action(row, selected_action)
+        kpi_after = {}
+        kpi_after.update(kpi_before)
+        for key, delta in sim.get("changed_kpis", {}).items():
+            kpi_after[key] = delta["after"]
+        hb = float(sim["before_health_score"])
+        ha = float(sim["after_health_score"])
+        auto_executed = gate.decision == Decision.APPROVED
+
+        if not llm_reasoning:
+            llm_reasoning = _heuristic_reasoning(
+                root_cause=hybrid.root_cause,
+                rc_confidence=float(hybrid.confidence),
+                selected_action=selected_action,
+                selected_source=selected_source,
+                hybrid_score=float(hybrid.hybrid_score),
+                candidates_payload=candidates_payload,
+                evidence=list(hybrid.evidence),
+                kpis=read_kpis_out.get("kpis", {}),
+                sim=sim,
+                llm_error=llm_response.error,
+            )
+            if llm_response.reasoning_id:
+                try:
+                    from ..store.repos import ReasoningsRepo as _RR
+                    _RR.update_text(llm_response.reasoning_id, llm_reasoning)
+                except Exception:
+                    pass
+        llm_reasoning = _with_policy_outcome(
+            llm_reasoning,
+            gate_decision=gate.decision,
+            gate_reason=gate.reason,
+        )
+        if llm_response.reasoning_id:
+            try:
+                from ..store.repos import ReasoningsRepo as _RR
+                _RR.update_text(llm_response.reasoning_id, llm_reasoning)
+            except Exception:
+                pass
+
+        mlflow_run_id = None
+        try:
+            mlflow_run_id = log_decision(
+                gate,
+                llm_response.model,
+                llm_response.available,
+                metadata={
+                    "hybrid_score": float(hybrid.hybrid_score),
+                    "rc_confidence": float(hybrid.confidence),
+                    "selected_source": selected_source,
+                    "selected_tool": ACTION_TOOLS.get(selected_action, "observe_kpi_stream"),
+                    "diagnostic_action": diagnostic_action if isinstance(diagnostic_action, str) else None,
+                    "health_before": hb,
+                    "health_after": ha,
+                },
+            )
+        except Exception:
+            mlflow_run_id = None
+
+        decision_id = DecisionsRepo.insert(
+            cell_id=resolved_cell_id,
+            root_cause=hybrid.root_cause,
+            rc_confidence=float(hybrid.confidence),
+            selected_action=selected_action,
+            selected_source=selected_source,
+            hybrid_score=float(hybrid.hybrid_score),
+            gate_decision=gate.decision.value,
+            gate_reason=gate.reason,
+            risk_level=contract.risk_level.value,
+            impact_radius=contract.estimated_impact.value,
+            auto_executed=auto_executed,
+            principal=principal_token,
+            evidence=hybrid.evidence,
+            candidates=candidates_payload,
+            validators=validators,
+            kpi_before=kpi_before,
+            kpi_after=kpi_after,
+            health_before=hb,
+            health_after=ha,
+            mlflow_run_id=mlflow_run_id,
+        )
+
+        # Attach the tool-call trace to the decision now that we have an id.
+        from ..store.repos import ToolCallsRepo
+        for entry in ctx.trace:
+            ToolCallsRepo.insert(
+                decision_id=decision_id,
+                seq=int(entry["seq"]),
+                tool_name=str(entry["tool"]),
+                input_payload=entry.get("input", {}),
+                output_payload=entry.get("output", {}),
+                duration_ms=float(entry.get("duration_ms", 0.0)),
+                error=entry.get("error"),
+            )
+
+        approval_id: str | None = None
+        if gate.decision == Decision.PENDING_APPROVAL:
+            approval_id = ApprovalsRepo.insert(
+                decision_id=decision_id,
+                sla_deadline_iso=_sla_deadline(contract.risk_level.value).isoformat(),
+            )
+
+        execution_info: dict[str, Any] = {}
+        ticket_info: dict[str, Any] = {}
+        if gate.decision == Decision.APPROVED:
+            try:
+                execution_info = execute_action(
+                    decision_id=decision_id,
+                    cell_id=resolved_cell_id,
+                    action_code=selected_action,
+                    actor=principal_token or "system-agent",
+                    reasoning=llm_reasoning,
+                    evidence=list(hybrid.evidence),
+                    kpis=read_kpis_out.get("kpis", {}),
+                    risk_level=contract.risk_level.value,
+                    create_ticket=False,
+                    source_system="qos-buddy-agent",
+                )
+            except Exception:
+                execution_info = {}
+            ticket_info = execution_info.get("ticket") or {}
+        elif gate.decision == Decision.REJECTED:
+            try:
+                rejection_call = LLMCall(
+                    prompt_name="agent.rejection_motive",
+                    kind="agent",
+                    decision_id=decision_id,
+                    bypass_cache=True,
+                    variables={
+                        "cell_id": resolved_cell_id,
+                        "root_cause": hybrid.root_cause,
+                        "action_code": selected_action,
+                        "risk_level": contract.risk_level.value,
+                        "impact_radius": contract.estimated_impact.value,
+                        "policy_reason": gate.reason,
+                        "validators": validators,
+                        "kpis": read_kpis_out.get("kpis", {}),
+                        "evidence": list(hybrid.evidence),
+                        "agent_reasoning": llm_reasoning,
+                    },
+                )
+                rejection_response = llm.call(rejection_call)
+                rejection_motive = (
+                    rejection_response.content
+                    if rejection_response.available and isinstance(rejection_response.content, dict)
+                    else _fallback_rejection_motive(
+                        selected_action=selected_action,
+                        gate_reason=gate.reason,
+                        risk_level=contract.risk_level.value,
+                        impact_radius=contract.estimated_impact.value,
+                        evidence=list(hybrid.evidence),
+                    )
+                )
+                motive = str(rejection_motive.get("motive") or gate.reason)
+                human_request = str(rejection_motive.get("human_request") or "Please review this rejected action.")
+                evidence_summary = rejection_motive.get("evidence_summary")
+                if not isinstance(evidence_summary, list):
+                    evidence_summary = []
+                ticket_info = open_change_ticket(
+                    decision_id=decision_id,
+                    cell_id=resolved_cell_id,
+                    action_code=selected_action,
+                    summary=f"[REJECTED:{contract.risk_level.value.upper()}] {selected_action} on {resolved_cell_id}",
+                    reasoning=(
+                        f"LLM rejection motive: {motive}\n"
+                        f"Human intervention request: {human_request}\n\n"
+                        f"Policy reason: {gate.reason}\n\n{llm_reasoning}"
+                    ),
+                    evidence=list(hybrid.evidence) + [str(item) for item in evidence_summary],
+                    kpis=read_kpis_out.get("kpis", {}),
+                    risk_level=contract.risk_level.value,
+                    opened_by=principal_token or "system-agent",
+                    extra_labels=[
+                        "policy-rejected",
+                        f"rc-{hybrid.root_cause.lower()}",
+                        f"impact-{contract.estimated_impact.value}",
+                    ],
+                )
+            except Exception:
+                ticket_info = {}
+
+        if _root_span is not None:
+            set_span_attributes(
+                _root_span,
+                {
+                    "qos.decision_id": decision_id,
+                    "qos.selected_action": selected_action,
+                    "qos.selected_source": selected_source,
+                    "qos.gate_decision": gate.decision.value,
+                    "qos.risk_level": contract.risk_level.value,
+                    "qos.health_before": hb,
+                    "qos.health_after": ha,
+                    "qos.health_delta": round(ha - hb, 4),
+                    "qos.llm_available": llm_response.available,
+                    "qos.llm_cached": llm_response.cached,
+                    "qos.tool_calls": len(ctx.trace),
+                },
+            )
+            set_span_outputs(
+                _root_span,
+                {
+                    "decision_id": decision_id,
+                    "selected_action": selected_action,
+                    "gate": gate.decision.value,
+                    "reason": gate.reason,
+                    "approval_id": approval_id,
+                    "auto_executed": auto_executed,
+                    "mlflow_run_id": mlflow_run_id,
+                },
+            )
+
+        return AgentResult(
+            decision_id=decision_id,
+            cell_id=resolved_cell_id,
+            root_cause=hybrid.root_cause,
+            rc_confidence=float(hybrid.confidence),
+            selected_action=selected_action,
+            selected_tool=ACTION_TOOLS.get(selected_action, "observe_kpi_stream"),
+            selected_source=selected_source,
+            gate_decision=gate.decision.value,
+            gate_reason=gate.reason,
+            risk_level=contract.risk_level.value,
+            impact_radius=contract.estimated_impact.value,
+            auto_executed=auto_executed,
+            approval_id=approval_id,
+            hybrid_score=float(hybrid.hybrid_score),
+            kpi_before=kpi_before,
+            kpi_after=kpi_after,
+            health_before=hb,
+            health_after=ha,
+            candidates=candidates_payload,
+            validators=validators,
+            llm_available=llm_response.available,
+            llm_reasoning=llm_reasoning,
+            llm_cached=llm_response.cached,
+            reasoning_id=llm_response.reasoning_id,
+            tool_trace=ctx.trace,
+            mlflow_run_id=mlflow_run_id,
+            execution_mode=execution_info.get("mode"),
+            execution_snapshot_id=execution_info.get("snapshot_id"),
+            ticket_provider=ticket_info.get("provider"),
+            ticket_key=ticket_info.get("ticket_key"),
+            ticket_url=ticket_info.get("ticket_url"),
+            ticket_local_id=ticket_info.get("local_id"),
+        )
+
+
+def list_tools() -> list[dict[str, Any]]:
+    return [
+        {
+            "name": t.name,
+            "description": t.description,
+            "minimum_role": t.minimum_role,
+            "input_schema": t.input_schema,
+            "output_schema": t.output_schema,
+        }
+        for t in TOOL_REGISTRY.values()
+    ]

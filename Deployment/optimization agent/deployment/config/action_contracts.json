@@ -1,0 +1,185 @@
+{
+  "root_causes": {
+    "RC_WEAK_SIGNAL": {
+      "action_code": "ACT_ALERT_COVERAGE_HOLE",
+      "tool_name": "create_noc_coverage_ticket",
+      "risk_level": "medium",
+      "autonomy": "human",
+      "reason": "Antenna/power changes need NOC sign-off.",
+      "is_reversible": true,
+      "estimated_impact": "sector",
+      "requires_human": true,
+      "action_cost": 0.2
+    },
+    "RC_SINR_DEGRADED": {
+      "action_code": "ACT_LOADBALANCE_FREQ_BAND",
+      "tool_name": "stage_frequency_band_load_balance",
+      "risk_level": "medium",
+      "autonomy": "semi-auto",
+      "reason": "Shift UEs to less congested band.",
+      "is_reversible": true,
+      "estimated_impact": "sector",
+      "requires_human": false,
+      "action_cost": 0.3
+    },
+    "RC_HO_FAILURE": {
+      "action_code": "ACT_OPTIMIZE_HO_PARAMS",
+      "tool_name": "stage_handover_parameter_patch",
+      "risk_level": "medium",
+      "autonomy": "semi-auto",
+      "reason": "Tune A3 offset and TTT timer.",
+      "is_reversible": true,
+      "estimated_impact": "sector",
+      "requires_human": false,
+      "action_cost": 0.25
+    },
+    "RC_PRB_CONGESTION": {
+      "action_code": "ACT_TRIGGER_CA",
+      "tool_name": "create_carrier_aggregation_change_request",
+      "risk_level": "high",
+      "autonomy": "human",
+      "reason": "Carrier aggregation is site-wide and risky.",
+      "is_reversible": true,
+      "estimated_impact": "site",
+      "requires_human": true,
+      "action_cost": 0.45
+    },
+    "RC_TRANSPORT_DELAY": {
+      "action_code": "ACT_REDUCE_BUFFER_SIZE",
+      "tool_name": "simulate_and_stage_buffer_profile",
+      "risk_level": "low",
+      "autonomy": "auto",
+      "reason": "Reversible local-only bufferbloat mitigation.",
+      "is_reversible": true,
+      "estimated_impact": "local",
+      "requires_human": false,
+      "action_cost": 0.12
+    },
+    "RC_CQI_MISMATCH": {
+      "action_code": "ACT_PRIORITY_VOLTE_SCHEDULING",
+      "tool_name": "stage_qci_scheduler_priority",
+      "risk_level": "low",
+      "autonomy": "auto",
+      "reason": "Scheduling only; no radio configuration touched.",
+      "is_reversible": true,
+      "estimated_impact": "local",
+      "requires_human": false,
+      "action_cost": 0.1
+    },
+    "RC_COVERAGE_HOLE": {
+      "action_code": "ACT_RECOMMEND_SITE_ADDITION",
+      "tool_name": "create_radio_planning_case",
+      "risk_level": "critical",
+      "autonomy": "always-human",
+      "reason": "Irreversible site addition enforced at schema level.",
+      "is_reversible": false,
+      "estimated_impact": "regional",
+      "requires_human": true,
+      "action_cost": 0.9
+    },
+    "RC_CAPACITY_OVERLOAD": {
+      "action_code": "ACT_LOADBALANCE_FREQ_BAND",
+      "tool_name": "stage_frequency_band_load_balance",
+      "risk_level": "high",
+      "autonomy": "human",
+      "reason": "Site-wide blast radius needs oversight.",
+      "is_reversible": true,
+      "estimated_impact": "site",
+      "requires_human": true,
+      "action_cost": 0.3
+    },
+    "RC_NONE": {
+      "action_code": "ACT_NO_OP",
+      "tool_name": "observe_kpi_stream",
+      "risk_level": "low",
+      "autonomy": "auto",
+      "reason": "No impairment requires no remediation.",
+      "is_reversible": true,
+      "estimated_impact": "local",
+      "requires_human": false,
+      "action_cost": 0.0
+    }
+  },
+  "actions": {
+    "ACT_NO_OP": {
+      "tool_name": "observe_kpi_stream",
+      "action_cost": 0.0,
+      "risk_level": "low",
+      "autonomy": "auto",
+      "reason": "No impairment requires no remediation.",
+      "is_reversible": true,
+      "estimated_impact": "local",
+      "requires_human": false
+    },
+    "ACT_ALERT_COVERAGE_HOLE": {
+      "tool_name": "create_noc_coverage_ticket",
+      "action_cost": 0.2,
+      "risk_level": "medium",
+      "autonomy": "human",
+      "reason": "Antenna or power changes need NOC sign-off.",
+      "is_reversible": true,
+      "estimated_impact": "sector",
+      "requires_human": true
+    },
+    "ACT_LOADBALANCE_FREQ_BAND": {
+      "tool_name": "stage_frequency_band_load_balance",
+      "action_cost": 0.3,
+      "risk_level": "medium",
+      "autonomy": "semi-auto",
+      "reason": "Shift UEs to a less congested band.",
+      "is_reversible": true,
+      "estimated_impact": "sector",
+      "requires_human": false
+    },
+    "ACT_OPTIMIZE_HO_PARAMS": {
+      "tool_name": "stage_handover_parameter_patch",
+      "action_cost": 0.25,
+      "risk_level": "medium",
+      "autonomy": "semi-auto",
+      "reason": "Tune A3 offset and TTT timer.",
+      "is_reversible": true,
+      "estimated_impact": "sector",
+      "requires_human": false
+    },
+    "ACT_TRIGGER_CA": {
+      "tool_name": "create_carrier_aggregation_change_request",
+      "action_cost": 0.45,
+      "risk_level": "high",
+      "autonomy": "human",
+      "reason": "Carrier aggregation has broad blast radius and needs oversight.",
+      "is_reversible": true,
+      "estimated_impact": "site",
+      "requires_human": true
+    },
+    "ACT_REDUCE_BUFFER_SIZE": {
+      "tool_name": "simulate_and_stage_buffer_profile",
+      "action_cost": 0.12,
+      "risk_level": "low",
+      "autonomy": "auto",
+      "reason": "Reversible local-only bufferbloat mitigation.",
+      "is_reversible": true,
+      "estimated_impact": "local",
+      "requires_human": false
+    },
+    "ACT_PRIORITY_VOLTE_SCHEDULING": {
+      "tool_name": "stage_qci_scheduler_priority",
+      "action_cost": 0.1,
+      "risk_level": "low",
+      "autonomy": "auto",
+      "reason": "Scheduling change only; no radio configuration touched.",
+      "is_reversible": true,
+      "estimated_impact": "local",
+      "requires_human": false
+    },
+    "ACT_RECOMMEND_SITE_ADDITION": {
+      "tool_name": "create_radio_planning_case",
+      "action_cost": 0.9,
+      "risk_level": "critical",
+      "autonomy": "always-human",
+      "reason": "Site addition is irreversible and requires manual planning.",
+      "is_reversible": false,
+      "estimated_impact": "regional",
+      "requires_human": true
+    }
+  }
+}

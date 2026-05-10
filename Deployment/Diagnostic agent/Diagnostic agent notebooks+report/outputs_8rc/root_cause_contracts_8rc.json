@@ -1,0 +1,105 @@
+{
+  "RC_CAPACITY_OVERLOAD": {
+    "real_anomaly_types": [
+      "low_throughput",
+      "congestion"
+    ],
+    "description": "Capacity or congestion pressure: low throughput, high queueing, high utilization, and connection pressure.",
+    "primary_evidence": [
+      "throughput_mbps",
+      "bandwidth_util_pct",
+      "queue_length",
+      "active_connections"
+    ],
+    "augmentation": "Boost utilization/queue/connection pressure and reduce throughput within operational bounds."
+  },
+  "RC_TRANSPORT_DELAY": {
+    "real_anomaly_types": [
+      "high_latency",
+      "latency_degradation"
+    ],
+    "description": "Transport/path delay: sustained latency increase with queue pressure and degraded MOS.",
+    "primary_evidence": [
+      "latency_ms",
+      "queue_length",
+      "mos_estimate",
+      "jitter_ms"
+    ],
+    "augmentation": "Raise latency and queueing while keeping the signature distinct from pure jitter or packet loss."
+  },
+  "RC_JITTER_INSTABILITY": {
+    "real_anomaly_types": [
+      "jitter_degradation",
+      "high_jitter"
+    ],
+    "description": "Unstable delay variation: jitter spikes dominate the QoS failure.",
+    "primary_evidence": [
+      "jitter_ms",
+      "jitter_increasing",
+      "latency_volatility"
+    ],
+    "augmentation": "Raise jitter and jitter trend, with moderate latency impact."
+  },
+  "RC_PACKET_LOSS": {
+    "real_anomaly_types": [
+      "severe_packet_loss"
+    ],
+    "description": "Packet loss path degradation: packet loss and BLER/retransmission pressure dominate.",
+    "primary_evidence": [
+      "packet_loss_pct",
+      "tcp_retransmit_rate",
+      "bler_proxy_pct",
+      "mos_estimate"
+    ],
+    "augmentation": "Raise packet loss and retransmission pressure and reduce MOS/throughput."
+  },
+  "RC_RETRANSMISSION": {
+    "real_anomaly_types": [
+      "high_retransmission"
+    ],
+    "description": "Transport retransmission pressure without necessarily severe packet loss.",
+    "primary_evidence": [
+      "tcp_retransmit_rate",
+      "bler_proxy_pct",
+      "throughput_mbps"
+    ],
+    "augmentation": "Raise retransmission/BLER with low-to-moderate packet loss."
+  },
+  "RC_RADIO_SIGNAL_WEAK": {
+    "real_anomaly_types": [
+      "weak_signal"
+    ],
+    "description": "Weak radio/Wi-Fi signal: poor RSSI/RSRP and low signal-health scores.",
+    "primary_evidence": [
+      "rssi_dbm",
+      "rsrp_dbm",
+      "signal_health_score",
+      "wifi_signal_score",
+      "cellular_signal_score"
+    ],
+    "augmentation": "Push signal metrics into weak ranges and degrade throughput modestly."
+  },
+  "RC_HANDOVER_INSTABILITY": {
+    "real_anomaly_types": [],
+    "description": "Mobility/handover instability: repeated handovers, low handover success, and latency/jitter spikes.",
+    "primary_evidence": [
+      "handover_event",
+      "handover_count",
+      "ho_success_rate_pct",
+      "cssr_proxy_pct"
+    ],
+    "augmentation": "Synthesize handover events with low success rate and transient latency/jitter impact."
+  },
+  "RC_CQI_MISMATCH": {
+    "real_anomaly_types": [],
+    "description": "CQI/MCS/BLER mismatch: radio quality indicators conflict with selected modulation/coding behavior.",
+    "primary_evidence": [
+      "cqi",
+      "mcs",
+      "sinr_db",
+      "bler_proxy_pct",
+      "bler_mcs_stress"
+    ],
+    "augmentation": "Create inconsistent CQI/MCS/BLER patterns while keeping signal levels plausible."
+  }
+}

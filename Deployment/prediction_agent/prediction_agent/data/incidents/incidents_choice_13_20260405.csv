@@ -1,0 +1,1 @@
+incident_id,start_timestamp,end_timestamp,node_id,incident_type,severity,time_to_detect_sec,duration_sec,samples,max_score

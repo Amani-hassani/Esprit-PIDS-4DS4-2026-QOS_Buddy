@@ -1,0 +1,59 @@
+Run Guide
+
+  Start the backend dashboard first:
+
+  python -m uvicorn backend.api_enhanced:app --host 127.0.0.1 --port 8000
+
+  Open the dashboard at:
+
+  http://127.0.0.1:8000
+
+  Run the monitoring replay in a second terminal:
+
+  python scripts/replay_monitoring.py --interval-seconds 30 --replace-monitoring-file
+
+  What this does:
+
+  - sends monitoring-style QoS batches every 30 seconds
+  - appends live monitoring rows to the backend feed
+  - triggers in-process prediction on each input batch
+  - persists predictions so the dashboard can show new packets
+  - keeps LLM explanation enabled by default
+
+  Useful options:
+
+  - fast demo:
+
+  python scripts/replay_monitoring.py --interval-seconds 0 --max-steps 20 --replace-monitoring-file
+
+  - single node:
+
+  python scripts/replay_monitoring.py --interval-seconds 30 --node-id N1
+
+  - disable LLM:
+
+  python scripts/replay_monitoring.py --interval-seconds 30 --no-generate-llm
+
+  What to watch on the dashboard:
+
+  - Monitoring rows should increase as replay runs
+  - Predictions 7d and the latest packet timestamp should move
+  - the priority queue should refresh with top results
+  - the risk timeline, telemetry, and TTE values should update for the selected node
+  - the LLM brief should appear when explanation generation succeeds
+
+  If the UI looks stale:
+
+  - hard refresh the browser with Ctrl+F5
+  - confirm the backend is on 127.0.0.1:8000
+  - confirm the replay terminal is printing lines like:
+
+  [step 1] rows=1 nodes=1 predictions=1 processed=N1 skipped=0
+
+  Recommended workflow:
+
+  1. Start backend
+  2. Open dashboard
+  3. Start replay script
+  4. Let it run for a few minutes to accumulate varied cases
+  5. Inspect the queue, incident board, timeline, telemetry, and TTE panels

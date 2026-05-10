@@ -1,0 +1,220 @@
+{
+  "transport_delay": {
+    "monitoring": {
+      "latency_ms": 162.0,
+      "jitter_ms": 46.0,
+      "packet_loss_pct": 2.1,
+      "throughput_mbps": 15.0,
+      "bandwidth_util_pct": 71.0,
+      "queue_length": 96.0,
+      "rssi_dbm": -78.0,
+      "sinr_db": 9.0
+    },
+    "diagnostic": {
+      "root_cause": "RC_TRANSPORT_DELAY",
+      "confidence": 0.92,
+      "recommended_action": "ACT_REDUCE_BUFFER_SIZE",
+      "summary": "Queue pressure is driving transport delay.",
+      "evidence": ["queue_length>90", "latency>150", "jitter>40"]
+    }
+  },
+  "sinr_degraded": {
+    "monitoring": {
+      "latency_ms": 84.0,
+      "jitter_ms": 18.0,
+      "packet_loss_pct": 1.2,
+      "throughput_mbps": 22.0,
+      "bandwidth_util_pct": 79.0,
+      "queue_length": 40.0,
+      "rssi_dbm": -83.0,
+      "sinr_db": 3.5
+    },
+    "diagnostic": {
+      "root_cause": "RC_SINR_DEGRADED",
+      "confidence": 0.87,
+      "recommended_action": "ACT_LOADBALANCE_FREQ_BAND",
+      "summary": "Interference is suppressing SINR.",
+      "evidence": ["sinr<4", "throughput collapsing under moderate load"]
+    }
+  },
+  "weak_signal_ticket": {
+    "monitoring": {
+      "latency_ms": 118.0,
+      "jitter_ms": 28.0,
+      "packet_loss_pct": 1.8,
+      "throughput_mbps": 8.0,
+      "bandwidth_util_pct": 52.0,
+      "queue_length": 34.0,
+      "rssi_dbm": -96.0,
+      "sinr_db": 7.0,
+      "signal_health_score": 28.0
+    },
+    "diagnostic": {
+      "root_cause": "RC_WEAK_SIGNAL",
+      "confidence": 0.94,
+      "recommended_action": "ACT_ALERT_COVERAGE_HOLE",
+      "summary": "Weak serving-cell signal requires a NOC coverage ticket.",
+      "evidence": ["rssi<-95", "signal_health_score<30", "sector coverage review required"]
+    }
+  },
+  "weak_signal_indoor_ticket": {
+    "monitoring": {
+      "latency_ms": 104.0,
+      "jitter_ms": 24.0,
+      "packet_loss_pct": 1.4,
+      "throughput_mbps": 7.5,
+      "bandwidth_util_pct": 48.0,
+      "queue_length": 29.0,
+      "rssi_dbm": -94.0,
+      "sinr_db": 6.0,
+      "signal_health_score": 31.0
+    },
+    "diagnostic": {
+      "root_cause": "RC_WEAK_SIGNAL",
+      "confidence": 0.91,
+      "recommended_action": "ACT_ALERT_COVERAGE_HOLE",
+      "summary": "Indoor weak-signal cluster needs a NOC coverage ticket.",
+      "evidence": ["indoor users below signal threshold", "rssi=-94", "coverage ticket required"]
+    }
+  },
+  "weak_signal_edge_ticket": {
+    "monitoring": {
+      "latency_ms": 126.0,
+      "jitter_ms": 35.0,
+      "packet_loss_pct": 2.3,
+      "throughput_mbps": 5.6,
+      "bandwidth_util_pct": 58.0,
+      "queue_length": 42.0,
+      "rssi_dbm": -98.0,
+      "sinr_db": 4.5,
+      "signal_health_score": 24.0
+    },
+    "diagnostic": {
+      "root_cause": "RC_WEAK_SIGNAL",
+      "confidence": 0.95,
+      "recommended_action": "ACT_ALERT_COVERAGE_HOLE",
+      "summary": "Cell-edge weak signal needs antenna/power review.",
+      "evidence": ["cell-edge rssi<-98", "sinr degraded at edge", "NOC review required"]
+    }
+  },
+  "congestion_ticket": {
+    "monitoring": {
+      "latency_ms": 142.0,
+      "jitter_ms": 34.0,
+      "packet_loss_pct": 2.9,
+      "throughput_mbps": 4.2,
+      "bandwidth_util_pct": 96.0,
+      "queue_length": 82.0,
+      "rssi_dbm": -73.0,
+      "sinr_db": 12.0,
+      "active_connections": 188.0
+    },
+    "diagnostic": {
+      "root_cause": "RC_PRB_CONGESTION",
+      "confidence": 0.93,
+      "recommended_action": "ACT_TRIGGER_CA",
+      "summary": "PRB exhaustion needs a carrier aggregation change request.",
+      "evidence": ["bandwidth_util_pct>95", "throughput<5", "active_connections>180"]
+    }
+  },
+  "coverage_planning_ticket": {
+    "monitoring": {
+      "latency_ms": 210.0,
+      "jitter_ms": 66.0,
+      "packet_loss_pct": 6.4,
+      "throughput_mbps": 0.7,
+      "bandwidth_util_pct": 44.0,
+      "queue_length": 38.0,
+      "rssi_dbm": -104.0,
+      "sinr_db": 1.5,
+      "signal_health_score": 12.0
+    },
+    "diagnostic": {
+      "root_cause": "RC_COVERAGE_HOLE",
+      "confidence": 0.96,
+      "recommended_action": "ACT_RECOMMEND_SITE_ADDITION",
+      "summary": "Persistent coverage hole needs a radio planning case.",
+      "evidence": ["rssi<-100", "sinr<2", "throughput<1", "regional planning required"]
+    }
+  },
+  "handover_failure": {
+    "monitoring": {
+      "latency_ms": 92.0,
+      "jitter_ms": 22.0,
+      "packet_loss_pct": 1.1,
+      "throughput_mbps": 19.0,
+      "bandwidth_util_pct": 68.0,
+      "queue_length": 45.0,
+      "rssi_dbm": -78.0,
+      "sinr_db": 9.5,
+      "ho_success_rate_pct": 71.0
+    },
+    "diagnostic": {
+      "root_cause": "RC_HO_FAILURE",
+      "confidence": 0.9,
+      "recommended_action": "ACT_OPTIMIZE_HO_PARAMS",
+      "summary": "Handover failures point to A3/TTT tuning.",
+      "evidence": ["ho_success_rate_pct<75", "handover drops elevated"]
+    }
+  },
+  "cqi_mismatch": {
+    "monitoring": {
+      "latency_ms": 76.0,
+      "jitter_ms": 16.0,
+      "packet_loss_pct": 0.9,
+      "throughput_mbps": 14.0,
+      "bandwidth_util_pct": 63.0,
+      "queue_length": 25.0,
+      "rssi_dbm": -74.0,
+      "sinr_db": 10.5,
+      "cqi": 4.0,
+      "bler_proxy_pct": 14.0
+    },
+    "diagnostic": {
+      "root_cause": "RC_CQI_MISMATCH",
+      "confidence": 0.88,
+      "recommended_action": "ACT_PRIORITY_VOLTE_SCHEDULING",
+      "summary": "CQI/BLER mismatch should prioritize latency-sensitive traffic.",
+      "evidence": ["cqi<=4", "bler_proxy_pct>12"]
+    }
+  },
+  "capacity_overload": {
+    "monitoring": {
+      "latency_ms": 128.0,
+      "jitter_ms": 31.0,
+      "packet_loss_pct": 2.2,
+      "throughput_mbps": 9.0,
+      "bandwidth_util_pct": 91.0,
+      "queue_length": 78.0,
+      "rssi_dbm": -76.0,
+      "sinr_db": 8.0,
+      "active_connections": 225.0
+    },
+    "diagnostic": {
+      "root_cause": "RC_CAPACITY_OVERLOAD",
+      "confidence": 0.91,
+      "recommended_action": "ACT_LOADBALANCE_FREQ_BAND",
+      "summary": "Cell saturation needs load balancing with oversight.",
+      "evidence": ["active_connections>220", "bandwidth_util_pct>90"]
+    }
+  },
+  "healthy_baseline": {
+    "monitoring": {
+      "latency_ms": 38.0,
+      "jitter_ms": 6.0,
+      "packet_loss_pct": 0.0,
+      "throughput_mbps": 68.0,
+      "bandwidth_util_pct": 32.0,
+      "queue_length": 8.0,
+      "rssi_dbm": -66.0,
+      "sinr_db": 19.0
+    },
+    "diagnostic": {
+      "root_cause": "RC_NONE",
+      "confidence": 0.82,
+      "recommended_action": "ACT_NO_OP",
+      "summary": "Healthy baseline sample.",
+      "evidence": ["latency normal", "throughput healthy", "no active impairment"]
+    }
+  }
+}

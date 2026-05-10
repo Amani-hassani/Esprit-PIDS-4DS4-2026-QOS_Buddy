@@ -1,0 +1,63 @@
+.git
+.git/**
+
+# Node / Next.js
+shell/node_modules
+shell/node_modules/**
+shell/.next
+shell/.next/**
+shell/out
+shell/out/**
+shell/.turbo
+shell/.turbo/**
+shell/.vercel
+shell/.vercel/**
+
+# Generic node artifacts (defensive; keep build context small)
+**/node_modules
+**/node_modules/**
+**/.next
+**/.next/**
+**/dist
+**/dist/**
+**/build
+**/build/**
+**/.cache
+**/.cache/**
+
+# Python
+**/__pycache__
+**/__pycache__/**
+**/*.pyc
+**/.pytest_cache
+**/.pytest_cache/**
+**/.mypy_cache
+**/.mypy_cache/**
+**/.ruff_cache
+**/.ruff_cache/**
+**/.venv
+**/.venv/**
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Logs & data
+**/*.log
+**/*.sqlite
+**/*.db
+redis-data
+postgres-data
+qdrant-data
+ollama-data
+rag-data
+rag-cache
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode
+.vscode/**
+.idea
+.idea/**

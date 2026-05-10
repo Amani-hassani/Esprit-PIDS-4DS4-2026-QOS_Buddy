@@ -1,0 +1,31 @@
+PREDICTION CONTEXT:
+- Node: {node_id}
+- Timestamp: {timestamp}
+- Capacity Exhaustion ETA: {capacity_exhaustion_eta_min} minutes
+- Prediction Confidence: {max_risk_probability:.0%}
+- Inferred Origin: {layer_hint}
+
+ENSEMBLE RISK SCORES (0-1, higher = worse):
+- Call Drop Risk: {call_drop_risk:.1%}
+- Latency Breach Risk: {latency_breach_risk:.1%}
+- Throughput Risk: {throughput_risk:.1%}
+- Jitter Risk: {jitter_risk:.1%}
+- Congestion Risk: {congestion_risk:.1%}
+- MOS Risk: {mos_risk:.1%}
+
+TOP SHAP DRIVERS (sorted by absolute impact):
+{shap_features_formatted}
+Format per row: [Feature Name] -> {{SHAP value:+.4f}} (direction)
+Example: latency_volatility -> +0.3156 (increases_risk) -- used in call_drop_risk model
+
+HISTORICAL PRECEDENT (Top 3 Similar Incidents):
+{incidents_formatted}
+Format per row: [Type] | Severity: [sev] | Similarity: {{score:.0%}} | Summary: [brief]
+Example: HANDOVER_INSTABILITY | Severity: high | Similarity: 87% | Summary: Weak SINR cascaded to call drops; resolved by clearing neighbor interference
+
+DECISION CONTEXT:
+- Severity Band: {severity_band}
+- Margin to Critical: {margin_to_critical:+.4f}
+- Primary Risk Driver: {primary_metric}
+
+Synthesize the above into a surgical 3-4 sentence NOC alert following the system prompt structure.

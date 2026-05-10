@@ -1,0 +1,134 @@
+{
+  "benchmark_type": "8-root-cause deployment contract benchmark",
+  "baseline_report_scope": "Original report validated 2 real-data classes; this notebook extends to 8 deployment contracts with explicit augmentation provenance.",
+  "root_causes": [
+    "RC_CAPACITY_OVERLOAD",
+    "RC_TRANSPORT_DELAY",
+    "RC_JITTER_INSTABILITY",
+    "RC_PACKET_LOSS",
+    "RC_RETRANSMISSION",
+    "RC_RADIO_SIGNAL_WEAK",
+    "RC_HANDOVER_INSTABILITY",
+    "RC_CQI_MISMATCH"
+  ],
+  "feature_count": 104,
+  "window_size": 10,
+  "target_counts_per_split": {
+    "train": 320,
+    "val": 80,
+    "test": 80
+  },
+  "random_forest": {
+    "artifact": "random_forest_8rc.joblib",
+    "train_time_sec": 8.821318626403809,
+    "metrics": [
+      {
+        "split": "train",
+        "accuracy": 0.999609375,
+        "balanced_accuracy": 0.999609375,
+        "macro_f1": 0.9996093740463233,
+        "weighted_f1": 0.9996093740463234,
+        "macro_precision": 0.9996105919003115,
+        "macro_recall": 0.999609375
+      },
+      {
+        "split": "val",
+        "accuracy": 0.9890625,
+        "balanced_accuracy": 0.9890625,
+        "macro_f1": 0.9890210718562168,
+        "weighted_f1": 0.9890210718562166,
+        "macro_precision": 0.9891965898825654,
+        "macro_recall": 0.9890625
+      },
+      {
+        "split": "test",
+        "accuracy": 0.9296875,
+        "balanced_accuracy": 0.9296875,
+        "macro_f1": 0.9278430999314697,
+        "weighted_f1": 0.9278430999314697,
+        "macro_precision": 0.9398440907016531,
+        "macro_recall": 0.9296875
+      }
+    ]
+  },
+  "gru_autoencoder": {
+    "artifact": "gru_autoencoder_8rc.pt",
+    "numpy_artifact": "gru_autoencoder_numpy_8rc.npz",
+    "best_epoch": 18,
+    "best_val_loss": 2.927495686177215,
+    "train_time_sec": 13.997803449630737
+  },
+  "prototype_retrieval": {
+    "backend": "sklearn_exact_fallback",
+    "production_backend": "faiss.IndexFlatL2",
+    "production_space": "scaled_gru_latent",
+    "offline_benchmark_vector": "GRU latent concatenated with weighted Random Forest posterior",
+    "rf_probability_vector_weight": 8.0,
+    "faiss_index_artifact": "faiss_prototype_index_8rc.faiss",
+    "fallback_artifact": "prototype_vectors_8rc.npz",
+    "metrics": [
+      {
+        "split": "train",
+        "backend": "sklearn_exact_fallback",
+        "accuracy": 1.0,
+        "balanced_accuracy": 1.0,
+        "macro_f1": 1.0,
+        "weighted_f1": 1.0,
+        "top3_hit_rate": 1.0,
+        "top5_hit_rate": 1.0,
+        "search_time_sec": 1.0142979621887207
+      },
+      {
+        "split": "val",
+        "backend": "sklearn_exact_fallback",
+        "accuracy": 1.0,
+        "balanced_accuracy": 1.0,
+        "macro_f1": 1.0,
+        "weighted_f1": 1.0,
+        "top3_hit_rate": 1.0,
+        "top5_hit_rate": 1.0,
+        "search_time_sec": 0.013523340225219727
+      },
+      {
+        "split": "test",
+        "backend": "sklearn_exact_fallback",
+        "accuracy": 0.8165322580645161,
+        "balanced_accuracy": 0.8123371237773568,
+        "macro_f1": 0.80456171989444,
+        "weighted_f1": 0.7990469156703842,
+        "top3_hit_rate": 0.8709677419354839,
+        "top5_hit_rate": 0.8850806451612904,
+        "search_time_sec": 0.014128923416137695
+      }
+    ]
+  },
+  "deployment_runtime": {
+    "api": "FastAPI",
+    "dashboard": "deploy/app/static",
+    "docker_image": "qos-buddy-diagnostic:8rc-faiss",
+    "dynamic_ingestion": true,
+    "separate_agent_context_fusion": true,
+    "data_quality_confidence_penalty": true,
+    "memory_guided_autoencoder_reconstruction": true,
+    "radio_transport_discriminator": true,
+    "multi_branch_fusion": true,
+    "optimization_outbox": true,
+    "llm_explanations": true,
+    "protocol_pipeline": [
+      "context_fusion",
+      "data_quality_gate",
+      "feature_builder",
+      "sequence_builder",
+      "memory_guided_autoencoder",
+      "prototype_diagnosis_faiss",
+      "random_forest_classifier",
+      "radio_transport_discriminator",
+      "fusion_confidence",
+      "llm_causal_chain",
+      "optimization_handoff"
+    ],
+    "validated_smoke_test": "python deploy\\tests\\smoke_test.py http://127.0.0.1:8000",
+    "validated_faiss_vectors": 1879
+  },
+  "artifact_directory": "C:\\Users\\amani\\OneDrive\\Desktop\\Diagnostic agent\\Diagnostic agent notebooks+report\\outputs_8rc"
+}

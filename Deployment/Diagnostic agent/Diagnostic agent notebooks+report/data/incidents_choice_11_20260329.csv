@@ -1,0 +1,4 @@
+incident_id,start_timestamp,end_timestamp,node_id,incident_type,severity,time_to_detect_sec,duration_sec,samples,max_score
+INC_1774819311_high_retra,2026-03-29T22:21:51.772682,2026-03-29T22:22:30.427897,N1,high_retransmission,medium,30,38,2,0.418
+INC_1774819668_jitter_deg,2026-03-29T22:27:48.304368,2026-03-29T22:27:48.304368,N1,jitter_degradation,low,30,0,1,0.248
+INC_1774820003_latency_de,2026-03-29T22:33:23.885267,2026-03-29T22:33:23.885267,N1,latency_degradation,low,30,0,1,0.002

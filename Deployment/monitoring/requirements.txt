@@ -1,0 +1,11 @@
+psutil==6.0.0
+numpy==1.24.3
+pandas==2.0.2
+PyYAML==6.0.1
+selenium==4.15.2
+webdriver-manager==4.0.1
+
+# iperf3 is optional but required for scenario testing:
+# - Windows: Download from https://iperf.fr/iperf-download.php or use Windows package manager
+# - macOS: brew install iperf3
+# - Linux: sudo apt-get install iperf3 (Ubuntu/Debian) or equivalent for your distro

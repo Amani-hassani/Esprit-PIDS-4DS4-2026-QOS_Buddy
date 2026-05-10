@@ -1,0 +1,48 @@
+{
+  "root_cause": "RC_CAPACITY_OVERLOAD",
+  "confidence": 0.439274202253186,
+  "rf_top3": [
+    {
+      "root_cause": "RC_CAPACITY_OVERLOAD",
+      "probability": 0.439274202253186
+    },
+    {
+      "root_cause": "RC_CQI_MISMATCH",
+      "probability": 0.2361613875369433
+    },
+    {
+      "root_cause": "RC_RETRANSMISSION",
+      "probability": 0.12372016578486114
+    }
+  ],
+  "contract_description": "Capacity or congestion pressure: low throughput, high queueing, high utilization, and connection pressure.",
+  "primary_evidence_fields": [
+    "throughput_mbps",
+    "bandwidth_util_pct",
+    "queue_length",
+    "active_connections"
+  ],
+  "prototype_neighbors": [
+    {
+      "root_cause": "RC_CAPACITY_OVERLOAD",
+      "distance": 3.7872531414031982
+    },
+    {
+      "root_cause": "RC_CAPACITY_OVERLOAD",
+      "distance": 3.8391504287719727
+    },
+    {
+      "root_cause": "RC_CAPACITY_OVERLOAD",
+      "distance": 3.918948173522949
+    },
+    {
+      "root_cause": "RC_CAPACITY_OVERLOAD",
+      "distance": 3.938296318054199
+    },
+    {
+      "root_cause": "RC_CAPACITY_OVERLOAD",
+      "distance": 3.9780945777893066
+    }
+  ],
+  "prototype_backend": "sklearn_exact_fallback"
+}

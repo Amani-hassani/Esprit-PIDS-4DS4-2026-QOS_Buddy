@@ -1,0 +1,9 @@
+**/__pycache__/
+**/*.pyc
+**/*.pyc.*
+data/
+*.ipynb
+*.pdf
+*.md
+outputs_8rc/gru_autoencoder_8rc.pt
+outputs_8rc/prototype_latents_8rc.npz

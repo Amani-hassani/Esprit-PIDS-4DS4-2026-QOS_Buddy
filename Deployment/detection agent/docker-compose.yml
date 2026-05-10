@@ -1,0 +1,72 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: qos_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/models:/app/models:ro
+      - ./backend/data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - DATABASE_URL=sqlite:///./data/app.db
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - MODEL_PATH=./models/agent_detection.keras
+      - SCALER_PATH=./models/scaler.pkl
+      - THRESHOLD_PATH=./models/threshold.pkl
+    depends_on:
+      - mlflow
+    networks:
+      - qos_network
+
+  frontend:
+    build:
+      context: ./frontend/static
+      dockerfile: ../Dockerfile
+    container_name: qos_frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - qos_network
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.8.0
+    container_name: qos_mlflow
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend/mlflow:/mlflow
+    command: mlflow server --host 0.0.0.0 --port 5000 --default-artifact-root /mlflow/artifacts
+    networks:
+      - qos_network
+
+  nginx:
+    image: nginx:alpine
+    container_name: qos_nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - qos_network
+
+networks:
+  qos_network:
+    name: qos_buddy_network
+    driver: bridge
+
+volumes:
+  mlflow_data:
