@@ -1,125 +1,237 @@
-# QOS-Buddy — First-Boot Run-book
+# QoS Buddy Runbook
 
-A single laptop, no mocks. The path is:
+This runbook describes how to operate the SSD copy of QoS Buddy from `E:\PI-Qos Buddy`.
 
-```
-monitoring agent  →  network_stream.jsonl  →  monitoring-bridge  →  Redis Streams
-                                                                         │
-                                                                         ▼
-                                                                     gateway
-                                                                         │
-                                                                         ▼
-                                                                Next.js dashboard
-```
+## 1. Prerequisites
 
-## 1 · Start the live data source
-
-Open a terminal in the project root and start the existing monitoring agent so
-it begins writing real samples to `monitoring/network_stream.jsonl`.
+- Docker Desktop is installed and running in Linux container mode.
+- Python 3.10 or newer is available on PATH.
+- Ollama is installed and running on the host.
+- The local model is available:
 
 ```powershell
-# from "PI-integration - Copy"
-cd monitoring
-
-# Quick start (host metrics, ping/iperf3 against a public target):
-python qos_buddy_collector.py --duration 0 --interval 5
-
-# With a router gateway (Huawei 4G/5G example):
-python qos_buddy_collector.py --router-gateway 192.168.8.1 --duration 0
+ollama pull qwen2.5
 ```
 
-`--duration 0` means "run until interrupted". Leave this terminal open during
-the demo. The bridge tails the JSONL file in real time.
+## 2. Prepare Local Environment
 
-## 2 · Bring up the stack
+From the SSD project root:
 
 ```powershell
-cd qos-buddy
-docker compose up -d
+cd .\qos-buddy
+Copy-Item .env.example .env
 ```
 
-First boot pulls and builds Docker images. LLM calls use the host computer's
-local Ollama service at `localhost:11434`, exposed to containers as
-`host.docker.internal:11434`. Make sure `qwen2.5:latest` is installed locally.
+Edit `.env` only on the local machine. Never commit `.env`.
 
-Watch the live data flow:
+For normal live operation:
+
+```text
+QOS_MONITORING_MODE=tail
+```
+
+## 3. Start The Full Platform
+
+Recommended start command from the SSD project root:
 
 ```powershell
-docker compose logs -f monitoring-bridge gateway
+Set-ExecutionPolicy -Scope Process Bypass
+.\START-HERE.ps1
 ```
 
-You should see lines like:
+This starts:
 
+- The host monitoring producer from `monitoring\qos_buddy_collector.py`.
+- The Docker Compose stack in `qos-buddy`.
+
+Open the dashboard:
+
+```text
+http://localhost:3000
 ```
-qos-monitoring-bridge | bridge starting jsonl=/data/network_stream.jsonl
-qos-monitoring-bridge | redis bus connected url=redis://redis:6379/0
-qos-gateway           | gateway up streams=6
-```
 
-## 3 · Open the dashboard
+## 4. Start Pieces Manually
 
-| Service           | URL                                                      |
-| ----------------- | -------------------------------------------------------- |
-| Dashboard         | http://localhost:3000                                    |
-| Gateway health    | http://localhost:8080/healthz                            |
-| Keycloak admin    | http://localhost:8081 (admin / admin)                    |
-| Keycloak account  | http://localhost:8081/realms/qos-buddy/account            |
-
-## 4 · Demo accounts
-
-The Keycloak realm is imported on first boot from
-`infra/keycloak/qos-buddy-realm.json`.
-
-| Username    | Password | Role             | Default theme |
-| ----------- | -------- | ---------------- | ------------- |
-| `noc-exec`  | `demo`   | NOC Executive    | Light         |
-| `engineer`  | `demo`   | AI Engineer      | Dark          |
-| `admin-noc` | `demo`   | Site Admin       | Dark          |
-
-Sign-in goes through Keycloak — the dashboard hands you off, you authenticate,
-and you come back with a real token. The role badge in the topbar shows what
-the gateway authorized.
-
-## 5 · Verify the live path
-
-Once you're signed in:
-
-1. The connection pill in the topbar reads **Live**.
-2. The four KPI tiles show real numbers from the monitoring agent (latency,
-   delay variation, packet loss, throughput) and update every few seconds.
-3. The chart fills with a rolling window of samples.
-4. The pipeline diagram lights "Observe" because metrics are flowing.
-
-If you see the empty state "Waiting for live samples…", the monitoring agent
-isn't producing yet — go back to step 1 and confirm it's writing to
-`monitoring/network_stream.jsonl`.
-
-## 6 · Tearing down
+Start only the host monitoring producer:
 
 ```powershell
-docker compose down              # keep volumes
-docker compose down -v           # remove all Docker data (Keycloak users, DBs, traces, etc.)
+cd E:\PI-Qos Buddy\qos-buddy
+.\start.ps1 -NoDocker
 ```
 
-## 7 · Common issues
+Start only Docker:
 
-| Symptom                                  | Fix                                                                                   |
-| ---------------------------------------- | ------------------------------------------------------------------------------------- |
-| LLM summaries are unavailable            | Start local Ollama on the host and confirm `ollama list` shows `qwen2.5:latest`.      |
-| Keycloak shows error after login         | The redirect URI in `qos-buddy-realm.json` must match the dashboard origin.            |
-| Dashboard shows "Sign in required" loop  | Browser blocked third-party cookies. Use the same hostname (localhost) for both apps.  |
-| KPI tiles stay empty                     | Monitoring agent isn't running, or the bridge can't see `network_stream.jsonl`.        |
+```powershell
+cd E:\PI-Qos Buddy\qos-buddy
+.\start.ps1 -NoProducer
+```
 
-## 8 · What is not yet wired (W2 scope)
+Start Docker Compose directly:
 
-These pages currently show a "wired in the next iteration" stub. The data
-backbone is live; the views are next:
+```powershell
+cd E:\PI-Qos Buddy\qos-buddy
+docker compose up -d --build
+```
 
-- Detection & Forecast (live feature view + forecast chart)
-- Diagnostic (similar-incident map + lesson library)
-- Optimization (action queue + safety checks + autonomy sliders)
-- Reporting (PDF + audio brief + embedded engineer view)
-- Audit Log (hash-chained ledger)
-- Scenario Lab (chaos injector)
+## 5. Login
 
-The Command Center page is real and live.
+Use the branded Keycloak login page from the dashboard.
+
+| User | Password | Role | Use |
+| --- | --- | --- | --- |
+| `noc-exec` | `demo` | NOC Executive | Executive overview and reports |
+| `noc-engineer` | `demo` | NOC Executive | NOC workflows and What-If |
+| `engineer` | `demo` | AI Engineer | Model and technical views |
+| `admin-noc` | `demo` | Site Admin | Full administration |
+
+## 6. Service URLs
+
+| Service | URL |
+| --- | --- |
+| Dashboard | `http://localhost:3000` |
+| Gateway API | `http://localhost:8080` |
+| Keycloak | `http://localhost:8081` |
+| RAG service | `http://localhost:8088` |
+| Reporting service | `http://localhost:8089` |
+| Jaeger tracing | `http://localhost:16686` |
+| Ollama host API | `http://localhost:11434` |
+
+## 7. Validate Health
+
+From the SSD project root:
+
+```powershell
+.\CHECK-SSD-HEALTH.ps1
+```
+
+Expected checks:
+
+- Docker Compose services are up.
+- Prediction health reports models ready.
+- ChromaDB includes the `qos_incidents` collection.
+- Optimization MLflow reports runs/traces/artifacts.
+- Recent bridge logs show normal event flow.
+
+## 8. Day-To-Day Operations
+
+Show running containers:
+
+```powershell
+cd E:\PI-Qos Buddy\qos-buddy
+docker compose ps
+```
+
+Tail dashboard and gateway logs:
+
+```powershell
+docker compose logs -f shell gateway
+```
+
+Tail pipeline logs:
+
+```powershell
+docker compose logs -f monitoring detection-bridge diagnostic-bridge prediction-bridge optimization-bridge
+```
+
+Restart one service:
+
+```powershell
+docker compose restart gateway
+```
+
+Rebuild one service after code changes:
+
+```powershell
+docker compose up -d --build gateway
+```
+
+Stop everything:
+
+```powershell
+.\stop.ps1
+```
+
+Stop and intentionally remove runtime volumes:
+
+```powershell
+.\stop.ps1 -RemoveVolumes
+```
+
+## 9. Live Monitoring
+
+The live collector runs on the host because it reads host network/system signals. The producer log is:
+
+```text
+qos-buddy\logs\producer.log
+```
+
+The Docker `monitoring` service tails:
+
+```text
+monitoring\network_stream.jsonl
+```
+
+If dashboard KPIs stop changing:
+
+1. Check that the producer process is running.
+2. Tail `qos-buddy\logs\producer.log`.
+3. Check `docker compose logs --tail 50 monitoring gateway`.
+4. Restart only the producer or monitoring bridge if needed.
+
+## 10. RAG And Chatbot
+
+The active vector store is ChromaDB. Qdrant is not required by this stack.
+
+The chatbot can answer about:
+
+- Live network state.
+- Recent incidents and alerts.
+- Diagnostics and likely causes.
+- Optimization actions.
+- Reports and post-mortem lessons.
+- Basic explanations of network metrics.
+
+The chatbot should stay scoped to QoS Buddy and network operations.
+
+## 11. Jira
+
+Jira is optional and disabled by default.
+
+To enable it:
+
+1. Set `QOS_JIRA_ENABLED=true` in `.env`.
+2. Fill `JIRA_URL`, `JIRA_EMAIL`, `JIRA_TOKEN`, `JIRA_PROJECT_KEY`, and `JIRA_ISSUE_TYPE`.
+3. Restart only affected services:
+
+```powershell
+docker compose up -d --build gateway synthesis optimization shell
+```
+
+Never commit Jira tokens.
+
+## 12. Common Issues
+
+If login fails:
+
+- Confirm `qos-keycloak` is running.
+- Open `http://localhost:8081`.
+- Confirm the `qos-buddy` realm exists.
+- If the realm was changed badly during testing, stop with `-RemoveVolumes` only if wiping local Keycloak state is acceptable.
+
+If AI answers are slow:
+
+- Confirm Ollama is running.
+- Confirm `ollama list` shows `qwen2.5:latest`.
+- Check `docker compose logs --tail 50 rag reporting diagnostic-bridge synthesis`.
+
+If prediction is unhealthy:
+
+- Run `.\CHECK-SSD-HEALTH.ps1`.
+- Check `docker compose logs --tail 80 prediction prediction-bridge`.
+- Confirm prediction models exist under `prediction_agent\prediction_agent\models\saved`.
+
+If the PC system drive is low on space:
+
+- Keep the project under the SSD path.
+- Do not move Docker runtime folders into the system drive.
+- Avoid committing or copying `docker-data`, logs, build caches, JSONL streams, or MLflow/Chroma runtime state into Git.
