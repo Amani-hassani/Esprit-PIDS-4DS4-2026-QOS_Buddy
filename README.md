@@ -90,3 +90,17 @@ From the project root:
 ```powershell
 Set-ExecutionPolicy -Scope Process Bypass
 .\START-HERE.ps1
+
+|--> Then open:
+http://localhost:3000
+-Default Services : 
+Dashboard: http://localhost:3000
+Gateway API: http://localhost:8080
+Keycloak: http://localhost:8081
+RAG Service: http://localhost:8088
+```
+
+### Acknowledgments
+Esprit School of Engineering for the academic framework and project supervision.
+The project team members for the design and implementation of the multi-agent architecture.
+Open-source technologies and communities supporting AI, monitoring, and full-stack development.
