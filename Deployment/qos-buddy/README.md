@@ -1,82 +1,64 @@
-# QoS Buddy - Qosmic NOC Command Center
+# QoS Buddy Integrated Stack
 
-QoS Buddy is an AI-assisted network assurance platform that connects live monitoring, anomaly detection, prediction, root-cause diagnosis, RAG memory, optimization recommendations, auditability, and executive reporting into one local Docker Compose stack.
+This folder contains the Docker Compose application that connects the QoS Buddy agents into one local network operations platform.
 
-The platform is built for NOC teams, AI/network engineers, and executives who need a clear answer to three questions:
+The stack is designed for a local demo environment. It runs the dashboard, gateway, authentication, event bus, RAG memory, reporting service, and bridges to the monitoring, detection, prediction, diagnostic, and optimization agents.
 
-- What is happening on the network right now?
-- What is likely to happen next?
-- What should we do, and what business impact does it avoid?
+## Capabilities
 
-## Current Capabilities
+- Role-based dashboard for NOC, engineering, executive, and admin views.
+- Live monitoring from the host collector.
+- Anomaly detection and QoS risk prediction.
+- Root-cause diagnostics with model evidence.
+- Policy-aware optimization recommendations and approvals.
+- ChromaDB-backed incident and operational memory.
+- Local Ollama integration for assistant, explanation, and reporting features.
+- Executive and operational reporting.
+- Audit, tracing, and troubleshooting surfaces.
 
-- Branded Keycloak login with role-based access control.
-- Live host network monitoring through `monitoring\qos_buddy_collector.py`.
-- Dashboard updates on a 10 second live cadence.
-- Detection and prediction agents with MLflow-backed operational tracking.
-- Diagnostic agent with plain-language root-cause summaries.
-- ChromaDB RAG memory for incidents, live network context, reports, diagnostics, and operator lessons.
-- Floating chatbot powered by local Ollama `qwen2.5:latest`.
-- Optimization agent with policy gates, pending approvals, blocked actions, accepted actions, MLflow traces, and optional Jira ticketing.
-- Reporting service for business-oriented PDF reports, post-mortems, KPI trends, MTTD, MTTR, service impact, and recommendations.
-- Audit log for operational accountability.
-- What-If simulation view for NOC and engineering workflows.
-
-## Repository Layout
+## Layout
 
 ```text
 qos-buddy/
-  agents-bridge/      Docker adapters for existing AI agents
-  bus/                Redis stream bridges and event pipeline workers
-  contracts/          Shared schemas and event contracts
-  gateway/            FastAPI backend, RBAC, APIs, live ingest, chatbot routing
-  infra/              Keycloak realm, Postgres init, validation helpers
-  rag-service/        ChromaDB-backed RAG service
-  reporting-service/  Executive reporting and post-mortem service
-  shell/              Next.js dashboard UI
-  synthesis/          Incident synthesis, recommendations, Jira/audit integration
-  docker-compose.yml  Local SSD deployment stack
+|-- agents-bridge/       Docker adapters for the individual AI agents
+|-- bus/                 Redis stream bridges and event pipeline workers
+|-- contracts/           Shared event contracts and schemas
+|-- gateway/             FastAPI gateway, RBAC, APIs, chatbot routing
+|-- infra/               Keycloak realm, Postgres init, validation helpers
+|-- rag-service/         ChromaDB-backed RAG service
+|-- reporting-service/   Report and post-mortem service
+|-- shell/               Next.js dashboard
+|-- synthesis/           Incident synthesis and recommendation narratives
+|-- docker-compose.yml   Local deployment stack
+|-- start.ps1            Windows launcher for this folder
+`-- stop.ps1             Windows shutdown helper
 ```
 
-Adjacent project folders provide the actual agent implementations and data sources:
+Adjacent folders under `Deployment/` contain the individual agent implementations and packaged artifacts.
 
-```text
-monitoring/
-detection agent/
-Diagnostic agent/
-optimization agent/
-prediction_agent/
+## Requirements
+
+- Windows 10 or 11.
+- Docker Desktop running in Linux container mode.
+- PowerShell.
+- Python 3.10 or newer.
+- Ollama running on the host.
+- Local model:
+
+```powershell
+ollama pull qwen2.5
 ```
 
-## Architecture
+## Start
 
-The host-side monitoring collector writes live network samples to JSONL. The Docker `monitoring` bridge tails that file and publishes normalized events to Redis Streams. Detection, prediction, diagnostic, optimization, synthesis, reporting, RAG, gateway, and dashboard services consume and enrich those events.
-
-Key runtime services:
-
-- `qos-shell`: dashboard at `http://localhost:3000`
-- `qos-gateway`: API and websocket gateway at `http://localhost:8080`
-- `qos-keycloak`: authentication at `http://localhost:8081`
-- `qos-rag`: Chroma-backed RAG API at `http://localhost:8088`
-- `qos-reporting`: reporting API at `http://localhost:8089`
-- `qos-jaeger`: traces at `http://localhost:16686`
-
-Ollama runs on the host and is reached by containers through:
-
-```text
-http://host.docker.internal:11434
-```
-
-## Quick Start
-
-From the SSD project root:
+Recommended path from `Deployment/`:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process Bypass
 .\START-HERE.ps1
 ```
 
-Or from this folder:
+Alternative path from this folder:
 
 ```powershell
 Copy-Item .env.example .env
@@ -89,20 +71,31 @@ Open:
 http://localhost:3000
 ```
 
-## Login Users
+## Local Services
 
-The Keycloak realm imports these demo users on a fresh Keycloak data volume:
+| Service | URL |
+| --- | --- |
+| Dashboard | `http://localhost:3000` |
+| Gateway API | `http://localhost:8080` |
+| Keycloak | `http://localhost:8081` |
+| RAG Service | `http://localhost:8088` |
+| Reporting Service | `http://localhost:8089` |
+| Jaeger | `http://localhost:16686` |
+
+## Demo Users
 
 | User | Password | Role |
 | --- | --- | --- |
 | `noc-exec` | `demo` | NOC Executive |
-| `noc-engineer` | `demo` | NOC Executive |
+| `noc-engineer` | `demo` | NOC Engineer |
 | `engineer` | `demo` | AI Engineer |
 | `admin-noc` | `demo` | Site Admin |
 
+These users are for local demo review only.
+
 ## Configuration
 
-Copy `.env.example` to `.env` and keep `.env` local. Do not commit real credentials.
+Copy `.env.example` to `.env` for local overrides. Keep real values local.
 
 Important variables:
 
@@ -125,60 +118,20 @@ For normal live operation, keep:
 QOS_MONITORING_MODE=tail
 ```
 
-Use replay mode only for intentional offline backfill or demo playback.
+## Health Checks
 
-## RAG And Vector Memory
-
-The active stack uses ChromaDB:
-
-- Prediction incident memory: `prediction_agent\prediction_agent\rag\chroma_db`
-- Runtime RAG memory: `qos-buddy\docker-data\rag-data`
-- Default incident collection: `qos_incidents`
-- Live operational memory collection: `qos_live_memory`
-
-Qdrant is not configured in the current SSD Compose stack and is not required for the active application.
-
-## Local AI Model
-
-Install Ollama on the host and pull the expected model:
-
-```powershell
-ollama pull qwen2.5
-```
-
-The stack expects:
-
-```text
-qwen2.5:latest
-```
-
-LLM-assisted diagnostics, chatbot answers, optimization wording, and report narratives use this local model.
-
-## Health Check
-
-From the SSD project root:
+From `Deployment/`:
 
 ```powershell
 .\CHECK-SSD-HEALTH.ps1
 ```
 
-From this folder, useful checks are:
+From this folder:
 
 ```powershell
 docker compose ps
 docker compose logs --tail 50 gateway shell rag reporting
 docker compose logs --tail 50 monitoring detection-bridge diagnostic-bridge prediction-bridge optimization-bridge
-```
-
-## Rebuild Affected Services
-
-After code changes, rebuild only the services that changed. Examples:
-
-```powershell
-docker compose up -d --build shell
-docker compose up -d --build gateway
-docker compose up -d --build reporting
-docker compose up -d --build rag gateway shell
 ```
 
 ## Stop
@@ -187,7 +140,7 @@ docker compose up -d --build rag gateway shell
 .\stop.ps1
 ```
 
-To intentionally wipe runtime volumes:
+To intentionally wipe runtime state:
 
 ```powershell
 .\stop.ps1 -RemoveVolumes
@@ -195,6 +148,7 @@ To intentionally wipe runtime volumes:
 
 ## Security Notes
 
-- Real `.env` files and Jira tokens must remain local.
-- Docker runtime state lives under `qos-buddy\docker-data` and should not be pushed to Git.
-- The GitHub deployment export intentionally excludes runtime databases, Chroma/MLflow state generated by containers, logs, caches, and telemetry streams.
+- Do not commit real `.env` files.
+- Do not commit Jira tokens or other private credentials.
+- Docker runtime data under `docker-data/` should stay local.
+- Demo users and placeholder credentials exist only for the local evaluation environment.

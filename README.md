@@ -1,68 +1,124 @@
 # QoS Buddy
 
-## Overview
-QoS Buddy is an AI-powered multi-agent platform for network Quality of Service monitoring, diagnosis, prediction, optimization, and reporting.
+QoS Buddy is an AI-assisted network quality-of-service platform. We built it as a multi-agent system that monitors live network conditions, detects anomalies, predicts service risk, diagnoses likely root causes, recommends remediation actions, and produces operational reports.
 
-This project was developed as part of the **PIDS – 4DS4 Engineering Program** at **Esprit School of Engineering** (Academic Year **2025–2026**).
+This repository was developed for the PIDS 4DS4 engineering program at Esprit School of Engineering during the 2025-2026 academic year. The project is organized as a runnable local demo plus the individual agent workspaces used to build and validate the system.
 
-QoS Buddy helps network operations teams monitor live QoS signals, detect abnormal behavior, forecast service degradation, diagnose likely root causes, recommend remediation actions, and preserve operational knowledge through incident memory and AI-assisted reporting.
+## What We Built
 
-## Features
-- Real-time collection of network and system QoS indicators such as latency, jitter, packet loss, throughput, CPU usage, active connections, and Wi-Fi signal quality
-- Live monitoring dashboard with role-based access for operators, engineers, executives, and administrators
-- Anomaly detection for abnormal network behavior
-- Prediction and forecasting of QoS degradation and potential service breaches
-- Diagnostic agent for root-cause analysis of incidents using AI and historical similarity retrieval
-- Optimization engine for remediation recommendations and policy-aware decision support
-- Incident memory and RAG support using ChromaDB
-- AI chatbot for questions related to live network status, incidents, diagnostics, and reports
-- Executive and operational reporting with business-oriented insights, KPI trends, MTTD, MTTR, and post-mortem support
-- Authentication and authorization using Keycloak
+QoS Buddy connects several specialized agents into one network operations workflow:
 
-## Tech Stack
+- Monitoring Agent: collects host, Wi-Fi, router, and QoS telemetry.
+- Detection Agent: identifies abnormal network behavior from live metrics.
+- Prediction Agent: forecasts QoS degradation and service breach risk.
+- Diagnostic Agent: infers likely root causes using model evidence and historical similarity.
+- Optimization Agent: recommends remediation actions with policy checks and approvals.
+- Reporting Agent: generates operational and executive summaries.
+- RAG memory layer: stores incidents, reports, lessons, and context for assistant answers.
+- Dashboard and Gateway: expose the user interface, APIs, role-based access, chatbot, and live views.
 
-### Frontend
-- Next.js
-- TypeScript
-- Dashboard UI
+## Repository Guide
 
-### Backend
-- Python
-- FastAPI
-- Redis
-- PostgreSQL
-- Docker
-- Docker Compose
-- MLflow
-- ChromaDB
-- Keycloak
-- Ollama
-- Qwen2.5
+The main runnable stack is under `Deployment/`. The top-level folders provide navigation for the portfolio version of the repository.
 
-### AI / Data / Monitoring
-- Scikit-learn
-- XGBoost
-- Random Forest
-- GRU
-- LSTM
-- Autoencoders
-- FAISS
-- Time-Series Analysis
-- iperf3
+```text
+.
+|-- Deployment/                 Runnable integrated demo and agent workspaces
+|-- docs/                       Project guide, architecture, runbook, and artifact notes
+|-- notebooks/                  Curated notebooks for model evaluation and reporting
+|-- agents/                     Portfolio navigation for agent responsibilities
+|-- shared/                     Placeholder for shared schemas, constants, and utilities
+|-- data/                       Placeholder for small public samples
+|-- scripts/                    Placeholder for repository-level helper scripts
+`-- README.md                   Project overview for GitHub visitors
+```
 
-## Architecture
-QoS Buddy follows a multi-agent architecture where each component plays a dedicated role in the QoS assurance pipeline:
+For a first review, start with:
 
-- **Monitoring Agent**: collects and structures live telemetry from the host and network environment
-- **Detection Agent**: identifies anomalies from real-time QoS metrics
-- **Prediction Agent**: forecasts future QoS degradation and risk of breach
-- **Diagnostic Agent**: analyzes incidents and infers likely root causes
-- **Optimization Agent**: recommends remediation actions with policy-aware decision support
-- - **Reporting Agent**: generates executive and operational reports
-- **RAG / Memory Layer**: stores incidents, reports, and operational knowledge using ChromaDB
-- **Gateway and Dashboard**: expose APIs, live views, chatbot features, and role-based access
+1. `docs/PROJECT_GUIDE.md`
+2. `docs/ARCHITECTURE.md`
+3. `Deployment/qos-buddy/README.md`
+4. `docs/RUNBOOK.md`
+5. `docs/ARTIFACTS.md`
+
+## Technology Stack
+
+- Frontend: Next.js, React, TypeScript, SvelteKit, React dashboard components.
+- Backend: Python, FastAPI, Docker, Docker Compose, Redis, PostgreSQL.
+- Authentication: Keycloak with role-based access.
+- AI and ML: scikit-learn, XGBoost, Random Forest, GRU, LSTM, autoencoders, FAISS.
+- Memory and reporting: ChromaDB, local Ollama, Qwen2.5, MLflow, PDF reporting.
+- Monitoring: host collectors, JSONL event streams, iperf3, router and Wi-Fi metrics.
+
+## Run The Local Demo
+
+The current demo targets Windows with Docker Desktop and PowerShell.
+
+Prerequisites:
+
+- Docker Desktop in Linux container mode.
+- Python 3.10 or newer on `PATH`.
+- PowerShell.
+- Ollama installed and running locally.
+- Local model available:
+
+```powershell
+ollama pull qwen2.5
+```
+
+Start the stack from the deployment folder:
+
+```powershell
+cd Deployment
+Set-ExecutionPolicy -Scope Process Bypass
+.\START-HERE.ps1
+```
+
+Open the dashboard:
+
+```text
+http://localhost:3000
+```
+
+Main local services:
+
+| Service | URL |
+| --- | --- |
+| Dashboard | `http://localhost:3000` |
+| Gateway API | `http://localhost:8080` |
+| Keycloak | `http://localhost:8081` |
+| RAG Service | `http://localhost:8088` |
+| Reporting Service | `http://localhost:8089` |
+| Jaeger | `http://localhost:16686` |
+
+Demo users are imported into the local Keycloak realm on first startup:
+
+| User | Password | Role |
+| --- | --- | --- |
+| `noc-exec` | `demo` | NOC Executive |
+| `noc-engineer` | `demo` | NOC Engineer |
+| `engineer` | `demo` | AI Engineer |
+| `admin-noc` | `demo` | Site Admin |
+
+These credentials are for the local demo only.
+
+## Documentation
+
+- `docs/PROJECT_GUIDE.md`: product goal, agent responsibilities, and reviewer path.
+- `docs/ARCHITECTURE.md`: event flow, services, data movement, and deployment shape.
+- `docs/RUNBOOK.md`: setup, startup, shutdown, health checks, and troubleshooting.
+- `docs/ARTIFACTS.md`: why trained models, datasets, notebooks, and reports are committed.
+- `Deployment/README_DEPLOYMENT.md`: portable demo package notes.
+- `Deployment/README_DEMO_PACKAGE.md`: demo flow and operational checklist.
+
+## Data And Artifacts
+
+This repository intentionally includes selected trained models, notebooks, CSV samples, generated figures, and deployment artifacts. We keep them in Git because this academic demo is designed to be inspectable and runnable without requiring every reviewer to retrain the models first.
+
+Runtime state, real environment files, logs, local databases, Docker volumes, and private credentials should remain untracked. See `docs/ARTIFACTS.md` and `.gitignore` for details.
 
 ## Contributors
+
 - Amri Mohamed Aziz
 - Hassani Amani
 - Darghoumi Nour Elhoude
@@ -70,37 +126,6 @@ QoS Buddy follows a multi-agent architecture where each component plays a dedica
 - Soulaymane Diallo
 - Ghassen Saddem
 
-## Academic Context
-Developed at **Esprit School of Engineering – Tunisia**  
-**PIDS – 4DS4 | Academic Year 2025–2026**
+## Acknowledgments
 
-This project was carried out as an academic engineering project focused on applying artificial intelligence, multi-agent systems, and software engineering practices to real-world network QoS management problems.
-
-## Getting Started
-
-### Prerequisites
-- Docker Desktop
-- Python 3.10+
-- Ollama installed locally
-- `qwen2.5` model available locally
-
-### Run the Project
-From the project root:
-
-```powershell
-Set-ExecutionPolicy -Scope Process Bypass
-.\START-HERE.ps1
-
-|--> Then open:
-http://localhost:3000
--Default Services : 
-Dashboard: http://localhost:3000
-Gateway API: http://localhost:8080
-Keycloak: http://localhost:8081
-RAG Service: http://localhost:8088
-```
-
-### Acknowledgments
-Esprit School of Engineering for the academic framework and project supervision.
-The project team members for the design and implementation of the multi-agent architecture.
-Open-source technologies and communities supporting AI, monitoring, and full-stack development.
+We thank Esprit School of Engineering for the academic framework and project supervision. We also acknowledge the open-source communities behind the monitoring, machine learning, web, and infrastructure tools used in this project.
