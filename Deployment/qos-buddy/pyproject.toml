@@ -1,7 +1,7 @@
 [project]
 name = "qos-buddy"
 version = "0.1.0"
-description = "Qosmic NOC Command Center — unified deployment for QOS-Buddy agents."
+description = "Unified local deployment for QoS Buddy agents."
 requires-python = ">=3.11"
 dependencies = [
   "pydantic>=2.6",

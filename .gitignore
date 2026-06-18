@@ -27,36 +27,62 @@ MANIFEST
 venv/
 ENV/
 env/
-.venv
+.venv/
 
-# IDE
+# Node and frontend builds
+node_modules/
+.next/
+.svelte-kit/
+out/
+build/
+coverage/
+
+# IDE and OS files
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 .DS_Store
+Thumbs.db
 
-# Jupyter Notebook
-.ipynb_checkpoints
+# Jupyter
+.ipynb_checkpoints/
 *.ipynb_checkpoints
 
-# pytest
+# Tests and caches
 .pytest_cache/
+.ruff_cache/
+.mypy_cache/
 .coverage
 htmlcov/
 
-# Data
+# Runtime data and logs
+*.log
+logs/
+*.pid
+docker-data/
+mlruns/
+mlartifacts/
+storage/
+*.sqlite
+*.sqlite3
+*.db
+chroma_db/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+
+# Root sample data placeholder
 data/samples/*
 !data/samples/.gitkeep
 
-# Environment variables
-.env
-.env.local
-
-# Logs
-*.log
-logs/
-
-# OS
-Thumbs.db
+# Local generated telemetry streams
+network_stream.jsonl
+monitoring_events.jsonl
+workflow_actions.jsonl

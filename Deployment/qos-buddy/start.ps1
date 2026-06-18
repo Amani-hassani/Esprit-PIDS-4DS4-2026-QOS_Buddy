@@ -1,12 +1,12 @@
-# QOS-Buddy launcher — boots the host-side monitoring producer + the docker stack.
+# QoS Buddy launcher: starts the host-side monitoring producer and Docker stack.
 #
 #   .\start.ps1                # producer + docker compose up -d
 #   .\start.ps1 -NoDocker      # producer only
 #   .\start.ps1 -NoProducer    # docker only
 #
-# The monitoring producer scrapes the host's real network (iperf3, system metrics,
-# router probes), so it has to run on the host. The docker `monitoring` service
-# tails network_stream.jsonl via volume mount and forwards onto Redis Streams.
+# The monitoring producer scrapes the host's real network through iperf3,
+# system metrics, and router probes. It runs on the host while the Docker
+# monitoring service tails network_stream.jsonl and forwards events to Redis.
 
 [CmdletBinding()]
 param(
@@ -35,7 +35,6 @@ function Test-ProducerRunning {
     if (-not $existingPid) { return $false }
     $proc = Get-Process -Id $existingPid -ErrorAction SilentlyContinue
     if (-not $proc) { return $false }
-    # Confirm it's actually our producer, not a recycled PID.
     if ($proc.ProcessName -notmatch "python") { return $false }
     return $true
 }
@@ -56,7 +55,7 @@ function Start-MonitoringProducer {
         throw "Producer script not found: $producerScript"
     }
 
-    Write-Host "[producer] starting → $logFile" -ForegroundColor Cyan
+    Write-Host "[producer] starting -> $logFile" -ForegroundColor Cyan
     $args = @(
         "qos_buddy_collector.py",
         "--duration", "0",
@@ -84,7 +83,7 @@ function Start-DockerStack {
         Write-Host "[docker] compose up -d --build" -ForegroundColor Cyan
         & docker compose up -d --build
         if ($LASTEXITCODE -ne 0) { throw "docker compose up -d --build failed (exit $LASTEXITCODE)" }
-        Write-Host "[docker] dashboard → http://localhost:3000" -ForegroundColor Green
+        Write-Host "[docker] dashboard -> http://localhost:3000" -ForegroundColor Green
     } finally {
         Pop-Location
     }
